@@ -13,5 +13,18 @@ module.exports = {
             .set('routes', resolve('src/routes'))
             .set('store', resolve('src/store'))
             .set('utils', resolve('src/utils'))
+    },
+
+    devServer: {
+        proxy: {
+            '/api': {
+                changeOrigin: true,
+                target: 'http://localhost:2333',
+                ws: true,
+                pathRewrite: {
+                    '^/api': '/'
+                }
+            }
+        }
     }
 };

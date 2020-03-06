@@ -1,7 +1,11 @@
-import VueRouter from 'vue-router'
+import Login from "../components/Login"
 
-const routes = {};
-const router = new VueRouter({
-    routes
-});
-export default router;
+const routes = [
+    {
+        path: "/login",
+        component: Login,
+        name: '',
+        hidden: true
+    }
+];
+export default routes;
