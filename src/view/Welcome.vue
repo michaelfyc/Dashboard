@@ -1,18 +1,13 @@
 <template>
-    <div>
-        <Login></Login>
-    </div>
+    <Login></Login>
 </template>
 
 <script>
-
-    import Login from '../components/Login'
+    import Login from "../components/Login";
 
     export default {
         name: "Welcome",
-        components: {
-            Login
-        }
+        components: {Login},
     }
 </script>
 

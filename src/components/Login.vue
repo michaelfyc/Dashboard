@@ -1,13 +1,13 @@
 <template>
-    <el-form label-width="80px" label-position="top" v-model="loginForm" :rules="rules" ref="loginForm">
-        <el-form-item label="用户名" prop="username">
-            <el-input v-model="loginForm.username" width="80%"></el-input>
+    <el-form label-width="80px" label-position="top" :model="loginForm" :rules="rules" ref="loginForm">
+        <el-form-item label="用户名/邮箱" prop="username">
+            <el-input v-model="loginForm.username" class="input_width"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password" width="80%"></el-input>
+            <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleLogin('loginForm')">登录</el-button>
+            <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -33,14 +33,34 @@
         },
 
         methods: {
+            login() {
+                this.axios.post('/API/user').then((response) => {
+                    //登录成功
+                    if (response.data.statusCode === "200") {
+                        this.$store.commit("setUser", response.data.user);
+                        sessionStorage.setItem('user_id', JSON.stringify(response.data.user));
+                        this.$router.push('/dashboard')
+                            .catch(e => {
+                                console.log(e)
+                            });
+                    }
+                    //登陆失败
+                    else {
+                        this.$message.error("用户名或密码错误！");
+                    }
+                }).catch((e) => {
+                    console.log(e);
+                    this.$message.error("系统错误!");
+                });
+            },
+
             handleLogin(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        //submit
-                    } else {
-                        console.log('error');
-                        return false;
+                        this.login();
+                        return true;
                     }
+                    return false;
                 });
             },
         }
@@ -48,5 +68,7 @@
 </script>
 
 <style scoped>
-
+    .input_width {
+        width: 80%;
+    }
 </style>

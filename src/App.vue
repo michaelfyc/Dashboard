@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <Welcome></Welcome>
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import Welcome from "./view/Welcome";
+    // import Welcome from "./view/Welcome";
 
   export default {
   name: 'App',
-    components: {Welcome}
+      // components: {Welcome}
 }
 </script>
 

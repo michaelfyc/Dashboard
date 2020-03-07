@@ -5,7 +5,7 @@
                      text-color="#fff"
                      active-text-color="#ffd04b">
                 <el-menu-item>首页</el-menu-item>
-                <el-menu-item>个人资料</el-menu-item>
+                <el-menu-item index="profile">个人资料</el-menu-item>
                 <el-submenu>
                     <template slot="title">管理订单</template>
                     <el-menu-item>增加订单</el-menu-item>
