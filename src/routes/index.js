@@ -2,6 +2,9 @@ import Login from "../components/Login"
 import AboutMe from "../components/panel/AboutMe";
 import Home from "../view/Home";
 import Welcome from "../view/Welcome";
+import Console from "../components/panel/Console";
+import Register from "../components/Register";
+import NotFound from "../view/404";
 
 const routes = [
     {
@@ -15,6 +18,12 @@ const routes = [
                 component: Login,
                 name: 'login',
                 hidden: true
+            },
+            {
+                path: "/register",
+                component: Register,
+                name: 'Register',
+                hidden: true
             }
         ]
     },
@@ -22,14 +31,31 @@ const routes = [
         path: "/dashboard",
         component: Home,
         name: "Home",
-        redirect: "/profile",
+        redirect: "/dashboard/profile",
         children: [
             {
-                path: "/profile",
+                path: "/dashboard/profile",
                 component: AboutMe,
                 name: "profile"
-            }
+            },
+            {
+                path: "/dashboard/index",
+                component: Console,
+                name: "console"
+            },
         ]
+    },
+    {
+        path: "/404",
+        component: NotFound,
+        name: "404 Not Found",
+        hidden: true
+    },
+    //其他自动404
+    {
+        path: '*',
+        hidden: true,
+        redirect: {path: "/404"}
     }
 ];
 export default routes;

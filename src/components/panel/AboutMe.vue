@@ -13,19 +13,20 @@
             <el-col :span="6">
                 <el-form-item label="旧密码" prop="oldPassword" :hide-required-asterisk="!profile.changePassword">
                     <el-input type="password" v-model="profile.oldPassword" class="inline-input_width"
-                              :disabled="!profile.changePassword"></el-input>
+                              :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="6">
                 <el-form-item label="新密码" prop="newPassword" :hide-required-asterisk="!profile.changePassword">
                     <el-input type="password" v-model="profile.newPassword" class="inline-input_width"
-                              :disabled="!profile.changePassword"></el-input>
+                              :disabled="!profile.changePassword" show-password minlength="6" maxlength="26"
+                              show-word-limit></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="6">
                 <el-form-item label="确认新密码" prop="vnewPassword" :hide-required-asterisk="!profile.changePassword">
                     <el-input type="password" v-model="profile.vnewPassword" class="inline-input_width"
-                              :disabled="!profile.changePassword"></el-input>
+                              :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
             </el-col>
 
@@ -52,6 +53,7 @@
                     callback();
                 }
             };
+
             const validNewPass = (rule, value, callback) => {
                 if (!this.profile.changePassword) {
                     callback();
@@ -117,21 +119,21 @@
                 };
                 this.axios.put("/API/putUserNoPwd", data).then(response => {
                     //如果修改成功:如名字未出现重复
-                    if (response.data.statusCode === "200" && response.data.verified === "true") {
+                    if (response.data.statusCode === "200" && response.data.verified === true) {
                         this.$store.commit("updateUser", {
                             username: this.profile.username,
                             password: this.profile.oldPassword,
                             email: this.profile.email
                         });
                         this.$message.success("修改成功！");
-                    } else if (response.data.verified === "false") {
+                    } else if (response.data.verified === false) {
                         this.$message.error(response.data.message);
                     } else {
                         this.$message.error("服务异常！")
                     }
                 })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
             },
 
@@ -145,16 +147,18 @@
                 };
                 this.axios.put("/API/putUserPwd", data).then(response => {
                     //如果旧密码正确
-                    if (response.data.statusCode === "200" && response.data.verified === "true") {
+                    if (response.data.statusCode === "200" && response.data.verified === true) {
                         this.$store.commit("updateUser", {
                             username: this.profile.username,
                             email: this.profile.email,
                             password: this.profile.vnewPassword
                         });
+                        //由于没有刷新页面，提交后要把旧密码换成新的
+                        this.profile.oldPassword = this.profile.vnewPassword;
                         this.$message.success("修改成功！");
                     }
-                    //如果旧密码错误
-                    else if (response.data.verified === "false") {
+                    //如果旧密码错误或者用户名/邮箱重复
+                    else if (response.data.verified === false) {
                         this.$message.error(response.data.message);
                     }
                     //其他
@@ -163,24 +167,41 @@
                     }
                 })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
             },
 
             handleUpdate() {
                 this.$refs['profile'].validate(valid => {
+                    //输入格式正确
                     if (valid) {
-                        //如果不修改密码
-                        if (!this.profile.changePassword) {
-                            this.sendNoPwd();
-                        }
-                        //如果修改密码
-                        else {
-                            this.sendPwd();
-                        }
+                        //先提醒用户
+                        this.$confirm("确定修改个人信息？", "提示", {
+                            confirmButtonText: "确认",
+                            cancelButtonText: "取消",
+                            type: "warning"
+                        })
+                        //如果确认要修改
+                            .then(() => {
+                                //如果不修改密码
+                                if (!this.profile.changePassword) {
+                                    this.sendNoPwd();
+                                }
+                                //如果修改密码
+                                else {
+                                    this.sendPwd();
+                                }
+                            })
+                            //如果不要修改，则取消
+                            .catch(() => {
+                                this.$message.info("已取消");
+                            });
                     }
-                    console.log("有东西没好好填");
-                    return false;
+                    //输入格式失败
+                    else {
+                        console.warn("有东西没好好填");
+                        return false;
+                    }
                 });
             }
         },

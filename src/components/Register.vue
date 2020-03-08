@@ -7,10 +7,11 @@
             <el-input type="email" v-model="regForm.email" class="narrow_input"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="regForm.password" class="narrow_input"></el-input>
+            <el-input type="password" v-model="regForm.password" class="narrow_input" minlength="6" maxlength="26"
+                      show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="vpassword">
-            <el-input type="password" v-model="regForm.vpassword" class="narrow_input"></el-input>
+            <el-input type="password" v-model="regForm.vpassword" class="narrow_input" show-password></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="handleReg('regForm')">注册</el-button>
@@ -59,9 +60,11 @@
                         {required: true, message: "请输入邮箱", trigger: 'blur'}
                     ],
                     password: [
+                        {required: true, message: "请输入密码", trigger: 'blur'},
                         {validator: validPwd, trigger: 'blur'}
                     ],
                     vpassword: [
+                        {required: true, message: "请输入确认密码", trigger: 'blur'},
                         {validator: validvPwd, trigger: 'blur'}
                     ]
                 },
@@ -76,16 +79,16 @@
                     password: this.regForm.password
                 };
                 this.axios.post("/API/register", data).then(response => {
-                    if (response.data.statusCode === "200" && response.data.verified === "true") {
+                    if (response.data.statusCode === "200" && response.data.verified === true) {
                         this.$message.success("注册成功！");
                         this.$router.push({path: "/login"});
-                    } else if (response.data.verified === "false") {
+                    } else if (response.data.verified === false) {
                         this.$message.error("用户名或邮箱已存在");
                     } else {
                         this.$message.error("服务异常！");
                     }
                 }).catch(e => {
-                    console.log(e);
+                    console.error(e);
                 })
             },
 
@@ -95,7 +98,7 @@
                     if (valid) {
                         this.register();
                     } else {
-                        console.log('error');
+                        console.warning('Register error');
                         return false;
                     }
                 });

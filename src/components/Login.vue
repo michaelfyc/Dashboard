@@ -6,9 +6,18 @@
         <el-form-item label="密码" prop="password">
             <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
         </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
-        </el-form-item>
+        <el-row>
+            <el-col :span="8">
+                <el-form-item>
+                    <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
+                </el-form-item>
+            </el-col>
+            <el-col :span="8">
+                <el-form-item>
+                    <el-button type="success" @click.prevent="jumpToRegister">注册</el-button>
+                </el-form-item>
+            </el-col>
+        </el-row>
     </el-form>
 </template>
 
@@ -41,7 +50,7 @@
                         sessionStorage.setItem('user_id', JSON.stringify(response.data.user));
                         this.$router.push('/dashboard')
                             .catch(e => {
-                                console.log(e)
+                                console.error(e)
                             });
                     }
                     //登陆失败
@@ -49,7 +58,7 @@
                         this.$message.error("用户名或密码错误！");
                     }
                 }).catch((e) => {
-                    console.log(e);
+                    console.error(e);
                     this.$message.error("系统错误!");
                 });
             },
@@ -63,12 +72,16 @@
                     return false;
                 });
             },
+
+            jumpToRegister() {
+                this.$router.push({path: "/register"}).catch(error => console.error(error));
+            }
         }
     }
 </script>
 
 <style scoped>
     .input_width {
-        width: 80%;
+        width: 40%;
     }
 </style>
