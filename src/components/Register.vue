@@ -20,8 +20,6 @@
 </template>
 
 <script>
-    //TODO 验证register功能和对应的mock
-
     export default {
         name: "Register",
         data() {
