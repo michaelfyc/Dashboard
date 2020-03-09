@@ -1,2 +1,2 @@
 # Dashboard
-Vue+Spring
+Vue+Flask
