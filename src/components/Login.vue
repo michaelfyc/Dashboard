@@ -1,5 +1,6 @@
 <template>
-    <el-form label-width="80px" label-position="top" :model="loginForm" :rules="rules" ref="loginForm">
+    <el-form label-width="80px" label-position="top" :model="loginForm" :rules="rules" ref="loginForm"
+             v-loading="loading">
         <el-form-item label="用户名/邮箱" prop="username">
             <el-input v-model="loginForm.username" class="input_width"></el-input>
         </el-form-item>
@@ -26,6 +27,7 @@
         name: "Login",
         data() {
             return {
+                loading: false,
                 loginForm: {
                     username: '',
                     password: ''
@@ -66,7 +68,9 @@
             handleLogin(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.loading = true;
                         this.login();
+                        this.loading = false;
                         return true;
                     }
                     return false;

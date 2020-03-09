@@ -1,5 +1,8 @@
 import Mock from 'mockjs'
 
+Mock.setup({
+    timeout: '200-600'
+});
 Mock.mock("/API/user", {
     statusCode: "200", user: {
         id: "12343",
