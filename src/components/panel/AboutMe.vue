@@ -1,5 +1,6 @@
 <template>
-    <el-form :model="profile" label-width="120px" label-position="right" ref="profile" :rules="profileRules">
+    <el-form :model="profile" label-width="120px" label-position="right" ref="profile" :rules="profileRules"
+             v-loading="loading">
         <el-form-item label="修改用户名" prop="username">
             <el-input v-model="profile.username" style="width:50%"></el-input>
         </el-form-item>
@@ -81,6 +82,7 @@
             };
 
             return {
+                loading: false,
                 profile: {
                     username: "",
                     email: "",
@@ -183,6 +185,7 @@
                         })
                         //如果确认要修改
                             .then(() => {
+                                this.loading = true;
                                 //如果不修改密码
                                 if (!this.profile.changePassword) {
                                     this.sendNoPwd();
@@ -191,6 +194,7 @@
                                 else {
                                     this.sendPwd();
                                 }
+                                this.loading = false;
                             })
                             //如果不要修改，则取消
                             .catch(() => {
@@ -218,6 +222,7 @@
             this.profile.username = this.$store.state.user.username;
             this.profile.email = this.$store.state.user.email;
             this.profile.oldPassword = this.$store.state.user.password;
+            this.loading = false;
         }
     }
 </script>

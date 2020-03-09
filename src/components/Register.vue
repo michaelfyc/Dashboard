@@ -1,5 +1,5 @@
 <template>
-    <el-form label-width="80px" :model="regForm" ref="regForm" :rules="regRules">
+    <el-form label-width="80px" :model="regForm" ref="regForm" :rules="regRules" v-loading="loading">
         <el-form-item label="用户名" prop="username">
             <el-input style="width:50%" v-model="regForm.username" class="narrow_input"></el-input>
         </el-form-item>
@@ -32,6 +32,7 @@
                     callback();
                 }
             };
+
             const validvPwd = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error("请输入确认密码！"));
@@ -44,6 +45,7 @@
             };
 
             return {
+                loading: false,
                 regForm: {
                     username: '',
                     email: '',
@@ -94,7 +96,9 @@
             handleReg(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.loading = true;
                         this.register();
+                        this.loading = false;
                     } else {
                         console.warning('Register error');
                         return false;
