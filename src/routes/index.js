@@ -5,7 +5,7 @@ import Welcome from "../view/Welcome";
 import Console from "../components/panel/Console";
 import Register from "../components/Register";
 import NotFound from "../view/404";
-import OrderForm from "../components/panel/OrderForm";
+import OrderForm from "../components/order/OrderForm";
 
 const routes = [
     {
