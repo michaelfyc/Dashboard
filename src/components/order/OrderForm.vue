@@ -4,39 +4,63 @@
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
-        <el-form-item label="产品类型" prop="productType">
-            <el-cascader v-model="orderForm.productType" :options="types" :props="expandTrigger">
-            </el-cascader>
+        <ProductType @transferProductType="getProductType"></ProductType>
+        <el-form-item label="附赠配件">
+            <el-switch v-model="orderForm.withAccessories"></el-switch>
         </el-form-item>
-        <el-form-item label="价格">
-            <el-input-number v-model="orderForm.price" :precision="2" :step="0.01"
-                             controls-position="right"></el-input-number>
-        </el-form-item>
+        <ProductAccessories @transferAccessories="getAccessories"
+                            :needAccessories="orderForm.withAccessories"></ProductAccessories>
+        <!--进价和售价和邮费-->
+        <el-row>
+            <el-col :span="6">
+                <el-form-item label="进价">
+                    <el-input-number v-model="orderForm.money.incomePrice" :precision="2" :step="0.01"
+                                     controls-position="right"></el-input-number>
+                </el-form-item>
+            </el-col>
+            <el-col :span="6">
+                <el-form-item label="售格">
+                    <el-input-number v-model="orderForm.money.soldPrice" :precision="2" :step="0.01"
+                                     controls-position="right"></el-input-number>
+                </el-form-item>
+            </el-col>
+            <el-col :span="6">
+                <el-form-item label="邮费">
+                    <el-input-number v-model="orderForm.money.postPrice" :precision="2" :step="0.01"
+                                     controls-position="right"></el-input-number>
+                </el-form-item>
+            </el-col>
+        </el-row>
         <span>产品描述</span>
-        <el-form-item label="颜色">
-            <el-select v-model="orderForm.productDescription.color" clearable>
-                <el-option v-for="color in colors" :key="color.value"
-                           :label="color.label" :value="color.value"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="容量" v-if="hasStorage">
-            <el-radio-group v-model="orderForm.productDescription.storage" v-if="isProduct('Phone')">
-                <el-radio label="64">64G</el-radio>
-                <el-radio label="128">128G</el-radio>
-                <el-radio label="256">256G</el-radio>
-            </el-radio-group>
-            <el-radio-group v-model="orderForm.productDescription.storage" v-if="isProduct('Computer')">
-                <el-radio label="128">128G</el-radio>
-                <el-radio label="256">256G</el-radio>
-                <el-radio label="512">512G</el-radio>
-                <el-radio label="1024">1T</el-radio>
-            </el-radio-group>
-        </el-form-item>
+        <!--颜色和成色-->
+        <el-row>
+            <el-col :span="4">
+                <el-form-item label="颜色">
+                    <el-select v-model="orderForm.productDescription.color" clearable>
+                        <el-option v-for="color in colors" :key="color.value"
+                                   :label="color.label" :value="color.value"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :span="4">
+                <el-form-item label="成色">
+                    <el-input v-model="orderForm.productDescription.outlook"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <ProductMemory :productType="orderForm.productType[0]" @transferMemory="getMemory"></ProductMemory>
+        <ProductStorage :productType="orderForm.productType[0]" @transferStorage="getStorage"></ProductStorage>
         <el-form-item label="购买人姓名" prop="purchaser">
             <el-input v-model="orderForm.purchaser"></el-input>
         </el-form-item>
         <el-form-item label="购买人联系方式" prop="phoneNum">
             <el-input v-model="orderForm.phoneNum"></el-input>
+        </el-form-item>
+        <el-form-item label="出售方式">
+            <el-input v-model="orderForm.platform"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+            <el-input type="textarea" v-model="orderForm.note"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="handleNew">新建订单</el-button>
@@ -45,21 +69,34 @@
 </template>
 
 <script>
+    import ProductType from "./ProductType";
+    import ProductStorage from "./ProductStorage";
+    import ProductMemory from "./ProductMemory";
+    import ProductAccessories from "./ProductAccessories";
+
     export default {
         name: "OrderForm",
+        components: {ProductAccessories, ProductMemory, ProductStorage, ProductType},
         data() {
             return {
                 loading: false,
                 orderForm: {
                     productName: "",
                     productType: [],
-                    price: 0,
+                    withAccessories: false,
+                    money: {
+                        incomePrice: 0,
+                        soldPrice: 0,
+                        postPrice: 0
+                    },
                     productDescription: {
                         color: "",
-                        storage: ""
+                        outlook: ""
                     },
                     purchaser: "",
-                    phoneNum: ""
+                    phoneNum: "",
+                    platform: "",
+                    note: ""
                 },
                 orderRules: {},//TODO 加rules验证规则
                 types: [
@@ -129,11 +166,23 @@
             handleNew() {
                 //TODO 发送给后台，存到state计数
                 alert(JSON.stringify(this.orderForm));
+            },
+            getProductType(productType) {
+                this.orderForm.productType = productType;
+            },
+            getStorage(storage) {
+                this.orderForm.productDescription.storage = storage
+            },
+            getMemory(memory) {
+                this.orderForm.productDescription.memory = memory;
+            },
+            getAccessories(acc) {
+                this.orderForm.accessories = acc;
             }
         },
 
         computed: {
-            isProduct() {
+            /*isProduct() {
                 return function (product) {
                     return this.orderForm.productType.indexOf(product) !== -1;
                 }
@@ -142,7 +191,7 @@
                 if (this.orderForm.productType.length === 0) {
                     return false;
                 } else return this.orderForm.productType.indexOf("Accessories") === -1 && this.orderForm.productType.indexOf("EarPhone") === -1;
-            }
+            }*/
         }
     }
 </script>
