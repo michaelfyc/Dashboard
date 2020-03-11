@@ -17,7 +17,8 @@
                     {value: "Pen", label: "手写笔"},
                     {value: "Charger", label: "充电器"},
                     {value: "Mouse", label: "鼠标"},
-                    {value: "KeyBoard", label: "键盘"}
+                    {value: "KeyBoard", label: "键盘"},
+                    {value: "Other", label: "其他"}
                 ]
             }
         },

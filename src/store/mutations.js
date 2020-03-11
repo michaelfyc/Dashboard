@@ -20,6 +20,18 @@ const mutations = {
     //登出时将user置空
     logout(state) {
         state.user = {};
+    },
+
+
+    //订单相关
+    //增加订单数量
+    addOrderNum(state) {
+        state.order.orderNum++;
+    },
+
+    //减少订单数量
+    subOrderNum(state) {
+        state.order.orderNum--;
     }
 };
 

@@ -5,7 +5,10 @@ import mutations from './mutations'
 Vue.use(Vuex);
 
 const state = {
-    user: {}
+    user: {},
+    order: {
+        orderNum: 0
+    }
 };
 
 const actions = {};

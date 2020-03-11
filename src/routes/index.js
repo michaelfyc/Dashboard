@@ -32,7 +32,7 @@ const routes = [
         path: "/dashboard",
         component: Home,
         name: "Home",
-        redirect: "/dashboard/profile",
+        redirect: "/dashboard/index",
         children: [
             {
                 path: "/dashboard/profile",
