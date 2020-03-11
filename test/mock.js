@@ -39,3 +39,7 @@ Mock.mock("/API/postOrderData", {
         {type: "bar", data: [15, 3, 6, 27], barWidth: "60%"},
     ]
 });
+
+Mock.mock("/API/newOrder", {
+    statusCode: "200"
+});

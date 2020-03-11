@@ -1,5 +1,5 @@
 <template>
-    <el-form-item label="产品类型">
+    <el-form-item label="产品类型" prop="productType">
         <el-cascader :options="types" :props="expandTrigger" v-model="productType" @change="transferProductType">
         </el-cascader>
     </el-form-item>

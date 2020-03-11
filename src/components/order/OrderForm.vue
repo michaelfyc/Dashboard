@@ -15,35 +15,37 @@
             <el-col :span="6">
                 <el-form-item label="进价">
                     <el-input-number v-model="orderForm.money.incomePrice" :precision="2" :step="0.01"
-                                     controls-position="right"></el-input-number>
+                                     controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
             <el-col :span="6">
                 <el-form-item label="售格">
                     <el-input-number v-model="orderForm.money.soldPrice" :precision="2" :step="0.01"
-                                     controls-position="right"></el-input-number>
+                                     controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
             <el-col :span="6">
                 <el-form-item label="邮费">
                     <el-input-number v-model="orderForm.money.postPrice" :precision="2" :step="0.01"
-                                     controls-position="right"></el-input-number>
+                                     controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
         </el-row>
-        <span>产品描述</span>
+        <el-form-item label="产品描述" label-width="130px" class="productDescription">
+            <!--           <label>产品描述</label>-->
+        </el-form-item>
         <!--颜色和成色-->
         <el-row>
-            <el-col :span="4">
-                <el-form-item label="颜色">
+            <el-col :span="6">
+                <el-form-item label="颜色" prop="color">
                     <el-select v-model="orderForm.productDescription.color" clearable>
                         <el-option v-for="color in colors" :key="color.value"
                                    :label="color.label" :value="color.value"></el-option>
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
-                <el-form-item label="成色">
+            <el-col :span="6">
+                <el-form-item label="成色" prop="outlook">
                     <el-input v-model="orderForm.productDescription.outlook"></el-input>
                 </el-form-item>
             </el-col>
@@ -53,10 +55,10 @@
         <el-form-item label="购买人姓名" prop="purchaser">
             <el-input v-model="orderForm.purchaser"></el-input>
         </el-form-item>
-        <el-form-item label="购买人联系方式" prop="phoneNum">
-            <el-input v-model="orderForm.phoneNum"></el-input>
+        <el-form-item label="购买人联系方式" prop="contact" label-width="130px">
+            <el-input v-model="orderForm.contact"></el-input>
         </el-form-item>
-        <el-form-item label="出售方式">
+        <el-form-item label="出售方式" prop="platform">
             <el-input v-model="orderForm.platform"></el-input>
         </el-form-item>
         <el-form-item label="备注">
@@ -94,61 +96,17 @@
                         outlook: ""
                     },
                     purchaser: "",
-                    phoneNum: "",
+                    contact: "",
                     platform: "",
                     note: ""
                 },
-                orderRules: {},//TODO 加rules验证规则
-                types: [
-                    {
-                        value: "Phone", label: "手机", children: [
-                            {value: "ApplePhone", label: "苹果手机"},
-                            {value: "AndroidPhone", label: "安卓手机"}
-                        ]
-                    },
-                    {
-                        value: "Computer", label: "电脑", children: [
-                            {
-                                value: "Laptop", label: "笔记本", children: [
-                                    {value: "WindowsLaptop", label: "Windows系统"},
-                                    {value: "AppleLaptop", label: "Mac系统"}
-                                ]
-                            },
-                            {
-                                value: "Desktop", label: "台式机", children: [
-                                    {value: "WindowsDesktop", label: "Windows系统"},
-                                    {value: "AppleDesktop", label: "Mac系统"}
-                                ]
-                            }
-                        ]
-                    },
-                    {value: "Pad", label: "平板电脑"},
-                    {
-                        value: "Accessories", label: "配件", children: [
-                            {value: "Pen", label: "手写笔"},
-                            {value: "Charger", label: "充电器"},
-                            {value: "Mouse", label: "鼠标"},
-                            {value: "KeyBoard", label: "键盘"}
-                        ]
-                    },
-                    {
-                        value: "EarPhone", label: "耳机", children: [
-                            {
-                                value: "Wireless", label: "无线耳机", children: [
-                                    {value: "Noiseless", label: "降噪"},
-                                    {value: "Noise", label: "非降噪"},
-                                ]
-                            },
-                            {
-                                value: "Wired", label: "有线耳机", children: [
-                                    {value: "Noiseless", label: "降噪"},
-                                    {value: "Noise", label: "非降噪"},
-                                ]
-                            }
-                        ]
-                    },
-                    {value: "other", label: "其他"}
-                ],
+                orderRules: {
+                    productName: [{required: true, message: "请输入产品名", trigger: "blur"}],
+                    purchaser: [{required: true, message: "请输入购买人姓名", trigger: "blur"}],
+                    productType: [{required: true, message: "请选择产品类型", trigger: "blur"}],
+                    contact: [{required: true, message: "请输入购买人联系方式", trigger: "blur"}],
+                    platform: [{required: true, message: "请输入出售方式", trigger: "blur"}],
+                },
                 colors: [
                     {value: "black", label: "黑色"},
                     {value: "silver", label: "银色"},
@@ -159,13 +117,37 @@
                     {value: "purple", label: "紫色"},
                     {value: "yellow", label: "黄色"}
                 ],
-                expandTrigger: {expandTrigger: "hover"}
             }
         },
         methods: {
+            postForm() {
+                this.axios.post("/API/newOrder", this.orderForm)
+                    .then((response) => {
+                        if (response.data.statusCode === "200") {
+                            //commit加数
+                            this.$store.commit("addOrderNum");
+                            this.$message.success("新建订单成功！");
+                            this.$refs['orderForm'].resetFields();
+                        } else {
+                            this.$message.error("新建订单失败");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        this.$message.error("系统错误");
+                    });
+            },
             handleNew() {
-                //TODO 发送给后台，存到state计数
-                alert(JSON.stringify(this.orderForm));
+                this.$refs['orderForm'].validate((valid) => {
+                    if (valid) {
+                        this.postForm();
+                        // alert(JSON.stringify(this.orderForm));
+                    } else {
+                        console.warn("有东西没好好填");
+                        return false;
+                    }
+                });
+
             },
             getProductType(productType) {
                 this.orderForm.productType = productType;
@@ -182,16 +164,6 @@
         },
 
         computed: {
-            /*isProduct() {
-                return function (product) {
-                    return this.orderForm.productType.indexOf(product) !== -1;
-                }
-            },
-            hasStorage() {
-                if (this.orderForm.productType.length === 0) {
-                    return false;
-                } else return this.orderForm.productType.indexOf("Accessories") === -1 && this.orderForm.productType.indexOf("EarPhone") === -1;
-            }*/
         }
     }
 </script>

@@ -1,5 +1,7 @@
 <template>
-    <router-view></router-view>
+    <el-card class="welcomeCard">
+        <router-view></router-view>
+    </el-card>
 </template>
 
 <script>
@@ -10,5 +12,10 @@
 </script>
 
 <style scoped>
-
+    .welcomeCard {
+        width: 500px;
+        margin-top: 100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>

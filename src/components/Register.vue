@@ -1,7 +1,7 @@
 <template>
     <el-form label-width="80px" :model="regForm" ref="regForm" :rules="regRules" v-loading="loading">
         <el-form-item label="用户名" prop="username">
-            <el-input style="width:50%" v-model="regForm.username" class="narrow_input"></el-input>
+            <el-input style="width:100%" v-model="regForm.username" class="narrow_input"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
             <el-input type="email" v-model="regForm.email" class="narrow_input"></el-input>
@@ -14,7 +14,14 @@
             <el-input type="password" v-model="regForm.vpassword" class="narrow_input" show-password></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleReg('regForm')">注册</el-button>
+            <el-row type="flex" justify="space-between">
+                <el-col :span="12">
+                    <el-button type="primary" @click="handleReg('regForm')">注册</el-button>
+                </el-col>
+                <el-col :span="12" :push="3">
+                    <el-link type="primary" href="#/login">有账号了？去登录</el-link>
+                </el-col>
+            </el-row>
         </el-form-item>
     </el-form>
 </template>
@@ -111,6 +118,6 @@
 
 <style scoped>
     .narrow_input {
-        width: 80%
+        width: 100%
     }
 </style>

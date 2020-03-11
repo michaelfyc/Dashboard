@@ -17,7 +17,6 @@
         data() {
             return {
                 loading: true,
-
                 //表格信息
                 orderBar: {
                     title: {text: "订单统计表"},
