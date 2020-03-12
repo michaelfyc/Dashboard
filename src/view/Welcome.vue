@@ -1,13 +1,17 @@
 <template>
-    <el-card class="welcomeCard">
-        <router-view></router-view>
-    </el-card>
+    <el-container>
+        <vue-canvas-nest :config="{color:red,opacity:0.7,count:300}"></vue-canvas-nest>
+        <el-card class="welcomeCard">
+            <router-view></router-view>
+        </el-card>
+    </el-container>
 </template>
 
 <script>
-
+    import VueCanvasNest from "vue-canvas-nest/src/vueCanvasNest";
     export default {
-        name: "Welcome"
+        name: "Welcome",
+        components: {VueCanvasNest}
     }
 </script>
 
