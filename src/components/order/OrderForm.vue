@@ -120,27 +120,13 @@
             }
         },
         methods: {
-            postForm() {
-                this.axios.post("/API/newOrder", this.orderForm)
-                    .then((response) => {
-                        if (response.data.statusCode === "200") {
-                            //commit加数
-                            this.$store.commit("addOrderNum");
-                            this.$message.success("新建订单成功！");
-                            this.$refs['orderForm'].resetFields();
-                        } else {
-                            this.$message.error("新建订单失败");
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        this.$message.error("系统错误");
-                    });
-            },
             handleNew() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
-                        this.postForm();
+                        this.$store.dispatch("postOrder", this.orderForm)
+                            .catch(e => {
+                                console.error(e);
+                            });
                         // alert(JSON.stringify(this.orderForm));
                     } else {
                         console.warn("有东西没好好填");
@@ -163,8 +149,7 @@
             }
         },
 
-        computed: {
-        }
+        computed: {}
     }
 </script>
 
