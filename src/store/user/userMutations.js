@@ -10,28 +10,15 @@ const mutations = {
 
     //修改个人信息后更新user状态
     updateUser(state, user) {
-        state.user.username = user.username;
-        state.user.password = user.password;
-        state.user.email = user.email;
-        state.user.login = true;
-        sessionStorage.setItem('user_id', JSON.stringify(state.user));
+        state.user.user.username = user.username;
+        state.user.user.password = user.password;
+        state.user.user.email = user.email;
+        state.user.user.login = true;
     },
 
     //登出时将user置空
     logout(state) {
         state.user = {};
-    },
-
-
-    //订单相关
-    //增加订单数量
-    addOrderNum(state) {
-        state.order.orderNum++;
-    },
-
-    //减少订单数量
-    subOrderNum(state) {
-        state.order.orderNum--;
     }
 };
 

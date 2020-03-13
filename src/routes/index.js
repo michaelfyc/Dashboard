@@ -6,7 +6,10 @@ import Console from "../components/panel/Console";
 import Register from "../components/Register";
 import NotFound from "../view/404";
 import OrderForm from "../components/order/OrderForm";
+import Vue from "vue";
+import VueRouter from "vue-router";
 
+Vue.use(VueRouter);
 const routes = [
     {
         path: "/",
@@ -64,4 +67,6 @@ const routes = [
         redirect: {path: "/404"}
     }
 ];
-export default routes;
+export default new VueRouter({
+    routes
+});

@@ -119,24 +119,7 @@
                     username: this.profile.username,
                     email: this.profile.email
                 };
-                this.axios.put("/API/putUserNoPwd", data).then(response => {
-                    //如果修改成功:如名字未出现重复
-                    if (response.data.statusCode === "200" && response.data.verified === true) {
-                        this.$store.commit("updateUser", {
-                            username: this.profile.username,
-                            password: this.profile.oldPassword,
-                            email: this.profile.email
-                        });
-                        this.$message.success("修改成功！");
-                    } else if (response.data.verified === false) {
-                        this.$message.error(response.data.message);
-                    } else {
-                        this.$message.error("服务异常！")
-                    }
-                })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                this.$store.dispatch("putUserNoPwd", data).catch(e => console.error(e));
             },
 
             sendPwd() {
@@ -147,30 +130,7 @@
                     password: this.profile.oldPassword,
                     newPassword: this.profile.vnewPassword
                 };
-                this.axios.put("/API/putUserPwd", data).then(response => {
-                    //如果旧密码正确
-                    if (response.data.statusCode === "200" && response.data.verified === true) {
-                        this.$store.commit("updateUser", {
-                            username: this.profile.username,
-                            email: this.profile.email,
-                            password: this.profile.vnewPassword
-                        });
-                        //由于没有刷新页面，提交后要把旧密码换成新的
-                        this.profile.oldPassword = this.profile.vnewPassword;
-                        this.$message.success("修改成功！");
-                    }
-                    //如果旧密码错误或者用户名/邮箱重复
-                    else if (response.data.verified === false) {
-                        this.$message.error(response.data.message);
-                    }
-                    //其他
-                    else {
-                        this.$message.error("服务异常！");
-                    }
-                })
-                    .catch(error => {
-                        console.error(error);
-                    });
+                this.$store.dispatch("putUserWithPwd", data).catch(e => console.error(e));
             },
 
             handleUpdate() {
@@ -209,19 +169,11 @@
                 });
             }
         },
-
-        created() {
-            //解决刷新后state清空的问题
-            if (sessionStorage.getItem("user_id")) {
-                this.$store.state.user = JSON.parse(sessionStorage.getItem("user_id"));
-            }
-        },
-
         mounted() {
             //默认value
-            this.profile.username = this.$store.state.user.username;
-            this.profile.email = this.$store.state.user.email;
-            this.profile.oldPassword = this.$store.state.user.password;
+            this.profile.username = this.$store.state.user.user.username;
+            this.profile.email = this.$store.state.user.user.email;
+            this.profile.oldPassword = this.$store.state.user.user.password;
             this.loading = false;
         }
     }
