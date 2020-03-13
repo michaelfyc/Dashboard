@@ -3,8 +3,9 @@ import Mock from 'mockjs'
 Mock.setup({
     timeout: '200-600'
 });
-Mock.mock("/API/user", {
-    statusCode: "200", user: {
+Mock.mock("/API/login", {
+    verified: true,
+    user: {
         id: "12343",
         username: "admin",
         email: "a@qq.com",
@@ -19,14 +20,14 @@ Mock.mock("/API/register", {
     verified: true
 });
 
+//TODO 接口数据修改
 Mock.mock("/API/putUserNoPwd", {
-    statusCode: "200",
     verified: true,
     message: "修改成功"
 });
 
-Mock.mock("/API/putUserPwd", {
-    statusCode: "200",
+//TODO 接口数据修改
+Mock.mock("/API/putUserWithPwd", {
     verified: true,
     message: "修改成功"
 });

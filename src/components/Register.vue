@@ -85,18 +85,7 @@
                     email: this.regForm.email,
                     password: this.regForm.password
                 };
-                this.axios.post("/API/register", data).then(response => {
-                    if (response.data.statusCode === "200" && response.data.verified === true) {
-                        this.$message.success("注册成功！");
-                        this.$router.push({path: "/login"});
-                    } else if (response.data.verified === false) {
-                        this.$message.error("用户名或邮箱已存在");
-                    } else {
-                        this.$message.error("服务异常！");
-                    }
-                }).catch(e => {
-                    console.error(e);
-                })
+                this.$store.dispatch("register", data).catch(e => console.error(e));
             },
 
 
@@ -107,7 +96,7 @@
                         this.register();
                         this.loading = false;
                     } else {
-                        console.warning('Register error');
+                        console.warn('Register error');
                         return false;
                     }
                 });

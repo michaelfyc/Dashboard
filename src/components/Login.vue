@@ -45,24 +45,7 @@
 
         methods: {
             login() {
-                this.axios.post('/API/user').then((response) => {
-                    //登录成功
-                    if (response.data.statusCode === "200") {
-                        this.$store.commit("setUser", response.data.user);
-                        sessionStorage.setItem('user_id', JSON.stringify(response.data.user));
-                        this.$router.push('/dashboard')
-                            .catch(e => {
-                                console.error(e)
-                            });
-                    }
-                    //登陆失败
-                    else {
-                        this.$message.error("用户名或密码错误！");
-                    }
-                }).catch((e) => {
-                    console.error(e);
-                    this.$message.error("系统错误!");
-                });
+                this.$store.dispatch("login", this.loginForm)
             },
 
             handleLogin(formName) {
