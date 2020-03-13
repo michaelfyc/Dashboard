@@ -16,7 +16,6 @@ Mock.mock("/API/login", {
 
 
 Mock.mock("/API/register", {
-    statusCode: "200",
     verified: true
 });
 
@@ -33,7 +32,6 @@ Mock.mock("/API/putUserWithPwd", {
 });
 
 Mock.mock("/API/postOrderData", {
-    statusCode: "200",
     verified: true,
     xAxisData: ["1月", "2月", "3月", "4月"],
     series: [
