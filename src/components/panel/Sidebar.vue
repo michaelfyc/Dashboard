@@ -1,8 +1,8 @@
 <template>
-    <el-menu mode="vertical" background-color="#545c64"
+    <el-menu mode="vertical" background-color="#eef1f6"
              :default-active="$route.path.substr($route.path.lastIndexOf('/')+1)"
-             text-color="#fff"
-             active-text-color="#ffd04b"
+             text-color="#48576a"
+             active-text-color="#20a0ff"
              router>
         <el-menu-item index="index">首页</el-menu-item>
         <el-menu-item index="profile">个人资料</el-menu-item>
