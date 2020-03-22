@@ -10,19 +10,19 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, data) {
-        await axios.post("/API/login", data)
+        await axios.post("/api/login", data)
             .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
-                    commit("setUser", response.data.user);
-                    Message.success("登录成功!");
-                    router.push({path: "/dashboard"});
-                } else {
-                    Message.error(response.data.message);
-                }
+                commit("setUser", response.data.uid, response.data.isLogin);
+                Message.success("登录成功!");
+                router.push({path: "/dashboard"});
             })
             .catch(e => {
-                Message.error("系统错误！");
-                console.error(e);
+                if (e.response.status === 403) {
+                    Message.error("用户名或密码错误！");
+                } else {
+                    Message.error("系统错误！");
+                    console.error(e);
+                }
             })
     },
 

@@ -14,7 +14,6 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(Vuex);
-//axios.defaults.baseURL = "http://;localhost:2333/api";
 Vue.prototype.axios = axios;
 
 //导航守卫，如果sessionStorage里没有user_id则跳转至登录界面
