@@ -10,7 +10,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, data) {
-        await axios.post("/api/login", data)
+        await axios.post("/API/login", data)//TODO 生产环境改成/api
             .then(response => {
                 commit("setUser", response.data.uid, response.data.isLogin);
                 Message.success("登录成功!");

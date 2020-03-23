@@ -32,17 +32,28 @@
             </el-col>
 
         </el-row>
-
-        <el-form-item>
-            <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
-        </el-form-item>
+        <el-row :gutter="6">
+            <el-col :span="6">
+                <el-form-item>
+                    <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
+                </el-form-item>
+            </el-col>
+            <el-col :span="8" :offset="3">
+                <el-form-item>
+                    <Logout></Logout>
+                </el-form-item>
+            </el-col>
+        </el-row>
     </el-form>
 </template>
 
 <script>
 
+    import Logout from "./Logout";
+
     export default {
         name: "AboutMe",
+        components: {Logout},
         data() {
             const validOldPass = (rule, value, callback) => {
                 if (!this.profile.changePassword) {
