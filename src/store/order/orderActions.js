@@ -11,18 +11,18 @@ const actions = {
     async postOrder({commit}, orderForm) {
         await axios.post("/API/postOrder", orderForm)
             .then((response) => {
-                if (response.status === 200) {
+                if (response.data.status === "OK") {
                     //commit加数
                     commit("addOrder", orderForm);
                     Message.success("新建订单成功！");
                     window.location.reload();
-                } else {
-                    Message.error("新建订单失败");
+                } else if (response.data.status === "Error") {
+                    Message.error("新建订单失败！")
                 }
             })
             .catch((error) => {
                 console.error(error);
-                this.$message.error("系统错误");
+                Message.error("新建订单失败！");
             });
     },
 
@@ -39,7 +39,7 @@ const actions = {
                 if (response.status === 200 && response.data.verified === true) {
                     //commit
                     commit("removeOrder", orderForm.productName);
-                    Message.success("删除成功");
+                    Message.success("删除成功！");
                 }
             })
             .catch(error => {

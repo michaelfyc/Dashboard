@@ -1,10 +1,15 @@
 <template>
-    <el-button type="warning" @click.prevent="handleLogout">登出</el-button>
+    <el-button type="warning" @click.prevent="handleLogout" :v-loading="loading">登出</el-button>
 </template>
 
 <script>
     export default {
         name: "Logout",
+        data() {
+            return {
+                loading: false
+            }
+        },
         methods: {
             handleLogout() {
                 this.$confirm("确认登出？", "提示", {
@@ -13,8 +18,11 @@
                     type: "warning"
                 })
                     .then(() => {
+                        //TODO 这里加timeout自动关闭msgbox
                         this.$store.commit("logout");
-                        this.$router.push("/");
+                        this.$alert("正在登出中，请稍等...", {
+                            showConfirmButton: false,
+                        });
                     })
                     .catch(() => {
                         this.$message.info("已取消登出");

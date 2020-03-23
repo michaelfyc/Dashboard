@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <vue-canvas-nest :config="{color:red,opacity:0.7,count:300}"></vue-canvas-nest>
+        <vue-canvas-nest :config="{opacity:0.7,count:300}"></vue-canvas-nest>
         <el-card class="welcomeCard">
             <router-view></router-view>
         </el-card>
@@ -9,6 +9,7 @@
 
 <script>
     import VueCanvasNest from "vue-canvas-nest/src/vueCanvasNest";
+
     export default {
         name: "Welcome",
         components: {VueCanvasNest}

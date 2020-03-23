@@ -1,8 +1,8 @@
 <template>
     <el-form-item label="附加配件">
-        <el-select v-model="accessories" :disabled="hasAccessories()" multiple clearable>
-            <el-option v-for="option in options" :label="option.label" :value="option.value" @change="handleChange"
-                       :key="option.label"></el-option>
+        <el-select v-model="accessories" :disabled="hasAccessories()" multiple clearable @change="handleChange">
+            <el-option v-for="option in options" :label="option.label" :value="option.value"
+                       :key="option.value"></el-option>
         </el-select>
     </el-form-item>
 </template>
@@ -12,7 +12,7 @@
         name: "ProductAccessories",
         data() {
             return {
-                accessories: "",
+                accessories: [],
                 options: [
                     {value: "Pen", label: "手写笔"},
                     {value: "Charger", label: "充电器"},
@@ -25,7 +25,7 @@
         props: ["needAccessories"],
         methods: {
             handleChange() {
-                this.$emit("transferAccessories", this.accessories)
+                this.$emit("transferAccessories", this.accessories);
             }
         },
         computed: {

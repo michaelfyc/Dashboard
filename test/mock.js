@@ -4,14 +4,8 @@ Mock.setup({
     timeout: '200-600'
 });
 Mock.mock("/API/login", {
-    verified: true,
-    user: {
-        id: "12343",
-        username: "admin",
-        email: "a@qq.com",
-        password: "123456",
-        login: true
-    }
+    uid: "1",
+    isLogin: true
 });
 
 
