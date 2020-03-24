@@ -7,13 +7,13 @@
         <el-form-item label="密码" prop="password">
             <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
         </el-form-item>
-        <el-row>
-            <el-col :span="8">
+        <el-row type="flex" justify="space-between">
+            <el-col :span="12">
                 <el-form-item>
                     <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
                 </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12" :push="8">
                 <el-form-item>
                     <el-button type="success" @click.prevent="jumpToRegister">注册</el-button>
                 </el-form-item>
@@ -45,24 +45,7 @@
 
         methods: {
             login() {
-                this.axios.post('/API/user').then((response) => {
-                    //登录成功
-                    if (response.data.statusCode === "200") {
-                        this.$store.commit("setUser", response.data.user);
-                        sessionStorage.setItem('user_id', JSON.stringify(response.data.user));
-                        this.$router.push('/dashboard')
-                            .catch(e => {
-                                console.error(e)
-                            });
-                    }
-                    //登陆失败
-                    else {
-                        this.$message.error("用户名或密码错误！");
-                    }
-                }).catch((e) => {
-                    console.error(e);
-                    this.$message.error("系统错误!");
-                });
+                this.$store.dispatch("login", this.loginForm)
             },
 
             handleLogin(formName) {
@@ -86,6 +69,6 @@
 
 <style scoped>
     .input_width {
-        width: 40%;
+        width: 100%;
     }
 </style>

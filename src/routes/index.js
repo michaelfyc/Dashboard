@@ -5,8 +5,12 @@ import Welcome from "../view/Welcome";
 import Console from "../components/panel/Console";
 import Register from "../components/Register";
 import NotFound from "../view/404";
-import OrderForm from "../components/panel/OrderForm";
+import OrderForm from "../components/order/OrderForm";
+import Vue from "vue";
+import VueRouter from "vue-router";
+import OrderTable from "../components/order/OrderTable";
 
+Vue.use(VueRouter);
 const routes = [
     {
         path: "/",
@@ -32,7 +36,7 @@ const routes = [
         path: "/dashboard",
         component: Home,
         name: "Home",
-        redirect: "/dashboard/profile",
+        redirect: "/dashboard/index",
         children: [
             {
                 path: "/dashboard/profile",
@@ -48,6 +52,11 @@ const routes = [
                 path: "/dashboard/newOrder",
                 component: OrderForm,
                 name: "newOrder"
+            },
+            {
+                path: "/dashboard/orderList",
+                component: OrderTable,
+                name: "orderList"
             }
         ]
     },
@@ -64,4 +73,6 @@ const routes = [
         redirect: {path: "/404"}
     }
 ];
-export default routes;
+export default new VueRouter({
+    routes
+});

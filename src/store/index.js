@@ -1,20 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from './mutations'
+import order from "./order/order"
+import user from "./user/user"
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
-
-const state = {
-    user: {}
-};
-
-const actions = {};
 
 const getters = {};
 
 export default new Vuex.Store({
-    actions,
-    state,
-    mutations,
-    getters
+    modules: {
+        order,
+        user
+    },
+    getters,
+    plugins: [createPersistedState()]//TODO some should get from session/cookie
 })
