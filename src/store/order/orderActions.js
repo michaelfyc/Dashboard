@@ -5,15 +5,15 @@ const actions = {
     /**
      * 新建订单
      * @param commit
-     * @param orderForm
+     * @param data
      * @returns {Promise<void>}
      */
-    async postOrder({commit}, orderForm) {
-        await axios.post("/API/postOrder", orderForm)
+    async postOrder({commit}, data) {
+        await axios.post("/API/postOrder", data)
             .then((response) => {
                 if (response.data.status === "OK") {
                     //commit加数
-                    commit("addOrder", orderForm);
+                    commit("addOrder", data.order);
                     Message.success("新建订单成功！");
                     window.location.reload();
                 } else if (response.data.status === "Error") {

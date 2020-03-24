@@ -14,7 +14,7 @@
         <el-row>
             <el-col :span="6">
                 <el-form-item label="进价">
-                    <el-input-number v-model="orderForm.money.incomePrice" :precision="2" :step="0.01"
+                    <el-input-number v-model="orderForm.money.purchasePrice" :precision="2" :step="0.01"
                                      controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
@@ -87,7 +87,7 @@
                     productType: [],
                     withAccessories: false,
                     money: {
-                        incomePrice: 0,
+                        purchasePrice: 0,
                         soldPrice: 0,
                         postPrice: 0
                     },
@@ -123,11 +123,12 @@
             handleNew() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
-                        this.$store.dispatch("postOrder", this.orderForm)
+                        let data = {uid: this.$store.state.user.id, order: this.orderForm};
+                        this.$store.dispatch("postOrder", data)
                             .catch(e => {
                                 console.error(e);
                             });
-                        //alert(JSON.stringify(this.orderForm));
+                        // alert(JSON.stringify(this.orderForm));
                     } else {
                         console.warn("有东西没好好填");
                         return false;
@@ -147,9 +148,7 @@
             getAccessories(acc) {
                 this.orderForm.accessories = acc;
             }
-        },
-
-        computed: {}
+        }
     }
 </script>
 

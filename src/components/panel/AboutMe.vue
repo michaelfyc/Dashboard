@@ -30,17 +30,22 @@
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
             </el-col>
-
         </el-row>
         <el-row :gutter="6">
+            <!--更新按钮-->
             <el-col :span="6">
                 <el-form-item>
                     <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
                 </el-form-item>
             </el-col>
             <el-col :span="8" :offset="3">
+                <!--登出按钮-->
                 <el-form-item>
-                    <Logout></Logout>
+                    <el-button type="warning" @click.prevent="handleLogout"
+                               v-loading.fullscreen.lock="fullscreenLoading"
+                               element-loading-text="正在登出.." element-loading-spinner="el-icon-loading"
+                               element-loading-background="rgba(0,0,0,0.8)">登出
+                    </el-button>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -48,12 +53,8 @@
 </template>
 
 <script>
-
-    import Logout from "./Logout";
-
     export default {
         name: "AboutMe",
-        components: {Logout},
         data() {
             const validOldPass = (rule, value, callback) => {
                 if (!this.profile.changePassword) {
@@ -94,6 +95,7 @@
 
             return {
                 loading: false,
+                fullscreenLoading: false,
                 profile: {
                     username: "",
                     email: "",
@@ -178,6 +180,25 @@
                         return false;
                     }
                 });
+            },
+
+            handleLogout() {
+                this.$confirm("确认登出？", "提示", {
+                    confirmButtonText: "登出",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.commit("logout");
+                        this.fullscreenLoading = true;
+                        setTimeout(() => {
+                            this.fullscreenLoading = false;
+                            this.$router.push("/");
+                        }, 3000);
+                    })
+                    .catch(() => {
+                        this.$message.info("已取消登出");
+                    })
             }
         },
         mounted() {
