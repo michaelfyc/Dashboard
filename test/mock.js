@@ -34,5 +34,5 @@ Mock.mock("/API/postOrderData", {
 });
 
 Mock.mock("/API/postOrder", {
-    statusCode: "200"
+    status: "OK"
 });

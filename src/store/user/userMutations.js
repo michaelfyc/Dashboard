@@ -16,6 +16,7 @@ const mutations = {
     //登出时将user置空
     logout(state) {
         state.user = {};
+        localStorage.removeItem("vuex");// TODO 直接删cookie和localStorage
     }
 };
 

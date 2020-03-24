@@ -8,6 +8,7 @@ import NotFound from "../view/404";
 import OrderForm from "../components/order/OrderForm";
 import Vue from "vue";
 import VueRouter from "vue-router";
+import OrderTable from "../components/order/OrderTable";
 
 Vue.use(VueRouter);
 const routes = [
@@ -51,6 +52,11 @@ const routes = [
                 path: "/dashboard/newOrder",
                 component: OrderForm,
                 name: "newOrder"
+            },
+            {
+                path: "/dashboard/orderList",
+                component: OrderTable,
+                name: "orderList"
             }
         ]
     },

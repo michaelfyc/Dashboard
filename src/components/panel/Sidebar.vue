@@ -9,8 +9,7 @@
         <el-submenu index="order">
             <template slot="title">管理订单</template>
             <el-menu-item index="newOrder">增加订单</el-menu-item>
-            <el-menu-item>修改/删除订单</el-menu-item>
-            <el-menu-item>订单列表</el-menu-item>
+            <el-menu-item index="orderList">订单列表</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>
