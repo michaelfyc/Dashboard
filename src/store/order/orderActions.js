@@ -29,20 +29,22 @@ const actions = {
     /**
      * 删除订单
      * @param commit
+     * @param orderId
      * @param orderForm
      * @returns {Promise<void>}
      */
-    async deleteOrder({commit}, orderForm) {
-        await axios.delete("/API/deleteOrder", orderForm.productName)
+    async deleteOrder({commit}, orderId) {
+        await axios.delete("/API/deleteOrder", orderId)
             .then((response) => {
                 //如果成功删除
-                if (response.status === 200 && response.data.verified === true) {
+                if (response.data.verified === true) {
                     //commit
-                    commit("removeOrder", orderForm.productName);
+                    commit("removeOrder", orderId);
                     Message.success("删除成功！");
                 }
             })
             .catch(error => {
+                Message.error("删除失败！");
                 console.error(error);
             })
     }

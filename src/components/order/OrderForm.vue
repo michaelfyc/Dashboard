@@ -123,6 +123,7 @@
             handleNew() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
+                        this.orderForm.profit = this.orderForm.money.soldPrice - this.orderForm.money.purchasePrice - this.orderForm.money.postPrice;
                         let data = {uid: this.$store.state.user.id, order: this.orderForm};
                         this.$store.dispatch("postOrder", data)
                             .catch(e => {

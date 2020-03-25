@@ -1,35 +1,36 @@
 <template>
     <el-table :data="orderList" border style="width: 100%" :row-class-name="tableRowClassName">
+        <el-table-column prop="orderId" label="订单号" v-if="false"></el-table-column>
         <el-table-column type="expand">
             <template slot-scope="props">
                 <el-form label-position="left" inline class="table-expand">
                     <el-form-item label="产品颜色">
-                        <span v-text="props.row.color"></span>
+                        <span v-text="translateColor(props.row.productDescription.color)"></span>
                     </el-form-item>
                     <el-form-item label="产品外观">
-                        <span v-text="props.row.outlook"></span>
+                        <span v-text="props.row.productDescription.outlook"></span>
                     </el-form-item>
                     <el-form-item label="产品内存" v-show="hasMemory(props.row)">
-                        <span v-text="props.row.memory"></span>
+                        <span v-text="props.row.productDescription.memory"></span>
                     </el-form-item>
                     <el-form-item label="产品容量" v-show="hasStorage(props.row)">
-                        <span v-text="props.row.storage"></span>
+                        <span v-text="props.row.productDescription.storage"></span>
                     </el-form-item>
                     <el-form-item label="配件">
-                        <span v-text="props.row.accessories.join('，')"></span>
+                        <span v-text="translateAcc(props.row.accessories)"></span>
                     </el-form-item>
-                    <el-form-item label="备注">
-                        <span v-text="props.row.remark===null?'空':props.row.remark"></span>
+                    <el-form-item label="备注" v-show="hasNote(props.row)">
+                        <span v-text="props.row.note"></span>
                     </el-form-item>
                 </el-form>
             </template>
         </el-table-column>
         <el-table-column prop="date" label="日期" width="150" sortable></el-table-column>
         <el-table-column prop="productName" label="产品名"></el-table-column>
-        <el-table-column prop="productType" label="产品类型"></el-table-column>
-        <el-table-column prop="purchasePrice" label="进价" sortable></el-table-column>
-        <el-table-column prop="soldPrice" label="售价" sortable></el-table-column>
-        <el-table-column prop="postPrice" label="邮费" sortable></el-table-column>
+        <el-table-column prop="productType[0]" label="产品类型"></el-table-column>
+        <el-table-column prop="money.purchasePrice" label="进价" sortable></el-table-column>
+        <el-table-column prop="money.soldPrice" label="售价" sortable></el-table-column>
+        <el-table-column prop="money.postPrice" label="邮费" sortable></el-table-column>
         <el-table-column prop="profit" label="盈利" sortable></el-table-column>
         <el-table-column prop="purchaser" label="购买人"></el-table-column>
         <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
@@ -48,52 +49,98 @@
         name: "OrderTable",
         data() {
             return {
-                orderList: [{
-                    date: "2020/3/24",
-                    productName: "IPhone X Pro",
-                    productType: "Pad",
-                    memory: "8G",
-                    storage: "256G",
-                    soldPrice: 7999,
-                    purchasePrice: 6999,
-                    postPrice: 20,
-                    profit: 980,
-                    color: "银色",
-                    outlook: "全新",
-                    purchaser: "张三",
-                    contact: "139**132471",
-                    platform: "vx",
-                    accessories: ["充电器", "耳机"],
-                    remark: null
-                }]
+                orderList: []
             }
         },
         methods: {
+            /**
+             * 把颜色从value翻译回中文label
+             * @param color
+             * @returns {any}
+             */
+            translateColor(color) {
+                let colorMap = new Map();
+                colorMap.set("red", "红色");
+                colorMap.set("blue", "蓝色");
+                colorMap.set("green", "绿色");
+                colorMap.set("black", "黑色");
+                colorMap.set("silver", "银色");
+                colorMap.set("gold", "金色");
+                colorMap.set("yellow", "黄色");
+                colorMap.set("white", "白色");
+                colorMap.set("purple", "紫色");
+                return colorMap.get(color);
+            },
+
+            /**
+             * 把英文配件value翻译成中文
+             * @param acc
+             * @returns {string | *}
+             */
+            translateAcc(acc) {
+                let accMap = {
+                    "Charger": "充电器",
+                    "Mouse": "鼠标",
+                    "KeyBoard": "键盘",
+                    "Pen": "手写笔",
+                    "Earphone": "耳机",
+                    "Other": "其他"
+                };
+                return acc.map(element => {
+                    element = accMap[element];
+                    return element;
+                }).join("，");
+            },
+
+            hasNote(row) {
+                return row.note !== "";
+            },
             hasMemory(row) {
                 return row.productType === "Phone" || row.productType === "Computer";
             },
             hasStorage(row) {
                 return row.productType === "Phone" || row.productType === "Computer" || row.productType === "Pad";
             },
+
+            /**
+             * 不同的盈利用不同的底色
+             * @param row
+             * @returns {string}
+             */
             tableRowClassName({row}) {
                 //如果收益少于50就标红
-                if (row.profit < 50) {
+                if (row.profit < 100) {
                     return "loss-row"
                 }
                 //收益大于100就标绿
-                if (row.profit > 100) {
+                if (row.profit > 200) {
                     return "earn-row"
                 }
                 return ""
             },
+
             handleEdit(row) {
                 console.log(row)
             },
             handleDelete(row) {
-                console.log(row)
+                this.$confirm("确定删除?", "提示", {
+                    confirmButtonText: "确认删除",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$store.commit("deleteOrder", this.orderList.orderId);
+                        console.log(row);
+                        //TODO remove the row after deleted
+                    })
+                    .catch((e) => {
+                        console.error(e)
+                    })
             }
         },
-        computed: {}
+        mounted() {
+            this.orderList = this.$store.state.order.order.orderList
+        }
     }
 </script>
 
