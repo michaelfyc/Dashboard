@@ -3,9 +3,9 @@ const mutations = {
         state.order.orderList.unshift(order);
         state.order.orderNum++;
     },
-    removeOrder(state, order) {
-        console.log(state);
-        console.log(order);
+    removeOrder(state, orderId) {
+        state.order.orderList.delete(orderId);
+        state.order.orderNum--;
     }
 };
 
