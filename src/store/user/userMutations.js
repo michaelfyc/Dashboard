@@ -10,9 +10,9 @@ const mutations = {
         state.user.uid = payload.uid;
         state.user.isLogin = true;
         if (payload.rememberMe) {
-            Cookies.set("user", {id: state.user.id, isLogin: true}, {expires: 7});
+            Cookies.set("user", {uid: state.user.uid, isLogin: true}, {expires: 7});
         } else {
-            sessionStorage.setItem("user", JSON.stringify({id: state.user.id, isLogin: true}));
+            sessionStorage.setItem("user", JSON.stringify({uid: state.user.uid, isLogin: true}));
         }
     },
 

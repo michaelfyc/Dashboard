@@ -10,7 +10,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, payload) {
-        await axios.post("/API/login", payload.data)//TODO 生产环境改成/api
+        await axios.post("/api/login", payload.data)//TODO 生产环境改成/api
             .then(response => {
                 commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
                 Message.success("登录成功!");

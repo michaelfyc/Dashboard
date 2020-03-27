@@ -4,15 +4,16 @@ import {Message} from 'element-ui'
 const actions = {
     /**
      * 新建订单
+     * @param commit
      * @param data
      * @returns {Promise<void>}
      */
-    async postOrder(data) {
-        await axios.post("/api/addOrder", data)
+    async postOrder({commit}, data) {
+        await axios.post("/api/AddOrder", data)
             .then((response) => {
                 if (response.data.status === "success") {
-                    //commit加数
-                    //commit("addOrder", data.order);
+                    //Not doing anything atc all..Just to make sure the function is async
+                    commit("addOrder");
                     Message.success("新建订单成功！");
                     window.location.reload();
                 }

@@ -129,7 +129,7 @@
                             .catch(e => {
                                 console.error(e);
                             });
-                        alert(JSON.stringify(data));
+                        console.log(JSON.stringify(data));
                     } else {
                         console.warn("有东西没好好填");
                         return false;

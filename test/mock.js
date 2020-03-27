@@ -4,7 +4,7 @@ Mock.setup({
     timeout: '200-600'
 });
 Mock.mock("/API/login", {
-    uid: "1",
+    uid: "0",
     isLogin: true
 });
 
