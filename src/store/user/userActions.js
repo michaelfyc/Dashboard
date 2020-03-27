@@ -29,15 +29,18 @@ const actions = {
 
     /**
      * 注册
+     * @param commit
      * @param data
      * @returns {Promise<void>}
      */
-    async register(data) {
-        await axios.post("/API/register", data)
+    async register({commit}, data) {
+        //Just to make sure register is async...
+        commit("doNothing");
+        await axios.post("/api/register", data)
             .then(response => {
                 if (response.data.verified === true) {
                     Message.success("注册成功！");
-                    this.$router.push({path: "/login"});
+                    router.push("/");
                 } else {
                     Message.error(response.data.reason);
                 }
