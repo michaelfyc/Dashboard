@@ -2,11 +2,9 @@ const mutations = {
     /**
      * 新增订单
      * @param state
-     * @param order
      */
-    addOrder(state, order) {
-        state.order.orderList.unshift(order);
-        state.order.orderNum++;
+    addOrder(state) {
+        console.log(state.order.orderNum)
     },
 
     /**
