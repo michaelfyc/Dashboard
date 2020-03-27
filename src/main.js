@@ -6,7 +6,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import App from './App.vue'
 import store from './store/index'
-import router from "./routes/index";
+import router from "./routes/index"
+import Cookies from "js-cookie"
 
 require('../test/mock');
 
@@ -19,10 +20,14 @@ Vue.prototype.axios = axios;
 //导航守卫，如果sessionStorage里没有user_id则跳转至登录界面
 router.beforeEach((to, from, next) => {
     if (to.path === "/login") {
-        sessionStorage.removeItem("dashboard");
+        //免得重新登录，session和cookie各存一份冗余
+        sessionStorage.removeItem("user");
     }
-    let user = localStorage.getItem("vuex");//TODO try to get it into sessionStorage
-    if (!user && to.path !== "/login" && to.path !== "/register") {
+    let isLogin = Cookies.get("user");
+    if (!isLogin) {
+        isLogin = sessionStorage.getItem("user")
+    }
+    if (!isLogin && to.path !== "/login" && to.path !== "/register") {
         next({path: "/login"})
     } else {
         next();

@@ -14,8 +14,8 @@
                 types: [
                     {
                         value: "Phone", label: "手机", children: [
-                            {value: "ApplePhone", label: "苹果手机"},
-                            {value: "AndroidPhone", label: "安卓手机"}
+                            {value: "Apple", label: "苹果手机"},
+                            {value: "Android", label: "安卓手机"}
                         ]
                     },
                     {value: "Pad", label: "平板电脑"},
@@ -23,14 +23,14 @@
                         value: "Computer", label: "电脑", children: [
                             {
                                 value: "Laptop", label: "笔记本", children: [
-                                    {value: "WindowsLaptop", label: "Windows系统"},
-                                    {value: "AppleLaptop", label: "Mac系统"}
+                                    {value: "Windows", label: "Windows系统"},
+                                    {value: "Apple", label: "Mac系统"}
                                 ]
                             },
                             {
                                 value: "Desktop", label: "台式机", children: [
-                                    {value: "WindowsDesktop", label: "Windows系统"},
-                                    {value: "AppleDesktop", label: "Mac系统"}
+                                    {value: "Windows", label: "Windows系统"},
+                                    {value: "Apple", label: "Mac系统"}
                                 ]
                             }
                         ]

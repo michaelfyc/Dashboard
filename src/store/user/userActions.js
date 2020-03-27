@@ -6,13 +6,13 @@ const actions = {
     /**
      * 登录
      * @param commit
-     * @param data
+     * @param payload
      * @returns {Promise<void>}
      */
-    async login({commit}, data) {
-        await axios.post("/API/login", data)//TODO 生产环境改成/api
+    async login({commit}, payload) {
+        await axios.post("/API/login", payload.data)//TODO 生产环境改成/api
             .then(response => {
-                commit("setUser", response.data.uid, response.data.isLogin);
+                commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
                 Message.success("登录成功!");
                 router.push({path: "/dashboard"});
             })
@@ -35,11 +35,11 @@ const actions = {
     async register(data) {
         await axios.post("/API/register", data)
             .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
+                if (response.data.verified === true) {
                     Message.success("注册成功！");
                     this.$router.push({path: "/login"});
                 } else {
-                    Message.error(response.data.message);
+                    Message.error(response.data.reason);
                 }
             })
             .catch(e => {
@@ -57,7 +57,7 @@ const actions = {
     async putUserNoPwd({commit}, data) {
         await axios.put("/API/putUserNoPwd", data)
             .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
+                if (response.data.verified === true) {
                     commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
                     Message.success("修改成功！");
                 } else {
@@ -79,7 +79,7 @@ const actions = {
     async putUserWithPwd({commit}, data) {
         await axios.put("/API/putUserWithPwd", data)
             .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
+                if (response.data.verified === true) {
                     commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
                     Message.success("修改成功！");
                 } else {

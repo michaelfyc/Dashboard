@@ -7,6 +7,9 @@
         <el-form-item label="密码" prop="password">
             <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
         </el-form-item>
+        <el-form-item>
+            <el-checkbox v-model="rememberMe">七天免登录</el-checkbox>
+        </el-form-item>
         <el-row type="flex" justify="space-between">
             <el-col :span="12">
                 <el-form-item>
@@ -28,9 +31,10 @@
         data() {
             return {
                 loading: false,
+                rememberMe: false,
                 loginForm: {
                     username: '',
-                    password: ''
+                    password: '',
                 },
                 rules: {
                     username: [
@@ -44,15 +48,12 @@
         },
 
         methods: {
-            login() {
-                this.$store.dispatch("login", this.loginForm)
-            },
-
             handleLogin(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        this.login();
+                        this.$store.dispatch("login", {data: this.loginForm, rememberMe: this.rememberMe})
+                            .catch(e => console.log(e));
                         this.loading = false;
                         return true;
                     }

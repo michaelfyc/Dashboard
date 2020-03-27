@@ -12,9 +12,9 @@
             <el-radio label="1024">1T</el-radio>
         </el-radio-group>
         <el-radio-group v-model="storage" v-if="isStorageOf('Pad')" @change="handleChange">
-            <el-radio label="256">256G</el-radio>
-            <el-radio label="512">512G</el-radio>
-            <el-radio label="1024">1T</el-radio>
+            <el-radio label="256G">256G</el-radio>
+            <el-radio label="512G">512G</el-radio>
+            <el-radio label="1T">1T</el-radio>
         </el-radio-group>
     </el-form-item>
 </template>
