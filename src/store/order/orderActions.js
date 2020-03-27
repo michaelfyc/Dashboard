@@ -4,26 +4,40 @@ import {Message} from 'element-ui'
 const actions = {
     /**
      * 新建订单
-     * @param commit
      * @param data
      * @returns {Promise<void>}
      */
-    async postOrder({commit}, data) {
-        await axios.post("/API/postOrder", data)
+    async postOrder(data) {
+        await axios.post("/api/addOrder", data)
             .then((response) => {
-                if (response.data.status === "OK") {
+                if (response.data.status === "success") {
                     //commit加数
-                    commit("addOrder", data.order);
+                    //commit("addOrder", data.order);
                     Message.success("新建订单成功！");
                     window.location.reload();
-                } else if (response.data.status === "Error") {
-                    Message.error("新建订单失败！")
                 }
             })
             .catch((error) => {
                 console.error(error);
                 Message.error("新建订单失败！");
             });
+    },
+
+    /**
+     *
+     * 获取订单列表
+     * @param commit
+     */
+    async getOrderList({commit}) {
+        await axios.post("/API/getOrderList")
+            .then(response => {
+                commit("getOrders", response.data.orderList);//TODO 后端叫啥还没决定，分页也没做..
+                console.log("表格信息加载完毕！");
+            })
+            .catch(e => {
+                Message.error("获取订单信息失败！");
+                console.error(e);
+            })
     },
 
     /**

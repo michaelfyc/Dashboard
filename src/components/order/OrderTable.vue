@@ -27,11 +27,11 @@
         </el-table-column>
         <el-table-column prop="date" label="日期" width="150" sortable></el-table-column>
         <el-table-column prop="productName" label="产品名"></el-table-column>
-        <el-table-column prop="productType[0]" label="产品类型"></el-table-column>
+        <el-table-column prop="productType" label="产品类型" :formatter="translateType"></el-table-column>
         <el-table-column prop="money.purchasePrice" label="进价" sortable></el-table-column>
         <el-table-column prop="money.soldPrice" label="售价" sortable></el-table-column>
         <el-table-column prop="money.postPrice" label="邮费" sortable></el-table-column>
-        <el-table-column prop="profit" label="盈利" sortable></el-table-column>
+        <el-table-column prop="money.profit" label="盈利" sortable></el-table-column>
         <el-table-column prop="purchaser" label="购买人"></el-table-column>
         <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
         <el-table-column prop="platform" label="平台"></el-table-column>
@@ -92,6 +92,26 @@
                 }).join("，");
             },
 
+            translateType(row) {
+                let typeMap = {
+                    "Phone": "手机",
+                    "Pad": "平板电脑",
+                    "Computer": "电脑",
+                    "Accessories": "配件",
+                    "EarPhones": "耳机",
+                    "Others": "其他",
+                    "Laptop": "笔记本",
+                    "Desktop": "台式机",
+                    "Apple": "苹果",
+                    "Android": "安卓",
+                    "Windows": "Windows系统"
+                };
+                if (row.productType.length === 1) {
+                    return typeMap[row.productType[0]]
+                }
+                return typeMap[row.productType[1]] + typeMap[row.productType[0]];
+            },
+
             hasNote(row) {
                 return row.note !== "";
             },
@@ -109,18 +129,29 @@
              */
             tableRowClassName({row}) {
                 //如果收益少于50就标红
-                if (row.profit < 100) {
+                if (row.money.profit < 100) {
                     return "loss-row"
                 }
                 //收益大于100就标绿
-                if (row.profit > 200) {
+                if (row.money.profit > 200) {
                     return "earn-row"
                 }
                 return ""
             },
 
             handleEdit(row) {
-                console.log(row)
+                console.log(row);
+                this.$confirm("确认修改？", "提示", {
+                    confirmButtonText: "确认修改",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        this.$router.push("/dashboard/editOrder");
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    })
             },
             handleDelete(row) {
                 this.$confirm("确定删除?", "提示", {
@@ -129,7 +160,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.commit("deleteOrder", this.orderList.orderId);
+                        this.$store.dispatch("deleteOrder", this.orderList.orderId);
                         console.log(row);
                         //TODO remove the row after deleted
                     })
@@ -139,7 +170,8 @@
             }
         },
         mounted() {
-            this.orderList = this.$store.state.order.order.orderList
+            this.$store.dispatch("getOrderList").catch(e => console.error(e));
+            this.orderList = this.$store.state.order.order.orderList;
         }
     }
 </script>

@@ -123,13 +123,13 @@
             handleNew() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
-                        this.orderForm.profit = this.orderForm.money.soldPrice - this.orderForm.money.purchasePrice - this.orderForm.money.postPrice;
-                        let data = {uid: this.$store.state.user.id, order: this.orderForm};
+                        this.orderForm.money.profit = this.orderForm.money.soldPrice - this.orderForm.money.purchasePrice - this.orderForm.money.postPrice;
+                        let data = {userId: this.$store.state.user.user.uid, order: this.orderForm};
                         this.$store.dispatch("postOrder", data)
                             .catch(e => {
                                 console.error(e);
                             });
-                        // alert(JSON.stringify(this.orderForm));
+                        alert(JSON.stringify(data));
                     } else {
                         console.warn("有东西没好好填");
                         return false;
