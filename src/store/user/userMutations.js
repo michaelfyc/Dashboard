@@ -36,6 +36,10 @@ const mutations = {
         state.user = {};
         sessionStorage.removeItem("user");
         Cookies.remove("user");
+    },
+
+    doNothing(state) {
+        console.log(state.user.isLogin);
     }
 };
 
