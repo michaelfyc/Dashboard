@@ -9,7 +9,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async postOrder({commit}, data) {
-        await axios.post("/api/AddOrder", data)
+        await axios.post("/api/addOrder", data)
             .then((response) => {
                 if (response.data.status === "success") {
                     //Not doing anything atc all..Just to make sure the function is async
@@ -28,11 +28,12 @@ const actions = {
      *
      * 获取订单列表
      * @param commit
+     * @param page
      */
-    async getOrderList({commit}) {
-        await axios.post("/API/getOrderList")
+    async getOrderList({commit}, page) {
+        await axios.post("/api/getOrder", page)
             .then(response => {
-                commit("getOrders", response.data.orderList);//TODO 后端叫啥还没决定，分页也没做..
+                commit("getOrders", {orderList: response.data.orderList, orderNum: response.data.total});
                 console.log("表格信息加载完毕！");
             })
             .catch(e => {

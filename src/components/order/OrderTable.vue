@@ -1,47 +1,53 @@
 <template>
-    <el-table :data="orderList" border style="width: 100%" :row-class-name="tableRowClassName">
-        <el-table-column prop="orderId" label="订单号" v-if="false"></el-table-column>
-        <el-table-column type="expand">
-            <template slot-scope="props">
-                <el-form label-position="left" inline class="table-expand">
-                    <el-form-item label="产品颜色">
-                        <span v-text="translateColor(props.row.productDescription.color)"></span>
-                    </el-form-item>
-                    <el-form-item label="产品外观">
-                        <span v-text="props.row.productDescription.outlook"></span>
-                    </el-form-item>
-                    <el-form-item label="产品内存" v-show="hasMemory(props.row)">
-                        <span v-text="props.row.productDescription.memory"></span>
-                    </el-form-item>
-                    <el-form-item label="产品容量" v-show="hasStorage(props.row)">
-                        <span v-text="props.row.productDescription.storage"></span>
-                    </el-form-item>
-                    <el-form-item label="配件">
-                        <span v-text="translateAcc(props.row.accessories)"></span>
-                    </el-form-item>
-                    <el-form-item label="备注" v-show="hasNote(props.row)">
-                        <span v-text="props.row.note"></span>
-                    </el-form-item>
-                </el-form>
-            </template>
-        </el-table-column>
-        <el-table-column prop="date" label="日期" width="150" sortable></el-table-column>
-        <el-table-column prop="productName" label="产品名"></el-table-column>
-        <el-table-column prop="productType" label="产品类型" :formatter="translateType"></el-table-column>
-        <el-table-column prop="money.purchasePrice" label="进价" sortable></el-table-column>
-        <el-table-column prop="money.soldPrice" label="售价" sortable></el-table-column>
-        <el-table-column prop="money.postPrice" label="邮费" sortable></el-table-column>
-        <el-table-column prop="money.profit" label="盈利" sortable></el-table-column>
-        <el-table-column prop="purchaser" label="购买人"></el-table-column>
-        <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
-        <el-table-column prop="platform" label="平台"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
-            <template slot-scope="scope">
-                <el-button type="text" size="small" @click="handleEdit(scope.row)">修改</el-button>
-                <el-button type="text" style="color:red" size="small" @click="handleDelete(scope.row)">删除</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
+    <div>
+        <el-table :data="orderList" border style="width: 100%" :row-class-name="tableRowClassName">
+            <el-table-column prop="orderId" label="订单号" v-if="false"></el-table-column>
+            <el-table-column type="expand">
+                <template slot-scope="props">
+                    <el-form label-position="left" inline class="table-expand">
+                        <el-form-item label="产品颜色">
+                            <span v-text="translateColor(props.row.productDescription.color)"></span>
+                        </el-form-item>
+                        <el-form-item label="产品外观">
+                            <span v-text="props.row.productDescription.outlook"></span>
+                        </el-form-item>
+                        <el-form-item label="产品内存" v-show="hasMemory(props.row)">
+                            <span v-text="props.row.productDescription.memory"></span>
+                        </el-form-item>
+                        <el-form-item label="产品容量" v-show="hasStorage(props.row)">
+                            <span v-text="props.row.productDescription.storage"></span>
+                        </el-form-item>
+                        <el-form-item label="配件">
+                            <span v-text="translateAcc(props.row.accessories)"></span>
+                        </el-form-item>
+                        <el-form-item label="备注" v-show="hasNote(props.row)">
+                            <span v-text="props.row.note"></span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column prop="dateTime" label="日期" width="160" sortable></el-table-column>
+            <el-table-column prop="productName" label="产品名" width="150"></el-table-column>
+            <el-table-column prop="productType" label="产品类型" :formatter="translateType"></el-table-column>
+            <el-table-column prop="purchasePrice" label="进价" sortable></el-table-column>
+            <el-table-column prop="soldPrice" label="售价" sortable></el-table-column>
+            <el-table-column prop="postPrice" label="邮费" sortable></el-table-column>
+            <el-table-column prop="profit" label="盈利" sortable></el-table-column>
+            <el-table-column prop="purchaser" label="购买人"></el-table-column>
+            <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
+            <el-table-column prop="platform" label="平台"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="100">
+                <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="handleEdit(scope.row)">修改</el-button>
+                    <el-button type="text" style="color:red" size="small" @click="handleDelete(scope.row)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="total"
+                       :current-page="currentPage">
+        </el-pagination>
+    </div>
 </template>
 
 <script>
@@ -49,7 +55,9 @@
         name: "OrderTable",
         data() {
             return {
-                orderList: []
+                orderList: [],
+                currentPage: 1,
+                total: 0
             }
         },
         methods: {
@@ -78,13 +86,16 @@
              * @returns {string | *}
              */
             translateAcc(acc) {
+                if (!acc) {
+                    return "无"
+                }
                 let accMap = {
                     "Charger": "充电器",
                     "Mouse": "鼠标",
                     "KeyBoard": "键盘",
                     "Pen": "手写笔",
                     "Earphone": "耳机",
-                    "Other": "其他"
+                    "Other": "其他",
                 };
                 return acc.map(element => {
                     element = accMap[element];
@@ -104,16 +115,23 @@
                     "Desktop": "台式机",
                     "Apple": "苹果",
                     "Android": "安卓",
-                    "Windows": "Windows系统"
+                    "Windows": "Windows系统",
+                    "Noiseless": "降噪",
+                    "Noise": "普通",
+                    "Wired": "有线",
+                    "Wireless": "无线"
                 };
                 if (row.productType.length === 1) {
                     return typeMap[row.productType[0]]
                 }
-                return typeMap[row.productType[1]] + typeMap[row.productType[0]];
+                if (row.productType.length === 2) {
+                    return typeMap[row.productType[1]] + typeMap[row.productType[0]]
+                }
+                return typeMap[row.productType[1]] + typeMap[productType[2]] + typeMap[row.productType[0]];
             },
 
             hasNote(row) {
-                return row.note !== "";
+                return !!row.note;
             },
             hasMemory(row) {
                 return row.productType === "Phone" || row.productType === "Computer";
@@ -129,11 +147,11 @@
              */
             tableRowClassName({row}) {
                 //如果收益少于50就标红
-                if (row.money.profit < 100) {
+                if (row.profit < 100) {
                     return "loss-row"
                 }
                 //收益大于100就标绿
-                if (row.money.profit > 200) {
+                if (row.profit > 200) {
                     return "earn-row"
                 }
                 return ""
@@ -170,8 +188,9 @@
             }
         },
         mounted() {
-            this.$store.dispatch("getOrderList").catch(e => console.error(e));
+            this.$store.dispatch("getOrderList", {page: this.currentPage}).catch(e => console.error(e));
             this.orderList = this.$store.state.order.order.orderList;
+            this.total = this.$store.state.order.order.orderNum;
         }
     }
 </script>

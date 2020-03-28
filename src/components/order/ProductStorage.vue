@@ -3,6 +3,7 @@
         <el-radio-group v-model="storage" v-if="isStorageOf('Phone')" @change="handleChange">
             <el-radio label="64G">64G</el-radio>
             <el-radio label="128G">128G</el-radio>
+            <el-radio label="512G">512G</el-radio>
             <el-radio label="256G">256G</el-radio>
         </el-radio-group>
         <el-radio-group v-model="storage" v-if="isStorageOf('Computer')" @change="handleChange">
@@ -12,6 +13,8 @@
             <el-radio label="1T">1T</el-radio>
         </el-radio-group>
         <el-radio-group v-model="storage" v-if="isStorageOf('Pad')" @change="handleChange">
+            <el-radio label="64G">64G</el-radio>
+            <el-radio label="128G">128G</el-radio>
             <el-radio label="256G">256G</el-radio>
             <el-radio label="512G">512G</el-radio>
             <el-radio label="1T">1T</el-radio>
