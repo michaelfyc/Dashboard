@@ -45,7 +45,7 @@
             </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="total"
-                       :current-page="currentPage">
+                       :current-page="currentPage" @current-change="changePage">
         </el-pagination>
     </div>
 </template>
@@ -110,7 +110,7 @@
                     "Computer": "电脑",
                     "Accessories": "配件",
                     "EarPhones": "耳机",
-                    "Others": "其他",
+                    "Other": "其他",
                     "Laptop": "笔记本",
                     "Desktop": "台式机",
                     "Apple": "苹果",
@@ -185,6 +185,13 @@
                     .catch((e) => {
                         console.error(e)
                     })
+            },
+
+            changePage(currentPage) {
+                this.currentPage = currentPage;
+                this.$store.dispatch("getOrderList", {page: this.currentPage}).catch(e => console.error(e));
+                this.orderList = this.$store.state.order.order.orderList;
+                this.total = this.$store.state.order.order.orderNum;
             }
         },
         mounted() {
