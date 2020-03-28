@@ -10,11 +10,11 @@ const mutations = {
     /**
      * 获取订单列表
      * @param state
-     * @param orderList
+     * @param data
      */
-    getOrders(state, orderList) {
-        state.order.orderList = orderList;
-        state.order.orderNum = orderList.length;
+    getOrders(state, data) {
+        state.order.orderList = data.orderList;
+        state.order.orderNum = data.orderNum;
     },
 
     /**
