@@ -127,7 +127,7 @@
                 if (row.productType.length === 2) {
                     return typeMap[row.productType[1]] + typeMap[row.productType[0]]
                 }
-                return typeMap[row.productType[1]] + typeMap[productType[2]] + typeMap[row.productType[0]];
+                return typeMap[row.productType[1]] + typeMap[row.productType[2]] + typeMap[row.productType[0]];
             },
 
             hasNote(row) {
@@ -189,7 +189,7 @@
         },
         mounted() {
             this.$store.dispatch("getOrderList", {page: this.currentPage}).catch(e => console.error(e));
-            this.orderList = this.$store.state.order.order.orderList;
+            this.orderList = this.$store.state.order.order.orderList;//TODO 每次访问就发送请求并渲染..
             this.total = this.$store.state.order.order.orderNum;
         }
     }
