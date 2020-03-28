@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table :data="orderList" border style="width: 100%" :row-class-name="tableRowClassName">
-            <el-table-column prop="orderId" label="订单号" v-if="false"></el-table-column>
+            <el-table-column prop="orderId" label="订单号" v-if="true"></el-table-column>
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="table-expand">
@@ -45,7 +45,7 @@
             </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="total"
-                       :current-page="currentPage" @current-change="changePage">
+                       :current-page.sync="currentPage" @current-change="changePage">
         </el-pagination>
     </div>
 </template>
@@ -186,18 +186,30 @@
                         console.error(e)
                     })
             },
-
             changePage(currentPage) {
                 this.currentPage = currentPage;
-                this.$store.dispatch("getOrderList", {page: this.currentPage}).catch(e => console.error(e));
-                this.orderList = this.$store.state.order.order.orderList;
-                this.total = this.$store.state.order.order.orderNum;
+                this.axios.post("/api/getOrder", {page: currentPage})
+                    .then(response => {
+                        this.orderList = response.data.orderList;
+                        console.log("表格信息加载完毕！");
+                    })
+                    .catch(e => {
+                        this.$message.error("获取订单信息失败！");
+                        console.error(e);
+                    });
             }
         },
         mounted() {
-            this.$store.dispatch("getOrderList", {page: this.currentPage}).catch(e => console.error(e));
-            this.orderList = this.$store.state.order.order.orderList;//TODO 每次访问就发送请求并渲染..
-            this.total = this.$store.state.order.order.orderNum;
+            this.axios.post("/api/getOrder", {page: 1})
+                .then(response => {
+                    this.orderList = response.data.orderList;
+                    this.total = response.data.total;
+                    console.log("表格信息加载完毕！");
+                })
+                .catch(e => {
+                    this.$message.error("获取订单信息失败！");
+                    console.error(e);
+                });
         }
     }
 </script>
