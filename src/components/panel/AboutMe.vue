@@ -153,7 +153,7 @@
                         //如果确认要修改
                             .then(() => {
                                 this.loading = true;
-                                this.editInfo("/api/editInfo", this.profile);
+                                this.editInfo("/api/editUserInfo", this.profile);
                                 this.loading = false;
                             })
                             //如果不要修改，则取消
@@ -190,12 +190,11 @@
         },
 
         mounted() {
-            this.axios.get("/API/getUserInfo")
+            this.axios.get("/api/getUserInfo")
                 .then(response => {
                     console.log("获取用户信息成功");
                     this.profile.username = response.data.username;
                     this.profile.email = response.data.email;
-                    this.profile.oldPassword = response.data.password;
                 })
                 .catch(e => {
                     console.error(e);

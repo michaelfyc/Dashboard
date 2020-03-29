@@ -5,7 +5,7 @@
             <el-input v-model="loginForm.username" class="input_width"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
+            <el-input type="password" v-model="loginForm.password" class="input_width" show-password></el-input>
         </el-form-item>
         <el-form-item>
             <el-checkbox v-model="rememberMe">七天免登录</el-checkbox>
@@ -16,9 +16,9 @@
                     <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
                 </el-form-item>
             </el-col>
-            <el-col :span="12" :push="8">
+            <el-col :span="12" :push="3">
                 <el-form-item>
-                    <el-button type="success" @click.prevent="jumpToRegister">注册</el-button>
+                    <el-link type="primary" href="#/register">没有账号？去注册</el-link>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -59,10 +59,6 @@
                     }
                     return false;
                 });
-            },
-
-            jumpToRegister() {
-                this.$router.push({path: "/register"}).catch(error => console.error(error));
             }
         }
     }
