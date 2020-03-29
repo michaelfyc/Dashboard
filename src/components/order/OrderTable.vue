@@ -180,7 +180,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        order.deleteOrder("/api/deleteOrder", row.orderId);
+                        order.deleteOrder("/api/deleteOrder", {orderId: row.orderId});
                         window.location.reload();
                     })
                     .catch((e) => {
