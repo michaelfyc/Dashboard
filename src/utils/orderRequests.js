@@ -31,7 +31,7 @@ const order = {
     async deleteOrder(api, data) {
         await axios.delete(api, data)
             .then(response => {
-                if (response.data.verified) {
+                if (response.data.status === "success") {
                     Message.success("删除订单成功！");
                     window.location.reload();
                 }

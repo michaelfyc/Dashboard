@@ -10,7 +10,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, payload) {
-        await axios.post("/api/login", payload.data)//TODO 生产环境改成/api
+        await axios.post("/api/login", payload.data)
             .then(response => {
                 commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
                 Message.success("登录成功!");
@@ -49,49 +49,6 @@ const actions = {
                 Message.error("系统错误");
                 console.error(e);
             })
-    },
-
-    /**
-     * 修改用户信息（但不修改密码)
-     * @param commit
-     * @param data
-     * @returns {Promise<void>}
-     */
-    async putUserNoPwd({commit}, data) {
-        await axios.put("/API/putUserNoPwd", data)
-            .then(response => {
-                if (response.data.verified === true) {
-                    commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
-                    Message.success("修改成功！");
-                } else {
-                    Message.error("修改失败！" + response.data.message);
-                }
-            })
-            .catch(e => {
-                Message.error("系统错误");
-                console.error(e);
-            })
-    },
-
-    /**
-     * 修改用户信息，且修改密码
-     * @param commit
-     * @param data
-     * @returns {Promise<void>}
-     */
-    async putUserWithPwd({commit}, data) {
-        await axios.put("/API/putUserWithPwd", data)
-            .then(response => {
-                if (response.data.verified === true) {
-                    commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
-                    Message.success("修改成功！");
-                } else {
-                    Message.error("修改失败！" + response.data.message);
-                }
-            }).catch(e => {
-                Message.error("系统错误");
-                console.error(e);
-            });
     }
 };
 
