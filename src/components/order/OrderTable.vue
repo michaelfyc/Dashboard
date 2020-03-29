@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table :data="orderList" border style="width: 100%" :row-class-name="tableRowClassName">
-            <el-table-column prop="orderId" label="订单号" v-if="true"></el-table-column>
+            <el-table-column prop="orderId" label="订单号" v-if="false"></el-table-column>
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="table-expand">
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+    import order from "../../utils/orderRequests"
+
     export default {
         name: "OrderTable",
         data() {
@@ -178,7 +180,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.dispatch("deleteOrder", this.orderList.orderId);
+                        order.deleteOrder("/api/deleteOrder", row.orderId);
                         console.log(row);
                         //TODO remove the row after deleted
                     })
