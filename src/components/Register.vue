@@ -1,5 +1,6 @@
 <template>
-    <el-form label-width="80px" :model="regForm" ref="regForm" :rules="regRules" v-loading="loading">
+    <el-form label-width="80px" :model="regForm" ref="regForm" :rules="regRules" v-loading="loading"
+             label-position="top">
         <el-form-item label="用户名" prop="username">
             <el-input style="width:100%" v-model="regForm.username" class="narrow_input"></el-input>
         </el-form-item>
