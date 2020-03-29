@@ -167,7 +167,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$router.push("/dashboard/editOrder");
+                        this.$router.push({path: "/dashboard/editOrder", params: {orderId: row.orderId}});
                     })
                     .catch(e => {
                         console.error(e);
@@ -181,16 +181,15 @@
                 })
                     .then(() => {
                         order.deleteOrder("/api/deleteOrder", row.orderId);
-                        console.log(row);
-                        //TODO remove the row after deleted
+                        window.location.reload();
                     })
                     .catch((e) => {
                         console.error(e)
                     })
             },
-            changePage(currentPage) {
+            async changePage(currentPage) {
                 this.currentPage = currentPage;
-                this.axios.post("/api/getOrder", {page: currentPage})
+                await this.axios.post("/api/getOrder", {page: currentPage})
                     .then(response => {
                         this.orderList = response.data.orderList;
                         console.log("表格信息加载完毕！");
@@ -201,8 +200,8 @@
                     });
             }
         },
-        mounted() {
-            this.axios.post("/api/getOrder", {page: 1})
+        async mounted() {
+            await this.axios.post("/api/getOrder", {page: 1})
                 .then(response => {
                     this.orderList = response.data.orderList;
                     this.total = response.data.total;

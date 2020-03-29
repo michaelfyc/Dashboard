@@ -9,6 +9,7 @@ import OrderForm from "../components/order/OrderForm";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import OrderTable from "../components/order/OrderTable";
+import EditForm from "../components/order/EditForm";
 
 Vue.use(VueRouter);
 const routes = [
@@ -57,6 +58,11 @@ const routes = [
                 path: "/dashboard/orderList",
                 component: OrderTable,
                 name: "orderList"
+            },
+            {
+                path: "/dashboard/editOrder",
+                component: EditForm,
+                name: "editOrder"
             }
         ]
     },

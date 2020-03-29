@@ -17,7 +17,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.prototype.axios = axios;
 
-//导航守卫，如果sessionStorage里没有user_id则跳转至登录界面
+//导航守卫，如果sessionStorage里没有uid则跳转至登录界面
 router.beforeEach((to, from, next) => {
     if (to.path === "/login") {
         //免得重新登录，session和cookie各存一份冗余

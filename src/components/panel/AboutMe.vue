@@ -10,27 +10,19 @@
         <el-form-item label="修改密码">
             <el-switch v-model="profile.changePassword"></el-switch>
         </el-form-item>
-        <el-row>
-            <el-col :span="6">
                 <el-form-item label="旧密码" prop="oldPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.oldPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.oldPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
-            </el-col>
-            <el-col :span="6">
                 <el-form-item label="新密码" prop="newPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.newPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.newPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password minlength="6" maxlength="26"
                               show-word-limit></el-input>
                 </el-form-item>
-            </el-col>
-            <el-col :span="6">
                 <el-form-item label="确认新密码" prop="vnewPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.vnewPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.vnewPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
-            </el-col>
-        </el-row>
         <el-row :gutter="6">
             <!--更新按钮-->
             <el-col :span="6">
@@ -135,7 +127,7 @@
             async editInfo(api, data) {
                 await this.axios.post(api, data)
                     .then(response => {
-                        if (response.data.verified) {
+                        if (response.data.status === "success") {
                             this.$message.success("修改信息成功！");
                             window.location.reload();
                         } else {
@@ -198,7 +190,7 @@
         },
 
         mounted() {
-            this.axios.post("/api/getUserInfo")
+            this.axios.get("/API/getUserInfo")
                 .then(response => {
                     console.log("获取用户信息成功");
                     this.profile.username = response.data.username;
@@ -216,9 +208,5 @@
 <style scoped>
     .input_width {
         width: 50%;
-    }
-
-    .inline-input_width {
-        width: 80%;
     }
 </style>
