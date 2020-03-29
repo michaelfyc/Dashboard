@@ -75,6 +75,7 @@
     import ProductStorage from "./ProductStorage";
     import ProductMemory from "./ProductMemory";
     import ProductAccessories from "./ProductAccessories";
+    import order from "../../utils/orderRequests"
 
     export default {
         name: "OrderForm",
@@ -125,10 +126,7 @@
                     if (valid) {
                         this.orderForm.money.profit = this.orderForm.money.soldPrice - this.orderForm.money.purchasePrice - this.orderForm.money.postPrice;
                         let data = {userId: this.$store.state.user.user.uid, order: this.orderForm};
-                        this.$store.dispatch("postOrder", data)
-                            .catch(e => {
-                                console.error(e);
-                            });
+                        order.postOrder("/api/getOrder", data);
                         console.log(JSON.stringify(data));
                     } else {
                         console.warn("有东西没好好填");

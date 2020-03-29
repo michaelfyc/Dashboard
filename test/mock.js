@@ -13,16 +13,14 @@ Mock.mock("/API/register", {
     verified: true
 });
 
-//TODO 接口数据修改
-Mock.mock("/API/putUserNoPwd", {
-    verified: true,
-    message: "修改成功"
+Mock.mock("/API/getUserInfo", {
+    username: "admin",
+    email: "example@example.com",
+    password: "123456"
 });
 
-//TODO 接口数据修改
-Mock.mock("/API/putUserWithPwd", {
-    verified: true,
-    message: "修改成功"
+Mock.mock("/API/editInfo", {
+    verified: true
 });
 
 Mock.mock("/API/getOrderList", {

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import order from "./order/order"
 import user from "./user/user"
 import createPersistedState from 'vuex-persistedstate'
 
@@ -10,12 +9,11 @@ const getters = {};
 
 export default new Vuex.Store({
     modules: {
-        order,
         user
     },
     getters,
     plugins: [createPersistedState({
-        paths: ["order.order", "user.user"],
+        paths: ["user.user"],
         storage: window.sessionStorage
     })]
 })

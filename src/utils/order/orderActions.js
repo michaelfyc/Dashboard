@@ -1,5 +1,5 @@
-import axios from 'axios'
-import {Message} from 'element-ui'
+import axios from 'axios/index'
+import {Message} from 'element-ui/types'
 
 const actions = {
     /**

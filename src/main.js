@@ -9,7 +9,7 @@ import store from './store/index'
 import router from "./routes/index"
 import Cookies from "js-cookie"
 
-// require('../test/mock');
+require('../test/mock');
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
