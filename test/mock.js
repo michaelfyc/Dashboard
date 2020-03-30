@@ -56,14 +56,12 @@ Mock.mock("/API/getOrderList", {
         }],
 });
 
-Mock.mock("/API/postOrderData", {
-    verified: true,
-    xAxisData: ["1月", "2月", "3月", "4月"],
-    series: [
-        {type: "bar", data: [15, 3, 6, 27], barWidth: "60%"},
-    ]
+Mock.mock("/api/getOrderWeek", {
+    sales: [15, 3, 6, 27, 2, 5, 0],
+    profit: [2000, 150, 289, -40, 1500, 200, 0],
 });
 
-Mock.mock("/API/postOrder", {
-    status: "OK"
+Mock.mock("/api/getOrderMonth", {
+    sales: [15, 3, 6, 27, 2, 5, 0, 12, 13, 5, 1, 4],
+    profit: [2000, 150, 289, -40, 1500, 200, 0, 130, 423, 23, -33, 1320]
 });

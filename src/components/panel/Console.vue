@@ -1,13 +1,21 @@
 <template>
-    <!--    TODO 表格和仪表盘-->
-    <v-chart :options="orderBar" v-loading="loading"></v-chart>
+    <div>
+        <div>
+            <v-chart :options="weekData" v-loading="loading" autoresize="true"></v-chart>
+        </div>
+        <div>
+            <v-chart :options="monthData" v-loading="loading" autoresize="true"></v-chart>
+        </div>
+    </div>
 </template>
 
 <script>
     import Vue from 'vue'
     import 'echarts/lib/chart/bar'
     import 'echarts/lib/chart/line'
-    import 'echarts/lib/component/tooltip'
+    import 'echarts/lib/component/toolbox'
+    import 'echarts/lib/component/legend'
+    import 'echarts/lib/component/title'
     import Echarts from 'vue-echarts'
 
     Vue.component('v-chart', Echarts);
@@ -16,40 +24,152 @@
         name: "Console",
         data() {
             return {
-                loading: true,
+                loading: false,
                 //表格信息
-                orderBar: {
-                    title: {text: "订单统计表"},
-                    legend: {data: []},
+                weekData: {
+                    title: {text: "周订单统计表"},
+                    legend: {show: true, data: ['销量', '盈利额']},
                     xAxis: [{type: 'category', data: [], axisTick: {alignWithLabel: true}}],
-                    yAxis: [{type: 'value'}],
+                    yAxis: [
+                        {type: 'value', name: '销量', min: 0},
+                        {type: 'value', name: '盈利', axisLabel: {formatter: '{value}元'}}
+                    ],
                     toolbox: {
                         show: true,
+                        top: -6,
                         feature: {
                             saveAsImage: {show: true},
-                            magicType: {show: true, type: ['line', 'bar']}
+                            restore: {show: true}
                         }
                     },
-                    series: []
+                    series: [{
+                        name: "销量",
+                        type: "bar",
+                        data: [],
+                        barWidth: "60%",
+                        label: {show: true, position: "insideTop"},
+                        //颜色设置
+                        itemStyle: {
+                            normal: {
+                                color(params) {
+                                    let colorList = [
+                                        '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                                        '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                        '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        }
+                    },
+                        {
+                            name: "盈利额",
+                            type: "line",
+                            data: [],
+                            yAxisIndex: 1,
+                            label: {show: true, position: "bottom"}
+                        }]
+                },
+                monthData: {
+                    title: {text: "月订单统计表"},
+                    legend: {data: ["销量", "盈利额"]},
+                    xAxis: [{type: 'category', data: [], axisTick: {alignWithLabel: true}}],
+                    yAxis: [
+                        {type: 'value', name: '销量', min: 0},
+                        {type: 'value', name: '盈利', axisLabel: {formatter: '{value}元'}}
+                    ],
+                    toolbox: {
+                        top: -6,
+                        feature: {
+                            saveAsImage: {show: true},
+                            restore: {show: true}
+                        }
+                    },
+                    series: [{
+                        name: "销量",
+                        type: "bar",
+                        data: [],
+                        barWidth: "60%",
+                        label: {show: true, position: "insideTop"},
+                        //颜色设置
+                        itemStyle: {
+                            normal: {
+                                color(params) {
+                                    let colorList = [
+                                        '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                                        '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                                        '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                                    ];
+                                    return colorList[params.dataIndex]
+                                }
+                            }
+                        }
+                    },
+                        {
+                            name: "盈利额",
+                            type: "line",
+                            data: [],
+                            yAxisIndex: 1,
+                            label: {show: true, position: "bottom"}
+                        }]
                 }
             }
         },
 
         methods: {
             postOrderData() {
-                this.axios.post("/API/postOrderData", this.$store.state.user).then(response => {
-                    if (response.data.statusCode === "200" && response.data.verified === true) {
-                        this.loading = false;
-                        this.orderBar.series = response.data.series;
-                        this.orderBar.xAxis[0].data = response.data.xAxisData;
-                    } else {
-                        this.loading = false;
-                        this.$message.error("表格获取失败！");
-                    }
+                this.loading = true;
+                this.getWeek();
+                this.getMonth();
+            },
+
+            async getWeek() {
+                await this.axios.get("/api/getOrderWeek").then(response => {
+                    this.weekData.series[0].data = response.data.sales;
+                    this.weekData.series[1].data = response.data.profit;
+                    this.weekData.xAxis[0].data = this.getSevenDays();
                 }).catch(error => {
-                    this.loading = false;
                     this.$message.error("表格获取失败！");
                     console.error(error);
+                });
+                this.loading = false;
+            },
+
+            async getMonth() {
+                await this.axios.get("/api/getOrderMonth")
+                    .then(response => {
+                        this.monthData.series[0].data = response.data.sales;
+                        this.monthData.series[1].data = response.data.profit;
+                        this.monthData.xAxis[0].data = this.getTwelveMonths();
+                    }).catch(e => {
+                        console.error(e);
+                    });
+                this.loading = false;
+            },
+
+            getSevenDays() {
+                let dayMap = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+                let today = new Date();
+                let result = [today.getDay()];
+                for (let i = 0; i < 6; i++) {
+                    today.setDate(today.getDate() - 1);
+                    result.unshift(today.getDay());
+                }
+                return result.map(element => {
+                    return dayMap[element];
+                });
+            },
+
+            getTwelveMonths() {
+                let monthMap = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+                let today = new Date();
+                let result = [today.getMonth()];
+                for (let i = 0; i < 11; i++) {
+                    today.setMonth(today.getMonth() - 1);
+                    result.unshift(today.getMonth());
+                }
+                return result.map(element => {
+                    return monthMap[element];
                 });
             }
         },
@@ -61,5 +181,7 @@
 </script>
 
 <style scoped>
-
+    .echarts {
+        width: 100%
+    }
 </style>
