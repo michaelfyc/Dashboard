@@ -180,7 +180,8 @@
                     type: "warning"
                 })
                     .then(() => {
-                        order.deleteOrder("/api/deleteOrder", {orderId: row.orderId});
+                        order.deleteOrder("/api/delOrder", {orderId: row.orderId});
+                        alert("删除的" + row.orderId);
                         window.location.reload();
                     })
                     .catch((e) => {

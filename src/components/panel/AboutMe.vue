@@ -125,7 +125,7 @@
              * @returns {Promise<void>}
              */
             async editInfo(api, data) {
-                await this.axios.post(api, data)
+                await this.axios.put(api, data)
                     .then(response => {
                         if (response.data.status === "success") {
                             this.$message.success("修改信息成功！");
