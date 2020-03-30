@@ -67,7 +67,17 @@
                             type: "line",
                             data: [],
                             yAxisIndex: 1,
-                            label: {show: true, position: "bottom"}
+                            label: {
+                                show: true, position: "bottom",
+                                formatter: function (params) {
+                                    if (params.value < 0) {
+                                        return "{a|" + params.value + "}"
+                                    } else {
+                                        return "{b|" + params.value + "}";
+                                    }
+                                },
+                                rich: {a: {color: "#ff0000"}, b: {color: "#005c98"}}
+                            }
                         }]
                 },
                 monthData: {
@@ -110,7 +120,17 @@
                             type: "line",
                             data: [],
                             yAxisIndex: 1,
-                            label: {show: true, position: "bottom"}
+                            label: {
+                                show: true, position: "bottom",
+                                formatter: function (params) {
+                                    if (params.value < 0) {
+                                        return "{a|" + params.value + "}"
+                                    } else {
+                                        return "{b|" + params.value + "}";
+                                    }
+                                },
+                                rich: {a: {color: "#ff0000"}, b: {color: "#005c98"}}
+                            }
                         }]
                 }
             }
@@ -163,8 +183,8 @@
             getTwelveMonths() {
                 let monthMap = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
                 let today = new Date();
-                let result = [today.getMonth()];
-                for (let i = 0; i < 11; i++) {
+                let result = [];
+                for (let i = 0; i < 12; i++) {
                     today.setMonth(today.getMonth() - 1);
                     result.unshift(today.getMonth());
                 }
