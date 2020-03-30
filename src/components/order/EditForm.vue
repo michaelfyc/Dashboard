@@ -128,8 +128,14 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let data = {uid: this.$store.state.user.user.uid, order: this.orderForm};
-                        this.axios.post("/api/editOrder", data)
+
+                        let data = {
+                            uid: this.$store.state.user.user.uid,
+                            orderId: this.$route.params.orderId,
+                            order: this.orderForm
+                        };
+                        //alert(JSON.stringify(data));
+                        this.axios.put("/api/editOrder", data)
                             .then(response => {
                                 if (response.data.status === "success") {
                                     this.$message.success("修改订单信息成功！");
@@ -173,6 +179,7 @@
                 .catch(e => {
                     console.error(e);
                     this.$message.error("加载订单信息失败！");
+                    this.$router.push("/dashboard/orderList")
                 })
         }
     }
