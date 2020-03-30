@@ -1,10 +1,10 @@
 <template>
     <div>
         <div>
-            <v-chart :options="weekData" v-loading="loading" autoresize="true"></v-chart>
+            <v-chart :options="weekData" v-loading="loading" autoresize></v-chart>
         </div>
         <div>
-            <v-chart :options="monthData" v-loading="loading" autoresize="true"></v-chart>
+            <v-chart :options="monthData" v-loading="loading" autoresize></v-chart>
         </div>
     </div>
 </template>
