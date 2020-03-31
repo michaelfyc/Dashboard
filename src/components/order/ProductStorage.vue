@@ -25,7 +25,7 @@
 <script>
     export default {
         name: "ProductStorage",
-        props: ["productType"],
+        props: ["productType", "ajaxStorage"],
         data() {
             return {
                 storage: ""
@@ -46,7 +46,13 @@
             handleChange() {
                 this.$emit("transferStorage", this.storage);
             }
+        },
+        watch: {
+            ajaxStorage(val) {
+                this.storage = val;
+            }
         }
+
     }
 </script>
 

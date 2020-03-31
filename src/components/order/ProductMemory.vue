@@ -18,7 +18,7 @@
 <script>
     export default {
         name: "ProductMemory",
-        props: ["productType"],
+        props: ["productType", "ajaxMemo"],
         data() {
             return {
                 memory: ""
@@ -37,6 +37,11 @@
         methods: {
             handleChange() {
                 this.$emit("transferMemory", this.memory);
+            }
+        },
+        watch: {
+            ajaxMemo(val) {
+                this.memory = val;
             }
         }
     }

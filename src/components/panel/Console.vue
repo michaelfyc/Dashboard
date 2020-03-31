@@ -27,7 +27,7 @@
                 loading: false,
                 //表格信息
                 weekData: {
-                    title: {text: "周订单统计表"},
+                    title: {text: "最近7天订单统计表"},
                     legend: {show: true, data: ['销量', '盈利额']},
                     xAxis: [{type: 'category', data: [], axisTick: {alignWithLabel: true}}],
                     yAxis: [
@@ -81,7 +81,7 @@
                         }]
                 },
                 monthData: {
-                    title: {text: "月订单统计表"},
+                    title: {text: "本月订单统计表"},
                     legend: {data: ["销量", "盈利额"]},
                     xAxis: [{type: 'category', data: [], axisTick: {alignWithLabel: true}}],
                     yAxis: [
@@ -144,7 +144,7 @@
             },
 
             async getWeek() {
-                await this.axios.get("/api/getOrderWeek").then(response => {
+                await this.axios.get("/api/getWeekGraph").then(response => {
                     this.weekData.series[0].data = response.data.sales;
                     this.weekData.series[1].data = response.data.profit;
                     this.weekData.xAxis[0].data = this.getSevenDays();
@@ -156,41 +156,44 @@
             },
 
             async getMonth() {
-                await this.axios.get("/api/getOrderMonth")
+                await this.axios.get("/api/getMonthGraph")
                     .then(response => {
                         this.monthData.series[0].data = response.data.sales;
                         this.monthData.series[1].data = response.data.profit;
-                        this.monthData.xAxis[0].data = this.getTwelveMonths();
+                        this.monthData.xAxis[0].data = this.getMonthDays(response.data.day);
                     }).catch(e => {
                         console.error(e);
                     });
                 this.loading = false;
             },
 
+            /**
+             * 获取最近七天
+             */
             getSevenDays() {
                 let dayMap = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
                 let today = new Date();
-                let result = [today.getDay()];
+                let result = [today.getUTCDay()];
                 for (let i = 0; i < 6; i++) {
-                    today.setDate(today.getDate() - 1);
-                    result.unshift(today.getDay());
+                    today.setUTCDate(today.getUTCDate() - 1);
+                    result.unshift(today.getUTCDay());
                 }
                 return result.map(element => {
                     return dayMap[element];
                 });
             },
 
-            getTwelveMonths() {
-                let monthMap = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+            /**
+             * 获取这个月的日期
+             */
+            getMonthDays(days) {
                 let today = new Date();
-                let result = [];
-                for (let i = 0; i < 12; i++) {
-                    today.setMonth(today.getMonth() - 1);
-                    result.unshift(today.getMonth());
+                let result = [(today.getUTCMonth() + 1) + "/" + today.getUTCDate()];
+                for (let i = 0; i < days - 1; i++) {
+                    today.setUTCDate(today.getUTCDate() - 1);
+                    result.unshift((today.getUTCMonth() + 1) + "/" + today.getUTCDate())
                 }
-                return result.map(element => {
-                    return monthMap[element];
-                });
+                return result;
             }
         },
 

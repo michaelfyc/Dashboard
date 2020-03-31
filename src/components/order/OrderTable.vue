@@ -160,14 +160,13 @@
             },
 
             handleEdit(row) {
-                console.log(row);
                 this.$confirm("确认修改？", "提示", {
                     confirmButtonText: "确认修改",
                     cancelButtonText: "取消",
                     type: "warning"
                 })
                     .then(() => {
-                        this.$router.push({path: "/dashboard/editOrder", params: {orderId: row.orderId}});
+                        this.$router.push({path: "/dashboard/editOrder", query: {orderId: row.orderId}});
                     })
                     .catch(e => {
                         console.error(e);
@@ -181,7 +180,6 @@
                 })
                     .then(() => {
                         order.deleteOrder("/api/delOrder", {orderId: row.orderId});
-                        alert("删除的" + row.orderId);
                         window.location.reload();
                     })
                     .catch((e) => {
