@@ -68,7 +68,14 @@
             transferProductType() {
                 this.$emit("transferProductType", this.productType)
             }
+        },
+        props: ["ajaxType"],//异步获取EditForm父组件传过来的值
+        watch: {
+            ajaxType(val) {
+                this.productType = this.productType.concat(val);
+            }
         }
+
     }
 </script>
 

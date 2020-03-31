@@ -4,11 +4,11 @@
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
-        <ProductType @transferProductType="getProductType"></ProductType>
+        <ProductType @transferProductType="getProductType" :ajaxType="orderForm.productType"></ProductType>
         <el-form-item label="附赠配件">
             <el-switch v-model="orderForm.withAccessories"></el-switch>
         </el-form-item>
-        <ProductAccessories @transferAccessories="getAccessories"
+        <ProductAccessories @transferAccessories="getAccessories" :ajaxAcc="orderForm.accessories"
                             :needAccessories="orderForm.withAccessories"></ProductAccessories>
         <!--进价和售价和邮费-->
         <el-row>
@@ -50,8 +50,10 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <ProductMemory :productType="orderForm.productType[0]" @transferMemory="getMemory"></ProductMemory>
-        <ProductStorage :productType="orderForm.productType[0]" @transferStorage="getStorage"></ProductStorage>
+        <ProductMemory :productType="orderForm.productType[0]" :ajaxMemo="orderForm.productDescription.memory"
+                       @transferMemory="getMemory"></ProductMemory>
+        <ProductStorage :productType="orderForm.productType[0]" :ajaxStorage="orderForm.productDescription.storage"
+                        @transferStorage="getStorage"></ProductStorage>
         <el-form-item label="购买人姓名" prop="purchaser">
             <el-input v-model="orderForm.purchaser"></el-input>
         </el-form-item>
@@ -131,7 +133,7 @@
 
                         let data = {
                             uid: this.$store.state.user.user.uid,
-                            orderId: this.$route.params.orderId,
+                            orderId: this.$route.query.id,
                             order: this.orderForm
                         };
                         //alert(JSON.stringify(data));
@@ -170,16 +172,21 @@
             }
         },
 
-        async mounted() {
-            let orderId = this.$route.params.orderId;
-            await this.axios.post("/api/getOrderInfo", {orderId: orderId})
+        mounted() {
+            let orderId = this.$route.query.orderId;
+            this.axios.post("/api/getOrderInfo", {orderId: orderId})
                 .then(response => {
                     this.orderForm = response.data.order;
+                    this.orderForm.withAccessories = Boolean(response.data.order.withAccessories);
                 })
                 .catch(e => {
+                    if (e.response.status === 404) {
+                        this.$message.error("订单不存在！");
+                        this.$router.push("/dashboard/orderList");
+                    }
                     console.error(e);
                     this.$message.error("加载订单信息失败！");
-                    this.$router.push("/dashboard/orderList")
+                    this.$router.push("/dashboard/orderList");
                 })
         }
     }

@@ -125,8 +125,7 @@
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
                         let data = {userId: this.$store.state.user.user.uid, order: this.orderForm};
-                        order.postOrder("/api/getOrder", data);
-                        // console.log(JSON.stringify(data));
+                        order.postOrder("/api/addOrder", data);
                     } else {
                         console.warn("有东西没好好填");
                         return false;

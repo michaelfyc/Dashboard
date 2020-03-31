@@ -56,12 +56,13 @@ Mock.mock("/API/getOrderList", {
         }],
 });
 
-Mock.mock("/API/getOrderWeek", {
+Mock.mock("/API/getWeekGraph", {
     sales: [15, 3, 6, 27, 2, 5, 0],
     profit: [2000, 150, 289, -40, 1500, 200, 0],
 });
 
-Mock.mock("/API/getOrderMonth", {
+Mock.mock("/API/getMonthGraph", {
+    day: 31,
     sales: [15, 3, 6, 27, 2, 5, 0, 12, 13, 5, 1, 4],
     profit: [2000, 150, 289, -40, 1500, 200, 0, 130, 423, 23, -33, 1320]
 });
