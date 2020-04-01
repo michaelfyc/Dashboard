@@ -136,8 +136,7 @@
                             orderId: this.$route.query.id,
                             order: this.orderForm
                         };
-                        //alert(JSON.stringify(data));
-                        this.axios.put("/api/editOrder", data)
+                        this.axios.put("/api/editOrderInfo", data)
                             .then(response => {
                                 if (response.data.status === "success") {
                                     this.$message.success("修改订单信息成功！");
