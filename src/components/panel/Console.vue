@@ -173,10 +173,10 @@
             getSevenDays() {
                 let dayMap = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
                 let today = new Date();
-                let result = [today.getUTCDay()];
+                let result = [today.getDay()];
                 for (let i = 0; i < 6; i++) {
-                    today.setUTCDate(today.getUTCDate() - 1);
-                    result.unshift(today.getUTCDay());
+                    today.setDate(today.getDate() - 1);
+                    result.unshift(today.getDay());
                 }
                 return result.map(element => {
                     return dayMap[element];
@@ -188,10 +188,10 @@
              */
             getMonthDays(days) {
                 let today = new Date();
-                let result = [(today.getUTCMonth() + 1) + "/" + today.getUTCDate()];
+                let result = [(today.getMonth() + 1) + "/" + today.getDate()];
                 for (let i = 0; i < days - 1; i++) {
-                    today.setUTCDate(today.getUTCDate() - 1);
-                    result.unshift((today.getUTCMonth() + 1) + "/" + today.getUTCDate())
+                    today.setDate(today.getDate() - 1);
+                    result.unshift((today.getMonth() + 1) + "/" + today.getDate())
                 }
                 return result;
             }

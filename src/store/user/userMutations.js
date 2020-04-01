@@ -17,18 +17,6 @@ const mutations = {
     },
 
     /**
-     * 修改用户信息
-     * @param state
-     * @param user
-     */
-    updateUser(state, user) {
-        state.user.user.username = user.username;
-        state.user.user.password = user.password;
-        state.user.user.email = user.email;
-        state.user.user.isLogin = true;
-    },
-
-    /**
      * 登出后清空cookie和sessionStorage
      * @param state
      */
@@ -36,10 +24,6 @@ const mutations = {
         state.user = {};
         sessionStorage.removeItem("user");
         Cookies.remove("user");
-    },
-
-    doNothing(state) {
-        console.log(state.user.isLogin);
     }
 };
 

@@ -149,11 +149,12 @@
                             .catch(e => {
                                 console.error(e);
                                 this.$message.error("系统错误！");
+                                this.$router.push("/dashboard/orderList");
                             })
                     })
                     .catch(() => {
                         this.$message.info("已取消");
-                        this.$router.push("/dashboard/orderList")
+                        this.$router.push("/dashboard/orderList");
                     });
 
             },

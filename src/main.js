@@ -16,6 +16,7 @@ Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.prototype.axios = axios;
+axios.defaults.withCredentials=true;
 
 //导航守卫，如果sessionStorage里没有uid则跳转至登录界面
 router.beforeEach((to, from, next) => {
