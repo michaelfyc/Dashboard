@@ -5,6 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = {
+    publicPath: "/",
     chainWebpack: (config) => {
         config.resolve.alias
             .set('@$', resolve('src'))
@@ -17,12 +18,9 @@ module.exports = {
 
     devServer: {
         proxy: {
-            '/api': {
-                changeOrigin: true,
-                target: 'http://localhost:3000',
-                pathRewrite: {
-                    '^/api': 'http://localhost:3000/api'
-                }
+            "/api": {
+                target: "http://127.0.0.1:3000",
+                changeOrigin: true
             }
         }
     }

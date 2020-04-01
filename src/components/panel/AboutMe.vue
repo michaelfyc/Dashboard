@@ -10,27 +10,19 @@
         <el-form-item label="修改密码">
             <el-switch v-model="profile.changePassword"></el-switch>
         </el-form-item>
-        <el-row>
-            <el-col :span="6">
                 <el-form-item label="旧密码" prop="oldPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.oldPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.oldPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
-            </el-col>
-            <el-col :span="6">
                 <el-form-item label="新密码" prop="newPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.newPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.newPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password minlength="6" maxlength="26"
                               show-word-limit></el-input>
                 </el-form-item>
-            </el-col>
-            <el-col :span="6">
                 <el-form-item label="确认新密码" prop="vnewPassword" :hide-required-asterisk="!profile.changePassword">
-                    <el-input type="password" v-model="profile.vnewPassword" class="inline-input_width"
+                    <el-input type="password" v-model="profile.vnewPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
-            </el-col>
-        </el-row>
         <el-row :gutter="6">
             <!--更新按钮-->
             <el-col :span="6">
@@ -126,24 +118,26 @@
         },
 
         methods: {
-            sendNoPwd() {
-                let data = {
-                    id: this.$store.state.user.id,
-                    username: this.profile.username,
-                    email: this.profile.email
-                };
-                this.$store.dispatch("putUserNoPwd", data).catch(e => console.error(e));
-            },
-
-            sendPwd() {
-                let data = {
-                    id: this.$store.state.user.id,
-                    username: this.profile.username,
-                    email: this.profile.email,
-                    password: this.profile.oldPassword,
-                    newPassword: this.profile.vnewPassword
-                };
-                this.$store.dispatch("putUserWithPwd", data).catch(e => console.error(e));
+            /**
+             * 修改用户信息
+             * @param api
+             * @param data
+             * @returns {Promise<void>}
+             */
+            async editInfo(api, data) {
+                await this.axios.put(api, data)
+                    .then(response => {
+                        if (response.data.status === "success") {
+                            this.$message.success("修改信息成功！");
+                            window.location.reload();
+                        } else {
+                            this.$message.error(response.data.reason);
+                        }
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        this.$message.error("系统错误！")
+                    })
             },
 
             handleUpdate() {
@@ -159,14 +153,7 @@
                         //如果确认要修改
                             .then(() => {
                                 this.loading = true;
-                                //如果不修改密码
-                                if (!this.profile.changePassword) {
-                                    this.sendNoPwd();
-                                }
-                                //如果修改密码
-                                else {
-                                    this.sendPwd();
-                                }
+                                this.editInfo("/api/editUserInfo", this.profile);
                                 this.loading = false;
                             })
                             //如果不要修改，则取消
@@ -189,7 +176,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.commit("logout");
+                        this.$store.dispatch("logout").catch(e=>console.error(e));
                         this.fullscreenLoading = true;
                         setTimeout(() => {
                             this.fullscreenLoading = false;
@@ -201,12 +188,18 @@
                     })
             }
         },
+
         mounted() {
-            //默认value
-            this.profile.username = this.$store.state.user.user.username;
-            this.profile.email = this.$store.state.user.user.email;
-            this.profile.oldPassword = this.$store.state.user.user.password;
-            this.loading = false;
+            this.axios.get("/api/getUserInfo")
+                .then(response => {
+                    console.log("获取用户信息成功");
+                    this.profile.username = response.data.username;
+                    this.profile.email = response.data.email;
+                })
+                .catch(e => {
+                    console.error(e);
+                    this.$message.error("获取用户信息失败！");
+                })
         }
     }
 </script>
@@ -214,9 +207,5 @@
 <style scoped>
     .input_width {
         width: 50%;
-    }
-
-    .inline-input_width {
-        width: 80%;
     }
 </style>

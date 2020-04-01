@@ -4,6 +4,7 @@
             <el-radio label="4G">4G</el-radio>
             <el-radio label="6G">6G</el-radio>
             <el-radio label="8G">8G</el-radio>
+            <el-radio label="12G">12G</el-radio>
         </el-radio-group>
         <el-radio-group v-else-if="isMemoryOf('Computer')" v-model="memory" @change="handleChange" key="Computer">
             <el-radio label="4G">4G</el-radio>
@@ -17,7 +18,7 @@
 <script>
     export default {
         name: "ProductMemory",
-        props: ["productType"],
+        props: ["productType", "ajaxMemo"],
         data() {
             return {
                 memory: ""
@@ -36,6 +37,11 @@
         methods: {
             handleChange() {
                 this.$emit("transferMemory", this.memory);
+            }
+        },
+        watch: {
+            ajaxMemo(val) {
+                this.memory = val;
             }
         }
     }

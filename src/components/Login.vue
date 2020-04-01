@@ -5,7 +5,10 @@
             <el-input v-model="loginForm.username" class="input_width"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password" class="input_width"></el-input>
+            <el-input type="password" v-model="loginForm.password" class="input_width" show-password></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-checkbox v-model="loginForm.rememberMe">七天免登录</el-checkbox>
         </el-form-item>
         <el-row type="flex" justify="space-between">
             <el-col :span="12">
@@ -13,9 +16,9 @@
                     <el-button type="primary" @click.prevent="handleLogin('loginForm')">登录</el-button>
                 </el-form-item>
             </el-col>
-            <el-col :span="12" :push="8">
+            <el-col :span="12" :push="3">
                 <el-form-item>
-                    <el-button type="success" @click.prevent="jumpToRegister">注册</el-button>
+                    <el-link type="primary" href="#/register">没有账号？去注册</el-link>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -30,7 +33,8 @@
                 loading: false,
                 loginForm: {
                     username: '',
-                    password: ''
+                    password: '',
+                    rememberMe: false,
                 },
                 rules: {
                     username: [
@@ -44,24 +48,17 @@
         },
 
         methods: {
-            login() {
-                this.$store.dispatch("login", this.loginForm)
-            },
-
             handleLogin(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        this.login();
+                        this.$store.dispatch("login", this.loginForm)
+                            .catch(e => console.log(e));
                         this.loading = false;
                         return true;
                     }
                     return false;
                 });
-            },
-
-            jumpToRegister() {
-                this.$router.push({path: "/register"}).catch(error => console.error(error));
             }
         }
     }

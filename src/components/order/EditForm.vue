@@ -4,11 +4,11 @@
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
-        <ProductType @transferProductType="getProductType"></ProductType>
+        <ProductType @transferProductType="getProductType" :ajaxType="orderForm.productType"></ProductType>
         <el-form-item label="附赠配件">
             <el-switch v-model="orderForm.withAccessories"></el-switch>
         </el-form-item>
-        <ProductAccessories @transferAccessories="getAccessories"
+        <ProductAccessories @transferAccessories="getAccessories" :ajaxAcc="orderForm.accessories"
                             :needAccessories="orderForm.withAccessories"></ProductAccessories>
         <!--进价和售价和邮费-->
         <el-row>
@@ -50,8 +50,10 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <ProductMemory :productType="orderForm.productType[0]" @transferMemory="getMemory"></ProductMemory>
-        <ProductStorage :productType="orderForm.productType[0]" @transferStorage="getStorage"></ProductStorage>
+        <ProductMemory :productType="orderForm.productType[0]" :ajaxMemo="orderForm.productDescription.memory"
+                       @transferMemory="getMemory"></ProductMemory>
+        <ProductStorage :productType="orderForm.productType[0]" :ajaxStorage="orderForm.productDescription.storage"
+                        @transferStorage="getStorage"></ProductStorage>
         <el-form-item label="购买人姓名" prop="purchaser">
             <el-input v-model="orderForm.purchaser"></el-input>
         </el-form-item>
@@ -65,21 +67,20 @@
             <el-input type="textarea" v-model="orderForm.note"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleNew">新建订单</el-button>
+            <el-button type="warning" @click="handleEdit">修改订单</el-button>
         </el-form-item>
     </el-form>
 </template>
 
 <script>
     import ProductType from "./ProductType";
-    import ProductStorage from "./ProductStorage";
-    import ProductMemory from "./ProductMemory";
     import ProductAccessories from "./ProductAccessories";
-    import order from "../../utils/orderRequests"
+    import ProductMemory from "./ProductMemory";
+    import ProductStorage from "./ProductStorage";
 
     export default {
-        name: "OrderForm",
-        components: {ProductAccessories, ProductMemory, ProductStorage, ProductType},
+        name: "EditForm",
+        components: {ProductType, ProductAccessories, ProductMemory, ProductStorage},
         data() {
             return {
                 loading: false,
@@ -120,19 +121,44 @@
                 ]
             }
         },
+
         methods: {
-            handleNew() {
-                this.$refs['orderForm'].validate((valid) => {
-                    if (valid) {
-                        let data = {userId: this.$store.state.user.user.uid, order: this.orderForm};
-                        order.postOrder("/api/addOrder", data);
-                    } else {
-                        console.warn("有东西没好好填");
-                        return false;
-                    }
-                });
+            handleEdit() {
+                this.$confirm("真的要修改么？", "提示", {
+                    confirmButtonText: "真的要修改！",
+                    cancelButtonText: "算了吧..",
+                    type: "warning"
+                })
+                    .then(() => {
+
+                        let data = {
+                            uid: this.$store.state.user.user.uid,
+                            orderId: this.$route.query.id,
+                            order: this.orderForm
+                        };
+                        //alert(JSON.stringify(data));
+                        this.axios.put("/api/editOrder", data)
+                            .then(response => {
+                                if (response.data.status === "success") {
+                                    this.$message.success("修改订单信息成功！");
+                                    this.$router.push("/dashboard/orderList");
+                                } else {
+                                    this.$message.error("修改订单信息失败！");
+                                }
+                            })
+                            .catch(e => {
+                                console.error(e);
+                                this.$message.error("系统错误！");
+                                this.$router.push("/dashboard/orderList");
+                            })
+                    })
+                    .catch(() => {
+                        this.$message.info("已取消");
+                        this.$router.push("/dashboard/orderList");
+                    });
 
             },
+
             getProductType(productType) {
                 this.orderForm.productType = productType;
             },
@@ -145,6 +171,24 @@
             getAccessories(acc) {
                 this.orderForm.accessories = acc;
             }
+        },
+
+        mounted() {
+            let orderId = this.$route.query.orderId;
+            this.axios.post("/api/getOrderInfo", {orderId: orderId})
+                .then(response => {
+                    this.orderForm = response.data.order;
+                    this.orderForm.withAccessories = Boolean(response.data.order.withAccessories);
+                })
+                .catch(e => {
+                    if (e.response.status === 404) {
+                        this.$message.error("订单不存在！");
+                        this.$router.push("/dashboard/orderList");
+                    }
+                    console.error(e);
+                    this.$message.error("加载订单信息失败！");
+                    this.$router.push("/dashboard/orderList");
+                })
         }
     }
 </script>

@@ -1,22 +1,29 @@
+import Cookies from "js-cookie"
+
 const mutations = {
-    //登录时设置状态
-    setUser(state, id, isLogin) {
-        state.user.id = id;
-        state.user.isLogin = isLogin;
+    /**
+     * 登录
+     * @param state
+     * @param payload
+     */
+    login(state, payload) {
+        state.user.uid = payload.uid;
+        state.user.isLogin = true;
+        if (payload.rememberMe) {
+            Cookies.set("user", {uid: state.user.uid, isLogin: true}, {expires: 7});
+        } else {
+            sessionStorage.setItem("user", JSON.stringify({uid: state.user.uid, isLogin: true}));
+        }
     },
 
-    //修改个人信息后更新user状态
-    updateUser(state, user) {
-        state.user.user.username = user.username;
-        state.user.user.password = user.password;
-        state.user.user.email = user.email;
-        state.user.user.isLogin = true;
-    },
-
-    //登出时将user置空
+    /**
+     * 登出后清空cookie和sessionStorage
+     * @param state
+     */
     logout(state) {
         state.user = {};
-        localStorage.removeItem("vuex");// TODO 直接删cookie和localStorage
+        sessionStorage.removeItem("user");
+        Cookies.remove("user");
     }
 };
 

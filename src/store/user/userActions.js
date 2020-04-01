@@ -6,13 +6,13 @@ const actions = {
     /**
      * 登录
      * @param commit
-     * @param data
+     * @param payload
      * @returns {Promise<void>}
      */
-    async login({commit}, data) {
-        await axios.post("/API/login", data)//TODO 生产环境改成/api
+    async login({commit}, payload) {
+        await axios.post("/api/login", payload)
             .then(response => {
-                commit("setUser", response.data.uid, response.data.isLogin);
+                commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
                 Message.success("登录成功!");
                 router.push({path: "/dashboard"});
             })
@@ -29,17 +29,20 @@ const actions = {
 
     /**
      * 注册
+     * @param commit
      * @param data
      * @returns {Promise<void>}
      */
-    async register(data) {
-        await axios.post("/API/register", data)
+    async register({commit}, data) {
+        //Just to make sure register is async...
+        commit("doNothing");
+        await axios.post("/api/register", data)
             .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
+                if (response.data.verified === true) {
                     Message.success("注册成功！");
-                    this.$router.push({path: "/login"});
+                    router.push("/");
                 } else {
-                    Message.error(response.data.message);
+                    Message.error(response.data.reason);
                 }
             })
             .catch(e => {
@@ -49,46 +52,20 @@ const actions = {
     },
 
     /**
-     * 修改用户信息（但不修改密码)
+     * 登出
      * @param commit
-     * @param data
      * @returns {Promise<void>}
      */
-    async putUserNoPwd({commit}, data) {
-        await axios.put("/API/putUserNoPwd", data)
-            .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
-                    commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
-                    Message.success("修改成功！");
-                } else {
-                    Message.error("修改失败！" + response.data.message);
-                }
+    async logout({commit}){
+        await axios.post("/api/logout")
+            .then(()=>{
+                commit("logout");
             })
-            .catch(e => {
-                Message.error("系统错误");
+            .catch(e=>{
                 console.error(e);
+                Message.error("登出失败！");
             })
-    },
 
-    /**
-     * 修改用户信息，且修改密码
-     * @param commit
-     * @param data
-     * @returns {Promise<void>}
-     */
-    async putUserWithPwd({commit}, data) {
-        await axios.put("/API/putUserWithPwd", data)
-            .then(response => {
-                if (response.status === 200 && response.data.verified === true) {
-                    commit("updateUser", response.data.user);//TODO 后端传什么还没决定..
-                    Message.success("修改成功！");
-                } else {
-                    Message.error("修改失败！" + response.data.message);
-                }
-            }).catch(e => {
-                Message.error("系统错误");
-                console.error(e);
-            });
     }
 };
 

@@ -22,7 +22,7 @@
                 ]
             }
         },
-        props: ["needAccessories"],
+        props: ["needAccessories", "ajaxAcc"],
         methods: {
             handleChange() {
                 this.$emit("transferAccessories", this.accessories);
@@ -33,6 +33,12 @@
                 return function () {
                     return !this.needAccessories;
                 }
+            }
+        },
+
+        watch: {
+            ajaxAcc(val) {
+                this.accessories = val;
             }
         }
     }
