@@ -136,7 +136,6 @@
                             orderId: this.$route.query.orderId,
                             order: this.orderForm
                         };
-                        alert(JSON.stringify(data));
                         this.axios.put("/api/editOrderInfo", data)
                             .then(response => {
                                 if (response.data.status === "success") {
