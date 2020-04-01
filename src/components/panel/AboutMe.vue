@@ -176,7 +176,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        this.$store.commit("logout");
+                        this.$store.dispatch("logout").catch(e=>console.error(e));
                         this.fullscreenLoading = true;
                         setTimeout(() => {
                             this.fullscreenLoading = false;

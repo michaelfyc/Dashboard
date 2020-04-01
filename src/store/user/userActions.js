@@ -10,7 +10,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, payload) {
-        await axios.post("/api/login", payload.data)
+        await axios.post("/api/login", payload)
             .then(response => {
                 commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
                 Message.success("登录成功!");
@@ -49,6 +49,23 @@ const actions = {
                 Message.error("系统错误");
                 console.error(e);
             })
+    },
+
+    /**
+     * 登出
+     * @param commit
+     * @returns {Promise<void>}
+     */
+    async logout({commit}){
+        await axios.post("/api/logout")
+            .then(()=>{
+                commit("logout");
+            })
+            .catch(e=>{
+                console.error(e);
+                Message.error("登出失败！");
+            })
+
     }
 };
 

@@ -8,7 +8,7 @@
             <el-input type="password" v-model="loginForm.password" class="input_width" show-password></el-input>
         </el-form-item>
         <el-form-item>
-            <el-checkbox v-model="rememberMe">七天免登录</el-checkbox>
+            <el-checkbox v-model="loginForm.rememberMe">七天免登录</el-checkbox>
         </el-form-item>
         <el-row type="flex" justify="space-between">
             <el-col :span="12">
@@ -31,10 +31,10 @@
         data() {
             return {
                 loading: false,
-                rememberMe: false,
                 loginForm: {
                     username: '',
                     password: '',
+                    rememberMe: false,
                 },
                 rules: {
                     username: [
@@ -52,7 +52,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        this.$store.dispatch("login", {data: this.loginForm, rememberMe: this.rememberMe})
+                        this.$store.dispatch("login", this.loginForm)
                             .catch(e => console.log(e));
                         this.loading = false;
                         return true;

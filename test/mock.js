@@ -9,6 +9,9 @@ Mock.mock("/API/login", {
 });
 
 
+Mock.mock("/API/logout",{});
+
+
 Mock.mock("/API/register", {
     verified: true
 });
