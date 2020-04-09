@@ -1,15 +1,34 @@
 <template>
-    <el-form :model="profile" label-width="120px" label-position="right" ref="profile" :rules="profileRules"
-             v-loading="loading">
-        <el-form-item label="修改用户名" prop="username">
-            <el-input v-model="profile.username" style="width:50%"></el-input>
-        </el-form-item>
-        <el-form-item label="更改邮箱" prop="email">
-            <el-input type="email" v-model="profile.email" class="input_width" required></el-input>
-        </el-form-item>
-        <el-form-item label="修改密码">
-            <el-switch v-model="profile.changePassword"></el-switch>
-        </el-form-item>
+    <el-container>
+        <el-aside width="300px">
+            <el-card style="width:250px;height:300px">
+                <div class="user-avatar">
+                    <el-image fit="cover" :src="avatar" style="width:100%">
+                        <div slot="error">
+                            <i class="el-icon-picture-outline"></i>
+                        </div>
+                        <div slot="placeholder">
+                            <img :src="defaultImage" alt="正在加载..">
+                        </div>
+                    </el-image>
+                </div>
+                <div class="avatar-button">
+                    <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
+                </div>
+            </el-card>
+        </el-aside>
+        <el-main>
+            <el-form :model="profile" label-width="120px" label-position="right" ref="profile" :rules="profileRules"
+                     v-loading="loading">
+                <el-form-item label="修改用户名" prop="username">
+                    <el-input v-model="profile.username" style="width:50%"></el-input>
+                </el-form-item>
+                <el-form-item label="更改邮箱" prop="email">
+                    <el-input type="email" v-model="profile.email" class="input_width" required></el-input>
+                </el-form-item>
+                <el-form-item label="修改密码">
+                    <el-switch v-model="profile.changePassword"></el-switch>
+                </el-form-item>
                 <el-form-item label="旧密码" prop="oldPassword" :hide-required-asterisk="!profile.changePassword">
                     <el-input type="password" v-model="profile.oldPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
@@ -23,25 +42,17 @@
                     <el-input type="password" v-model="profile.vnewPassword" class="input_width"
                               :disabled="!profile.changePassword" show-password></el-input>
                 </el-form-item>
-        <el-row :gutter="6">
-            <!--更新按钮-->
-            <el-col :span="6">
-                <el-form-item>
-                    <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
-                </el-form-item>
-            </el-col>
-            <el-col :span="8" :offset="3">
-                <!--登出按钮-->
-                <el-form-item>
-                    <el-button type="warning" @click.prevent="handleLogout"
-                               v-loading.fullscreen.lock="fullscreenLoading"
-                               element-loading-text="正在登出.." element-loading-spinner="el-icon-loading"
-                               element-loading-background="rgba(0,0,0,0.8)">登出
-                    </el-button>
-                </el-form-item>
-            </el-col>
-        </el-row>
-    </el-form>
+                <el-row :gutter="6">
+                    <!--更新按钮-->
+                    <el-col :span="6">
+                        <el-form-item>
+                            <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
@@ -87,7 +98,8 @@
 
             return {
                 loading: false,
-                fullscreenLoading: false,
+                defaultImage: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+                avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 profile: {
                     username: "",
                     email: "",
@@ -140,6 +152,9 @@
                     })
             },
 
+            /**
+             * 修改用户信息
+             */
             handleUpdate() {
                 this.$refs['profile'].validate(valid => {
                     //输入格式正确
@@ -169,27 +184,13 @@
                 });
             },
 
-            handleLogout() {
-                this.$confirm("确认登出？", "提示", {
-                    confirmButtonText: "登出",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$store.dispatch("logout").catch(e=>console.error(e));
-                        this.fullscreenLoading = true;
-                        setTimeout(() => {
-                            this.fullscreenLoading = false;
-                            this.$router.push("/");
-                        }, 3000);
-                    })
-                    .catch(() => {
-                        this.$message.info("已取消登出");
-                    })
+            handleUpload() {//TODO 上传图片
+
             }
         },
 
         mounted() {
+            //TODO 每次加载头像
             this.axios.get("/api/getUserInfo")
                 .then(response => {
                     console.log("获取用户信息成功");
@@ -207,5 +208,14 @@
 <style scoped>
     .input_width {
         width: 50%;
+    }
+
+    .user-avatar {
+        padding: 0 auto;
+    }
+
+    .avatar-button {
+        margin: 10px auto;
+        text-align: center;
     }
 </style>

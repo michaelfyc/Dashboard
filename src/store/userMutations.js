@@ -8,11 +8,16 @@ const mutations = {
      */
     login(state, payload) {
         state.user.uid = payload.uid;
+        state.user.username = payload.username;
         state.user.isLogin = true;
         if (payload.rememberMe) {
-            Cookies.set("user", {uid: state.user.uid, isLogin: true}, {expires: 7});
+            Cookies.set("user", {uid: state.user.uid, username: state.user.username, isLogin: true}, {expires: 7});
         } else {
-            sessionStorage.setItem("user", JSON.stringify({uid: state.user.uid, isLogin: true}));
+            sessionStorage.setItem("user", JSON.stringify({
+                uid: state.user.uid,
+                username: state.user.username,
+                isLogin: true
+            }));
         }
     },
 

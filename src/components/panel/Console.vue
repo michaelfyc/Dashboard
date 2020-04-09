@@ -144,7 +144,7 @@
             },
 
             async getWeek() {
-                await this.axios.get("/api/getWeekGraph").then(response => {
+                await this.axios.get("/API/getWeekGraph").then(response => {
                     this.weekData.series[0].data = response.data.sales;
                     this.weekData.series[1].data = response.data.profit;
                     this.weekData.xAxis[0].data = this.getSevenDays();
@@ -156,7 +156,7 @@
             },
 
             async getMonth() {
-                await this.axios.get("/api/getMonthGraph")
+                await this.axios.get("/API/getMonthGraph")
                     .then(response => {
                         this.monthData.series[0].data = response.data.sales;
                         this.monthData.series[1].data = response.data.profit;
