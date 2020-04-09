@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios from 'axios/index'
 import {Message} from "element-ui"
-import router from "../../routes"
+import router from "../routes"
 
 const actions = {
     /**
@@ -10,9 +10,14 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, payload) {
-        await axios.post("/api/login", payload)
+        await axios.post("/API/login", payload)
             .then(response => {
-                commit("login", {uid: response.data.uid, rememberMe: payload.rememberMe});
+                commit("login", {
+                    uid: response.data.uid,
+                    username: response.data.username,
+                    rememberMe: payload.rememberMe
+                });
+                //TODO 后端还要返回username
                 Message.success("登录成功!");
                 router.push({path: "/dashboard"});
             })
@@ -56,12 +61,12 @@ const actions = {
      * @param commit
      * @returns {Promise<void>}
      */
-    async logout({commit}){
+    async logout({commit}) {
         await axios.post("/api/logout")
-            .then(()=>{
+            .then(() => {
                 commit("logout");
             })
-            .catch(e=>{
+            .catch(e => {
                 console.error(e);
                 Message.error("登出失败！");
             })

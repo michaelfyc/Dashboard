@@ -15,7 +15,6 @@
         font-family: Arial, serif;
         color: white;
         line-height: 60px;
-        height: 60px;
         text-align: center;
     }
 </style>
