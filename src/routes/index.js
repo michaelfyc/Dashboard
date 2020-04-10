@@ -10,6 +10,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import OrderTable from "../components/order/OrderTable";
 import EditForm from "../components/order/EditForm";
+import NewItem from "../components/inventory/NewItem";
+import ItemList from "../components/inventory/ItemList";
+import ItemGraph from "../components/inventory/ItemGraph";
+import FundGraph from "../components/fund/FundGraph";
+import FundFlow from "../components/fund/FundFlow";
+import NewOrder from "../components/order/NewOrder";
 
 Vue.use(VueRouter);
 const routes = [
@@ -50,8 +56,13 @@ const routes = [
                 name: "console"
             },
             {
-                path: "/dashboard/newOrder",
+                path: "/dashboard/newStorageOrder",
                 component: OrderForm,
+                name: "newStorageOrder"
+            },
+            {
+                path: "/dashboard/newOrder",
+                component: NewOrder,
                 name: "newOrder"
             },
             {
@@ -63,6 +74,31 @@ const routes = [
                 path: "/dashboard/editOrder",
                 component: EditForm,
                 name: "editOrder"
+            },
+            {
+                path: "/dashboard/newItem",
+                component: NewItem,
+                name: "newItem"
+            },
+            {
+                path: "/dashboard/itemList",
+                component: ItemList,
+                name: "itemList"
+            },
+            {
+                path: "/dashboard/itemGraph",
+                component: ItemGraph,
+                name: "itemGraph"
+            },
+            {
+                path: "/dashboard/fundGraph",
+                component: FundGraph,
+                name: "fundGraph"
+            },
+            {
+                path: "/dashboard/flow",
+                component: FundFlow,
+                name: "flow"
             }
         ]
     },
