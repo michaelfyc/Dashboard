@@ -1,11 +1,8 @@
 <template>
     <el-form :model="orderForm" label-width="120px" label-position="right" ref="orderForm" :rules="orderRules"
              v-loading="loading">
-        <!--<el-form-item label="商品名" prop="productName">
+        <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
-        </el-form-item>-->
-        <el-form-item label="产品名称">
-            <el-autocomplete v-model="orderForm.productName" :fetch-suggestions="getProductName"></el-autocomplete>
         </el-form-item>
         <ProductType @transferProductType="getProductType"></ProductType>
         <el-form-item label="附赠配件">
@@ -16,7 +13,13 @@
         <!--进价和售价和邮费-->
         <el-row>
             <el-col :span="6">
-                <el-form-item label="售价">
+                <el-form-item label="进价">
+                    <el-input-number v-model="orderForm.money.purchasePrice" :precision="2" :step="0.01"
+                                     controls-position="right" :min="0"></el-input-number>
+                </el-form-item>
+            </el-col>
+            <el-col :span="6">
+                <el-form-item label="售格">
                     <el-input-number v-model="orderForm.money.soldPrice" :precision="2" :step="0.01"
                                      controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
@@ -27,34 +30,10 @@
                                      controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
-            <el-col :span="6">
-                <el-form-item label="盈利">
-                    <el-input-number v-model="orderForm.money.profit" :precision="2" :step="0.01"
-                                     controls-position="right" :min="0"></el-input-number>
-                </el-form-item>
-            </el-col>
         </el-row>
         <el-form-item label="产品描述" label-width="130px" class="productDescription">
-            <!--           <label>产品描述</label>-->
+            <el-input v-model="orderForm.productDescription"></el-input>
         </el-form-item>
-        <!--颜色和成色-->
-        <el-row>
-            <el-col :span="6">
-                <el-form-item label="颜色" prop="color">
-                    <el-select v-model="orderForm.productDescription.color" clearable>
-                        <el-option v-for="color in colors" :key="color.value"
-                                   :label="color.label" :value="color.value"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item label="成色" prop="outlook">
-                    <el-input v-model="orderForm.productDescription.outlook"></el-input>
-                </el-form-item>
-            </el-col>
-        </el-row>
-        <ProductMemory :productType="orderForm.productType[0]" @transferMemory="getMemory"></ProductMemory>
-        <ProductStorage :productType="orderForm.productType[0]" @transferStorage="getStorage"></ProductStorage>
         <el-form-item label="购买人姓名" prop="purchaser">
             <el-input v-model="orderForm.purchaser"></el-input>
         </el-form-item>
@@ -75,14 +54,12 @@
 
 <script>
     import ProductType from "./ProductType";
-    import ProductStorage from "./ProductStorage";
-    import ProductMemory from "./ProductMemory";
     import ProductAccessories from "./ProductAccessories";
     import order from "../../utils/orderRequests"
 
     export default {
-        name: "OrderForm",
-        components: {ProductAccessories, ProductMemory, ProductStorage, ProductType},
+        name: "NewOrder",
+        components: {ProductAccessories, ProductType},
         data() {
             return {
                 loading: false,
@@ -91,14 +68,11 @@
                     productType: [],
                     withAccessories: false,
                     money: {
+                        purchasePrice: 0,
                         soldPrice: 0,
-                        postPrice: 0,
-                        profit: 0
+                        postPrice: 0
                     },
-                    productDescription: {
-                        color: "",
-                        outlook: ""
-                    },
+                    productDescription: "",
                     purchaser: "",
                     contact: "",
                     platform: "",
@@ -120,8 +94,7 @@
                     {value: "green", label: "绿色"},
                     {value: "purple", label: "紫色"},
                     {value: "yellow", label: "黄色"}
-                ],
-                items: []
+                ]
             }
         },
         methods: {
@@ -138,42 +111,12 @@
 
             },
 
-            getProductName(queryString, callback) {
-                let result = queryString ? this.items.filter(this.createProductNameFilter(queryString)) : this.items;
-                callback(result);
-            },
-
-            createProductNameFilter(query) {
-                return (productName) => {
-                    return productName.value.toLowerCase().indexOf(query.toLowerCase()) === 0;
-                }
-            },
-
             getProductType(productType) {
                 this.orderForm.productType = productType;
-            },
-            getStorage(storage) {
-                this.orderForm.productDescription.storage = storage
-            },
-            getMemory(memory) {
-                this.orderForm.productDescription.memory = memory;
             },
             getAccessories(acc) {
                 this.orderForm.accessories = acc;
             }
-        },
-
-        mounted() {
-            this.axios.get("/api/getItems")
-                .then(response => {
-                    this.items = response.data.items;
-                    this.orderForm.money.profit = response.data.soldPrice - response.data.purchasePrice - response.data.postPrice;
-                    //TODO 产品类型和产品描述自动填写,盈利自动运算
-                })
-                .catch(e => {
-                    console.error(e);
-                    this.$message.error("库存加载失败！");
-                })
         }
     }
 </script>

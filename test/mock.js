@@ -9,6 +9,14 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
+Mock.mock("/api/getItems", {
+    items: [
+        {value: "abc"},
+        {value: "abcd"},
+        {value: "bcd"}
+    ]
+});
+
 
 Mock.mock("/API/logout",{});
 
