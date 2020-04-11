@@ -1,14 +1,14 @@
 import axios from "axios"
 import {Message} from "element-ui";
 
-const item = {
+const stock = {
     /**
      * 商品入库
      * @param api
      * @param data
      * @returns {Promise<void>}
      */
-    async postItem(api, data) {
+    async postStock(api, data) {
         await axios.post(api, data)
             .then(response => {
                 if (response.data.status === "success") {
@@ -20,26 +20,7 @@ const item = {
                 console.error(error);
                 Message.error("入库失败！");
             })
-    },
-
-    /**
-     * 删除库存
-     * @param api
-     * @param data
-     * @returns {Promise<void>}
-     */
-    async deleteItem(api, data) {
-        await axios.delete(api, data)
-            .then(response => {
-                if (response.data.status === "success") {
-                    Message.success("删除库存成功！");
-                }
-            })
-            .catch(e => {
-                console.error(e);
-                Message.error("删除订单失败！");
-            })
     }
 };
 
-export default item;
+export default stock;

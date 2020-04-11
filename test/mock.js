@@ -9,14 +9,44 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
-Mock.mock("/api/getItems", {
-    items: [
-        {value: "abc"},
-        {value: "abcd"},
-        {value: "bcd"}
-    ]
+Mock.mock("/api/getStock", {
+    stockList: [
+        {
+            "contact": "182****9597",
+            "creator": "张三",
+            "dateTime": "2020-03-27 02:38:47",
+            "num": 20,
+            "platform": "vx",
+            "price": 1000,
+            "productDescription": {
+                "color": "silver",
+                "outlook": "全新"
+            },
+            "productName": "iPhone",
+            "productType": [
+                "Phone",
+                "Apple"
+            ],
+            "stockId": 1,
+            "sum": 20000
+        }
+    ],
+    total: 1
 });
 
+Mock.mock("/api/stock", {
+    types: ["Phone", "Pad", "Other"],
+    num: [10, 20, 3],
+    total: [1000, 2000, 30],
+    overview: {
+        num: 33,
+        total: 3030
+    }
+});
+
+Mock.mock("/api/addStock", {
+    status: "success"
+});
 
 Mock.mock("/API/logout",{});
 

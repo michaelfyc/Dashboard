@@ -1,20 +1,31 @@
 <template>
-    <el-form :model="itemForm" label-width="120px" label-position="right" ref="itemForm" :rules="itemRules"
+    <el-form :model="itemForm" label-width="130px" label-position="right" ref="itemForm" :rules="itemRules"
              v-loading="loading">
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="itemForm.productName"></el-input>
         </el-form-item>
         <ProductType @transferProductType="getProductType"></ProductType>
         <!--进价-->
-        <el-form-item label="进价">
-            <el-input-number v-model="itemForm.purchasePrice" :precision="2" :step="0.01"
-                             controls-position="right" :min="0"></el-input-number>
-        </el-form-item>
+        <el-row>
+            <el-col :span="6">
+                <el-form-item label="单价">
+                    <el-input-number v-model="itemForm.money.price" :precision="2" :step="0.01"
+                                     controls-position="right" :min="0"></el-input-number>
+                </el-form-item>
+            </el-col>
+            <el-col :span="6">
+                <el-form-item label="数量">
+                    <el-input-number v-model="itemForm.money.num" :step="1" controls-position="right"
+                                     :min="0"></el-input-number>
+                </el-form-item>
+            </el-col>
+        </el-row>
         <el-form-item label="产品描述" label-width="130px" class="productDescription">
-            <!--           <label>产品描述</label>-->
+            <el-input v-if="itemForm.productType[0]=='Other'"
+                      v-model="itemForm.productDescription.description"></el-input>
         </el-form-item>
         <!--颜色和成色-->
-        <el-row>
+        <el-row v-if="itemForm.productType[0]!='Other'">
             <el-col :span="6">
                 <el-form-item label="颜色" prop="color">
                     <el-select v-model="itemForm.productDescription.color" clearable>
@@ -31,6 +42,12 @@
         </el-row>
         <ProductMemory :productType="itemForm.productType[0]" @transferMemory="getMemory"></ProductMemory>
         <ProductStorage :productType="itemForm.productType[0]" @transferStorage="getStorage"></ProductStorage>
+        <el-form-item label="进货人" prop="creator">
+            <el-input v-model="itemForm.creator"></el-input>
+        </el-form-item>
+        <el-form-item label="进货人联系方式" prop="contact">
+            <el-input v-model="itemForm.contact"></el-input>
+        </el-form-item>
         <el-form-item label="进货平台" prop="platform">
             <el-input v-model="itemForm.platform"></el-input>
         </el-form-item>
@@ -47,10 +64,10 @@
     import ProductType from "../order/ProductType";
     import ProductStorage from "../order/ProductStorage";
     import ProductMemory from "../order/ProductMemory";
-    import item from "../../utils/itemRequests"
+    import item from "../../utils/stockRequests"
 
     export default {
-        name: "itemForm",
+        name: "NewStock",
         components: {ProductMemory, ProductStorage, ProductType},
         data() {
             return {
@@ -59,11 +76,16 @@
                     productName: "",
                     productType: [],
                     withAccessories: false,
-                    purchasePrice: 0,
+                    money: {
+                        num: 0,
+                        price: 0
+                    },
                     productDescription: {
                         color: "",
                         outlook: ""
                     },
+                    creator: "",
+                    contact: "",
                     platform: "",
                     note: ""
                 },
@@ -87,11 +109,16 @@
             }
         },
         methods: {
+            /**
+             * 新建库存
+             */
             handleNew() {
                 this.$refs['itemForm'].validate((valid) => {
                     if (valid) {
-                        let data = {userId: this.$store.state.user.uid, item: this.itemForm};
-                        item.postItem("/api/addItem", data);
+                        this.loading = true;
+                        let data = {userId: this.$store.state.user.uid, stock: this.itemForm};
+                        item.postStock("/api/addStock", data);
+                        this.loading = false;
                     } else {
                         console.warn("有东西没好好填");
                         return false;
@@ -99,6 +126,7 @@
                 });
 
             },
+
             getProductType(productType) {
                 this.itemForm.productType = productType;
             },
