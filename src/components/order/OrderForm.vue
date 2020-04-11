@@ -1,13 +1,13 @@
 <template>
+    <!--新建库存订单-->
     <el-form :model="orderForm" label-width="120px" label-position="right" ref="orderForm" :rules="orderRules"
              v-loading="loading">
-        <!--<el-form-item label="商品名" prop="productName">
-            <el-input v-model="orderForm.productName"></el-input>
-        </el-form-item>-->
         <el-form-item label="产品名称">
             <el-autocomplete v-model="orderForm.productName" :fetch-suggestions="getProductName"></el-autocomplete>
         </el-form-item>
-        <ProductType @transferProductType="getProductType"></ProductType>
+        <el-form-item label="产品类型">
+            <span v-text="orderForm.productType"></span>
+        </el-form-item>
         <el-form-item label="附赠配件">
             <el-switch v-model="orderForm.withAccessories"></el-switch>
         </el-form-item>
@@ -28,8 +28,8 @@
                 </el-form-item>
             </el-col>
             <el-col :span="6">
-                <el-form-item label="盈利">
-                    <el-input-number v-model="orderForm.money.profit" :precision="2" :step="0.01"
+                <el-form-item label="数量">
+                    <el-input-number v-model="orderForm.num" :precision="2" :step="0.01"
                                      controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
             </el-col>
@@ -74,7 +74,6 @@
 </template>
 
 <script>
-    import ProductType from "./ProductType";
     import ProductStorage from "./ProductStorage";
     import ProductMemory from "./ProductMemory";
     import ProductAccessories from "./ProductAccessories";
@@ -82,19 +81,19 @@
 
     export default {
         name: "OrderForm",
-        components: {ProductAccessories, ProductMemory, ProductStorage, ProductType},
+        components: {ProductAccessories, ProductMemory, ProductStorage},
         data() {
             return {
                 loading: false,
                 orderForm: {
                     productName: "",
-                    productType: [],
+                    productType: "",
                     withAccessories: false,
                     money: {
                         soldPrice: 0,
                         postPrice: 0,
-                        profit: 0
                     },
+                    num: 0,
                     productDescription: {
                         color: "",
                         outlook: ""
@@ -164,10 +163,9 @@
         },
 
         mounted() {
-            this.axios.get("/api/getItems")
+            this.axios.get("/api/getStock")
                 .then(response => {
                     this.items = response.data.items;
-                    this.orderForm.money.profit = response.data.soldPrice - response.data.purchasePrice - response.data.postPrice;
                     //TODO 产品类型和产品描述自动填写,盈利自动运算
                 })
                 .catch(e => {

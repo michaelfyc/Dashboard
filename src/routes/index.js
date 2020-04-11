@@ -10,9 +10,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import OrderTable from "../components/order/OrderTable";
 import EditForm from "../components/order/EditForm";
-import NewItem from "../components/inventory/NewItem";
-import ItemList from "../components/inventory/ItemList";
-import ItemGraph from "../components/inventory/ItemGraph";
+import NewStock from "../components/inventory/NewStock";
+import StockList from "../components/inventory/StockList";
+import StockGraph from "../components/inventory/StockGraph";
 import FundGraph from "../components/fund/FundGraph";
 import FundFlow from "../components/fund/FundFlow";
 import NewOrder from "../components/order/NewOrder";
@@ -76,19 +76,19 @@ const routes = [
                 name: "editOrder"
             },
             {
-                path: "/dashboard/newItem",
-                component: NewItem,
-                name: "newItem"
+                path: "/dashboard/newStock",
+                component: NewStock,
+                name: "newStock"
             },
             {
-                path: "/dashboard/itemList",
-                component: ItemList,
-                name: "itemList"
+                path: "/dashboard/stockList",
+                component: StockList,
+                name: "stockList"
             },
             {
-                path: "/dashboard/itemGraph",
-                component: ItemGraph,
-                name: "itemGraph"
+                path: "/dashboard/stockGraph",
+                component: StockGraph,
+                name: "stockGraph"
             },
             {
                 path: "/dashboard/fundGraph",
@@ -96,9 +96,9 @@ const routes = [
                 name: "fundGraph"
             },
             {
-                path: "/dashboard/flow",
+                path: "/dashboard/fundflow",
                 component: FundFlow,
-                name: "flow"
+                name: "fundflow"
             }
         ]
     },
