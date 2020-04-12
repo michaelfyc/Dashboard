@@ -16,6 +16,7 @@ import StockGraph from "../components/inventory/StockGraph";
 import FundGraph from "../components/fund/FundGraph";
 import FundFlow from "../components/fund/FundFlow";
 import NewOrder from "../components/order/NewOrder";
+import EditStock from "../components/inventory/EditStock";
 
 Vue.use(VueRouter);
 const routes = [
@@ -79,6 +80,11 @@ const routes = [
                 path: "/dashboard/newStock",
                 component: NewStock,
                 name: "newStock"
+            },
+            {
+                path: "/dashboard/editStock",
+                component: EditStock,
+                name: "editStock"
             },
             {
                 path: "/dashboard/stockList",

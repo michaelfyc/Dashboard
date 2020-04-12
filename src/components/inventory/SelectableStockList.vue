@@ -1,18 +1,20 @@
 <template>
     <div>
-        <el-table :data="stockList" border style="width: 100%">
+        <el-table :data="stockList" border style="width: 100%" highlight-current-row @current-change="handleSelect">
+            <el-table-column>
+                <template slot-scope="scope">
+                    <el-checkbox v-model="scope.row.checked"></el-checkbox>
+                </template>
+            </el-table-column>
             <el-table-column prop="stockId" label="库存ID" v-if="false"></el-table-column>
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="table-expand">
-                        <el-form-item label="产品颜色" v-show="!!props.row.productDescription.color">
+                        <el-form-item label="产品颜色">
                             <span v-text="translateColor(props.row.productDescription.color)"></span>
                         </el-form-item>
-                        <el-form-item label="产品外观" v-show="!!props.row.productDescription.outlook">
+                        <el-form-item label="产品外观">
                             <span v-text="props.row.productDescription.outlook"></span>
-                        </el-form-item>
-                        <el-form-item label="产品描述" v-show="!!props.row.productDescription.description">
-                            <span v-text="props.row.productDescription.description"></span>
                         </el-form-item>
                         <el-form-item label="产品内存" v-show="hasMemory(props.row)">
                             <span v-text="props.row.productDescription.memory"></span>
@@ -36,11 +38,6 @@
             <el-table-column prop="creator" label="进货人"></el-table-column>
             <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
             <el-table-column prop="platform" label="进货平台"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="handleEdit(scope.row)">修改</el-button>
-                </template>
-            </el-table-column>
         </el-table>
         <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="total"
                        :current-page.sync="currentPage" @current-change="changePage">
@@ -50,11 +47,13 @@
 
 <script>
     export default {
-        name: "StockList",
+        name: "SelectableStockList",
         data() {
             return {
                 stockList: [],
                 currentPage: 1,
+                selectedRow: {},
+                checked: false,
                 total: 0,
                 typeFilter: [
                     {text: "手机", value: "Phone"},
@@ -90,20 +89,6 @@
                         this.$message.error("获取库存信息失败！");
                         console.error(e);
                     });
-            },
-
-            handleEdit(row) {
-                this.$confirm("确认修改？", "提示", {
-                    confirmButtonText: "确认修改",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                })
-                    .then(() => {
-                        this.$router.push({path: "/dashboard/editStock", query: {stockId: row.stockId}});
-                    })
-                    .catch(e => {
-                        console.error(e);
-                    })
             },
 
             filterType(value, row) {
@@ -151,6 +136,15 @@
                 return typeMap[row.productType[1]] + typeMap[row.productType[2]] + typeMap[row.productType[0]];
             },
 
+            handleSelect(row) {
+                this.stockList.forEach(item => {
+                    if (item.stockId !== row.stockId) {
+                        item.checked = false;
+                    }
+                });
+                this.$emit("transferSelectedRow", row);
+            },
+
             hasNote(row) {
                 return !!row.note;
             },
@@ -159,15 +153,15 @@
             },
             hasStorage(row) {
                 return row.productType === "Phone" || row.productType === "Computer" || row.productType === "Pad";
-            }
+            },
         },
 
         mounted() {
             this.getStockList();
         }
+
     }
 </script>
 
 <style scoped>
-
 </style>

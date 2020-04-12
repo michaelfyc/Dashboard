@@ -9,7 +9,7 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
-Mock.mock("/api/getStock", {
+Mock.mock("/API/getStock", {
     stockList: [
         {
             "contact": "182****9597",
@@ -29,12 +29,72 @@ Mock.mock("/api/getStock", {
             ],
             "stockId": 1,
             "sum": 20000
+        },
+        {
+            "contact": "182****9597",
+            "creator": "张三",
+            "dateTime": "2020-03-27 03:48:47",
+            "num": 20,
+            "platform": "vx",
+            "price": 3000,
+            "productDescription": {
+                "color": "silver",
+                "outlook": "全新"
+            },
+            "productName": "Ipad Pro",
+            "productType": [
+                "Pad"
+            ],
+            "stockId": 1,
+            "sum": 20000
+        },
+        {
+            "contact": "182****9597",
+            "creator": "李四",
+            "dateTime": "2020-03-27 03:48:47",
+            "num": 1,
+            "platform": "vx",
+            "price": 3000,
+            "productDescription": {
+                "description": "周杰伦nb"
+            },
+            "productName": "周杰伦门票",
+            "productType": [
+                "Other"
+            ],
+            "stockId": 1,
+            "sum": 3000
         }
+
     ],
     total: 1
 });
 
-Mock.mock("/api/stock", {
+Mock.mock("/API/getStockInfo", {
+    stock: {
+        "contact": "182****9597",
+        "creator": "张三",
+        "dateTime": "2020-03-27 03:48:47",
+        "platform": "vx",
+        "money": {
+            "num": 10,
+            "price": 200
+        },
+        "productDescription": {
+            "color": "silver",
+            "outlook": "全新",
+            "storage": "512G"
+        },
+        "productName": "Ipad Pro",
+        "productType": ["Pad"]
+    }
+});
+
+Mock.mock("/API/editStockInfo", {
+    status: "success"
+});
+
+Mock.mock("/API/stock", {
     types: ["Phone", "Pad", "Other"],
     num: [10, 20, 3],
     total: [1000, 2000, 30],
@@ -44,11 +104,11 @@ Mock.mock("/api/stock", {
     }
 });
 
-Mock.mock("/api/addStock", {
+Mock.mock("/API/addStock", {
     status: "success"
 });
 
-Mock.mock("/API/logout",{});
+Mock.mock("/API/logout", {});
 
 
 Mock.mock("/API/register", {
