@@ -6,11 +6,6 @@
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
         <ProductType @transferProductType="getProductType" :ajaxType="orderForm.productType"></ProductType>
-        <el-form-item label="附赠配件">
-            <el-switch v-model="orderForm.withAccessories"></el-switch>
-        </el-form-item>
-        <ProductAccessories @transferAccessories="getAccessories" :ajaxAcc="orderForm.accessories"
-                            :needAccessories="orderForm.withAccessories"></ProductAccessories>
         <!--进价和售价和邮费-->
         <el-row>
             <el-col :span="6">
@@ -75,13 +70,12 @@
 
 <script>
     import ProductType from "./ProductType";
-    import ProductAccessories from "./ProductAccessories";
     import ProductMemory from "./ProductMemory";
     import ProductStorage from "./ProductStorage";
 
     export default {
         name: "EditForm",
-        components: {ProductType, ProductAccessories, ProductMemory, ProductStorage},
+        components: {ProductType, ProductMemory, ProductStorage},
         data() {
             return {
                 loading: false,
