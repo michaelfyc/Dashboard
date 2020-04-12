@@ -5,9 +5,7 @@
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
-        <el-form-item label="产品类型" prop="productType">
-            <el-input v-model="orderForm.productType"></el-input>
-        </el-form-item>
+        <ProductType @transferProductType="getProductType" :ajaxType="orderForm.productType"></ProductType>
         <!--进价和售价和邮费-->
         <el-row>
             <el-col :span="6">
@@ -52,9 +50,11 @@
 
 <script>
     import order from "../../utils/orderRequests"
+    import ProductType from "./ProductType";
 
     export default {
         name: "NewOrder",
+        components: {ProductType},
         data() {
             return {
                 loading: false,
@@ -88,13 +88,17 @@
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
                         let data = {userId: this.$store.state.user.uid, order: this.orderForm};
-                        order.postOrder("/api/addOrder", data);
+                        order.postOrder("/api/addOtherOrder", data);
                     } else {
                         console.warn("有东西没好好填");
                         return false;
                     }
                 });
 
+            },
+
+            getProductType(productType) {
+                this.orderForm.productType = productType;
             }
         }
     }

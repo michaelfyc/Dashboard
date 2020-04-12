@@ -48,7 +48,7 @@
         <el-form-item label="进货人联系方式" prop="contact">
             <el-input v-model="itemForm.contact"></el-input>
         </el-form-item>
-        <el-form-item label="进货平台" prop="platform">
+        <el-form-item label="进货渠道" prop="platform">
             <el-input v-model="itemForm.platform"></el-input>
         </el-form-item>
         <el-form-item label="备注">
@@ -75,7 +75,6 @@
                 itemForm: {
                     productName: "",
                     productType: [],
-                    withAccessories: false,
                     money: {
                         num: 0,
                         price: 0
@@ -91,10 +90,10 @@
                 },
                 itemRules: {
                     productName: [{required: true, message: "请输入产品名", trigger: "blur"}],
-                    purchaser: [{required: true, message: "请输入购买人姓名", trigger: "blur"}],
+                    creator: [{required: true, message: "请输入进货人姓名", trigger: "blur"}],
                     productType: [{required: true, message: "请选择产品类型", trigger: "blur"}],
-                    contact: [{required: true, message: "请输入购买人联系方式", trigger: "blur"}],
-                    platform: [{required: true, message: "请输入出售方式", trigger: "blur"}],
+                    contact: [{required: true, message: "请输入进货人联系方式", trigger: "blur"}],
+                    platform: [{required: true, message: "请输入进货渠道", trigger: "blur"}],
                 },
                 colors: [
                     {value: "black", label: "黑色"},
