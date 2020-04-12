@@ -97,7 +97,7 @@ Mock.mock("/API/editStockInfo", {
 Mock.mock("/API/stock", {
     types: ["Phone", "Pad", "Other"],
     num: [10, 20, 3],
-    total: [1000, 2000, 30],
+    total: [1000, 2700, 30],
     overview: {
         num: 33,
         total: 3030

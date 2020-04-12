@@ -162,7 +162,7 @@
             },
             async changePage(currentPage) {
                 this.currentPage = currentPage;
-                await this.axios.post("/api/getOrder", {page: currentPage})
+                await this.axios.post("/api/getOrders", {page: currentPage})
                     .then(response => {
                         this.orderList = response.data.orderList;
                         console.log("表格信息加载完毕！");
@@ -174,7 +174,7 @@
             }
         },
         async mounted() {
-            await this.axios.post("/api/getOrder", {page: 1})
+            await this.axios.post("/api/getOrders", {page: 1})
                 .then(response => {
                     this.orderList = response.data.orderList;
                     this.total = response.data.total;
