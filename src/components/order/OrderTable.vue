@@ -17,9 +17,6 @@
                         <el-form-item label="产品容量" v-show="hasStorage(props.row)">
                             <span v-text="props.row.productDescription.storage"></span>
                         </el-form-item>
-                        <el-form-item label="配件">
-                            <span v-text="translateAcc(props.row.accessories)"></span>
-                        </el-form-item>
                         <el-form-item label="备注" v-show="hasNote(props.row)">
                             <span v-text="props.row.note"></span>
                         </el-form-item>
@@ -80,29 +77,6 @@
                 colorMap.set("white", "白色");
                 colorMap.set("purple", "紫色");
                 return colorMap.get(color);
-            },
-
-            /**
-             * 把英文配件value翻译成中文
-             * @param acc
-             * @returns {string | *}
-             */
-            translateAcc(acc) {
-                if (!acc) {
-                    return "无"
-                }
-                let accMap = {
-                    "Charger": "充电器",
-                    "Mouse": "鼠标",
-                    "KeyBoard": "键盘",
-                    "Pen": "手写笔",
-                    "Earphone": "耳机",
-                    "Other": "其他",
-                };
-                return acc.map(element => {
-                    element = accMap[element];
-                    return element;
-                }).join("，");
             },
 
             translateType(row) {
@@ -188,7 +162,7 @@
             },
             async changePage(currentPage) {
                 this.currentPage = currentPage;
-                await this.axios.post("/api/getOrder", {page: currentPage})
+                await this.axios.post("/api/getOrders", {page: currentPage})
                     .then(response => {
                         this.orderList = response.data.orderList;
                         console.log("表格信息加载完毕！");
@@ -200,7 +174,7 @@
             }
         },
         async mounted() {
-            await this.axios.post("/api/getOrder", {page: 1})
+            await this.axios.post("/api/getOrders", {page: 1})
                 .then(response => {
                     this.orderList = response.data.orderList;
                     this.total = response.data.total;

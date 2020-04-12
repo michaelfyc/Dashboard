@@ -26,9 +26,26 @@
                     title: {text: "库存"},
                     legend: {show: true, data: ["库存", "金额"]},
                     xAxis: [{type: 'category', data: [], axisTick: {alignWithLabel: true}}],
-                    yAxis: [
-                        {type: 'value', name: '库存', min: 0},
-                        {type: 'value', name: '金额', min: 0}],
+                    yAxis: [{
+                        type: 'value',
+                        name: '库存数量',
+                        min: 0,
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        nameLocation: 'center',
+                        nameGap: 65
+                    },
+                        {
+                            type: 'value',
+                            name: '金额/CYN',
+                            axisLabel: {
+                                formatter: '{value}'
+                            },
+                            nameLocation: 'center',
+                            nameGap: 65,
+                            nameRotate: -90
+                        }],
                     toolbox: {
                         show: true,
                         top: -6,
@@ -48,6 +65,7 @@
                         {
                             name: "金额",
                             type: "bar",
+                            yAxisIndex: 1,
                             barGap: 0,
                             label: {show: true, position: "insideTop"},
                             data: []

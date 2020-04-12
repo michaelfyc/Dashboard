@@ -9,7 +9,7 @@
         </el-dialog>
         <el-form :model="orderForm" label-width="120px" label-position="right" ref="orderForm" :rules="orderRules"
                  v-loading="loading">
-            <el-form-item label="产品名称">
+            <el-form-item label="产品名称" prop="productName">
                 <span v-text="orderForm.productName"></span>
                 <el-button type="primary" @click="stockTableVisible=true" style="margin-left:10px">选择库存产品</el-button>
             </el-form-item>
@@ -181,17 +181,6 @@
                 }
                 return typeMap[type[1]] + typeMap[type[2]] + typeMap[type[0]];
             }
-        },
-        mounted() {
-            this.axios.get("/api/getStock")
-                .then(response => {
-                    this.items = response.data.items;
-                    //TODO 产品类型和产品描述自动填写,盈利自动运算
-                })
-                .catch(e => {
-                    console.error(e);
-                    this.$message.error("库存加载失败！");
-                })
         }
     }
 </script>

@@ -68,7 +68,7 @@
         },
         methods: {
             async getStockList() {
-                await this.axios.post("/api/getStock", {page: 1})
+                await this.axios.post("/api/getStocks", {page: 1})
                     .then(response => {
                         this.stockList = response.data.stockList;
                         console.log("库存列表加载完成！");
@@ -81,7 +81,7 @@
 
             async changePage(currentPage) {
                 this.currentPage = currentPage;
-                await this.axios.post("/api/getStock", {page: currentPage})
+                await this.axios.post("/api/getStocks", {page: currentPage})
                     .then(response => {
                         this.stockList = response.data.stockList;
                         console.log("表格信息加载完毕！");
