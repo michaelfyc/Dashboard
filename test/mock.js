@@ -9,7 +9,7 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
-Mock.mock("/API/getStock", {
+Mock.mock("/API/getStocks", {
     stockList: [
         {
             "contact": "182****9597",
@@ -125,7 +125,7 @@ Mock.mock("/API/editInfo", {
     verified: true
 });
 
-Mock.mock("/API/getOrderList", {
+Mock.mock("/API/getOrders", {
     orderList: [{
         orderId: 12,
         submitterId: 2,
