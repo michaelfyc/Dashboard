@@ -169,10 +169,30 @@ Mock.mock("/API/getMonthGraph", {
     profit: [2000, 150, 289, -40, 1500, 200, 0, 130, 423, 23, -33, 1320]
 });
 
-Mock.mock("/api/money", {
+Mock.mock("/API/money", {
     "orderPost": 100,
     "orderProfit": 500,
     "orderPurchase": 1400,
     "orderSold": 2000,
     "stockMoney": 1000
+});
+
+Mock.mock("/API/moneyDetail", {
+    "moneyDetail": [
+        {
+            "dateTime": "2020-04-11 01:21:39",
+            "money": "4000",
+            "productName": "iPad",
+            "productType": ["Pad"],
+            "type": "in"
+        },
+        {
+            "dateTime": "2020-04-11 01:21:40",
+            "money": "5000",
+            "productName": "iPhone",
+            "productType": ["Phone", "Apple"],
+            "type": "out"
+        }
+    ],
+    "num": 2
 });
