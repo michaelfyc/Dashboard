@@ -14,7 +14,7 @@
                 </el-form-item>
             </el-col>
             <el-col :span="6">
-                <el-form-item label="售格">
+                <el-form-item label="售价">
                     <el-input-number v-model="orderForm.money.soldPrice" :precision="2" :step="0.01"
                                      controls-position="right" :min="0"></el-input-number>
                 </el-form-item>
