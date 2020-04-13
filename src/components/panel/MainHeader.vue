@@ -26,7 +26,7 @@
         data() {
             return {
                 username: this.$store.state.user.username,
-                avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"//TODO 登录后去找头像
+                avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"//TODO v3.0登录后去找头像
             }
         },
 
