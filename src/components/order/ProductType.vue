@@ -44,7 +44,7 @@
                         ]
                     },
                     {
-                        value: "EarPhone", label: "耳机", children: [
+                        value: "EarPhones", label: "耳机", children: [
                             {
                                 value: "Wireless", label: "无线耳机", children: [
                                     {value: "Noiseless", label: "降噪"},

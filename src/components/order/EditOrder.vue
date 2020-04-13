@@ -73,7 +73,7 @@
     import ProductStorage from "./ProductStorage";
 
     export default {
-        name: "EditForm",
+        name: "EditOrder",
         components: {ProductType, ProductMemory, ProductStorage},
         data() {
             return {

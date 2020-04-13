@@ -1,5 +1,9 @@
 <template>
     <div>
+        <el-form inline class="fund-overview">
+            <el-form-item label="库存总金额:"><span v-text="fundData.series[0].data[0].value"></span>（元）</el-form-item>
+            <el-form-item label="销售总金额:"><span v-text="this.fundData.series[0].data[1].value"></span>（元）</el-form-item>
+        </el-form>
         <v-chart :options="fundData" v-loading="loading"></v-chart>
     </div>
 </template>
@@ -22,7 +26,12 @@
                 loading: false,
                 fundData: {
                     title: {text: "资金"},
-                    legend: {show: true, data: ["库存总金额", "销售总金额", "已售产品售价", "已售产品邮费", "总盈利"]},
+                    legend: {
+                        bottom: 5,
+                        orient: "vertical",
+                        left: 10,
+                        data: ["库存总金额", "销售总金额", "已售产品售价", "已售产品邮费", "总盈利"]
+                    },
                     toolbox: {
                         show: true,
                         top: -6,

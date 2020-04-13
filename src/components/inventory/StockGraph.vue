@@ -2,7 +2,7 @@
     <div>
         <el-form inline class="stock-overview">
             <el-form-item label="库存总量:"><span v-text="num"></span></el-form-item>
-            <el-form-item label="库存总进价:"><span>{{total+"（元）"}}</span></el-form-item>
+            <el-form-item label="库存总进价:"><span v-text="total"></span>（元）</el-form-item>
         </el-form>
         <v-chart :options="stockData"></v-chart>
     </div>
