@@ -9,7 +9,7 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
-Mock.mock("/API/getStocks", {
+Mock.mock("/api/getStocks", {
     stockList: [
         {
             "contact": "182****9597",
@@ -28,7 +28,7 @@ Mock.mock("/API/getStocks", {
                 "Apple"
             ],
             "stockId": 1,
-            "sum": 20000
+            "total": 20000
         },
         {
             "contact": "182****9597",
@@ -46,7 +46,7 @@ Mock.mock("/API/getStocks", {
                 "Pad"
             ],
             "stockId": 1,
-            "sum": 20000
+            "total": 20000
         },
         {
             "contact": "182****9597",
@@ -63,7 +63,7 @@ Mock.mock("/API/getStocks", {
                 "Other"
             ],
             "stockId": 1,
-            "sum": 3000
+            "total": 3000
         }
 
     ],

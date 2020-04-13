@@ -10,7 +10,7 @@ const actions = {
      * @returns {Promise<void>}
      */
     async login({commit}, payload) {
-        await axios.post("/API/login", payload)
+        await axios.post("/api/login", payload)
             .then(response => {
                 commit("login", {
                     uid: response.data.uid,

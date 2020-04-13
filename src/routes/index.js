@@ -9,7 +9,7 @@ import OrderForm from "../components/order/OrderForm";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import OrderTable from "../components/order/OrderTable";
-import EditForm from "../components/order/EditForm";
+import EditForm from "../components/order/EditOrder";
 import NewStock from "../components/inventory/NewStock";
 import StockList from "../components/inventory/StockList";
 import StockGraph from "../components/inventory/StockGraph";

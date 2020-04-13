@@ -32,7 +32,7 @@
                              :filter-method="filterType"></el-table-column>
             <el-table-column prop="price" label="单价" sortable></el-table-column>
             <el-table-column prop="num" label="数量" sortable></el-table-column>
-            <el-table-column prop="sum" label="总额" sortable></el-table-column>
+            <el-table-column prop="total" label="总额" sortable></el-table-column>
             <el-table-column prop="creator" label="进货人"></el-table-column>
             <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
             <el-table-column prop="platform" label="进货平台"></el-table-column>
@@ -42,7 +42,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="total"
+        <el-pagination background layout="prev, pager, next,jumper" :page-size="50" :total="stockNum"
                        :current-page.sync="currentPage" @current-change="changePage">
         </el-pagination>
     </div>
@@ -55,13 +55,13 @@
             return {
                 stockList: [],
                 currentPage: 1,
-                total: 0,
+                stockNum: 0,
                 typeFilter: [
                     {text: "手机", value: "Phone"},
                     {text: "平板电脑", value: "Pad"},
                     {text: "电脑", value: "Computer"},
                     {text: "配件", value: "Accessories"},
-                    {text: "耳机", value: "EarPhone"},
+                    {text: "耳机", value: "EarPhones"},
                     {text: "其他", value: "Other"},
                 ]
             }
@@ -71,7 +71,7 @@
                 await this.axios.post("/api/getStocks", {page: page})
                     .then(response => {
                         this.stockList = response.data.stockList;
-                        this.total = response.data.stockNum;
+                        this.stockNum = response.data.stockNum;
                         console.log("库存列表加载完成！");
                     })
                     .catch(e => {

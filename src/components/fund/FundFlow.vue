@@ -27,7 +27,7 @@
                     {text: "平板电脑", value: "Pad"},
                     {text: "电脑", value: "Computer"},
                     {text: "配件", value: "Accessories"},
-                    {text: "耳机", value: "EarPhone"},
+                    {text: "耳机", value: "EarPhones"},
                     {text: "其他", value: "Other"},
                 ]
             }
