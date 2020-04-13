@@ -71,6 +71,7 @@
                 await this.axios.post("/api/getStocks", {page: page})
                     .then(response => {
                         this.stockList = response.data.stockList;
+                        this.total = response.data.stockNum;
                         console.log("库存列表加载完成！");
                     })
                     .catch(e => {

@@ -67,7 +67,7 @@ Mock.mock("/API/getStocks", {
         }
 
     ],
-    total: 1
+    stockNum: 1
 });
 
 Mock.mock("/API/getStockInfo", {
