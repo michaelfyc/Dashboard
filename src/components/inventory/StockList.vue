@@ -27,7 +27,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="dateTime" label="入库日期" width="160" sortable></el-table-column>
-            <el-table-column prop="productName" label="产品名" width="150"></el-table-column>
+            <el-table-column prop="productName" label="产品名" min-width="150"></el-table-column>
             <el-table-column prop="productType[0]" label="产品类型" :formatter="translateType" :filters="typeFilter"
                              :filter-method="filterType"></el-table-column>
             <el-table-column prop="price" label="单价" sortable></el-table-column>
@@ -67,10 +67,11 @@
             }
         },
         methods: {
-            async getStockList() {
-                await this.axios.post("/api/getStocks", {page: 1})
+            async getStockList(page) {
+                await this.axios.post("/api/getStocks", {page: page})
                     .then(response => {
                         this.stockList = response.data.stockList;
+                        this.total = response.data.stockNum;
                         console.log("库存列表加载完成！");
                     })
                     .catch(e => {
@@ -81,15 +82,7 @@
 
             async changePage(currentPage) {
                 this.currentPage = currentPage;
-                await this.axios.post("/api/getStocks", {page: currentPage})
-                    .then(response => {
-                        this.stockList = response.data.stockList;
-                        console.log("表格信息加载完毕！");
-                    })
-                    .catch(e => {
-                        this.$message.error("获取库存信息失败！");
-                        console.error(e);
-                    });
+                this.getStockList(this.currentPage);
             },
 
             handleEdit(row) {
@@ -163,7 +156,7 @@
         },
 
         mounted() {
-            this.getStockList();
+            this.getStockList(1);
         }
     }
 </script>

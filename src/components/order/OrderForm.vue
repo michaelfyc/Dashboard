@@ -138,7 +138,7 @@
             handleNew() {
                 this.$refs['orderForm'].validate((valid) => {
                     if (valid) {
-                        let data = {userId: this.$store.state.user.uid, order: this.orderForm};
+                        let data = {userId: this.$store.state.user.uid, stock: this.orderForm, stockId: this.stockId};
                         order.postOrder("/api/addStockOrder", data);
                     } else {
                         console.warn("有东西没好好填");
@@ -149,6 +149,7 @@
             },
 
             getRow(value) {
+                this.stockId = value.stockId;
                 this.orderForm.productName = value.productName;
                 this.orderForm.productType = value.productType;
                 this.orderForm.productDescription = value.productDescription;

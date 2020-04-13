@@ -13,7 +13,9 @@
                     </el-image>
                 </div>
                 <div class="avatar-button">
-                    <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
+                    <el-upload limit="1" accept="jpg,png,jpeg">
+                        <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
+                    </el-upload>
                 </div>
             </el-card>
         </el-aside>

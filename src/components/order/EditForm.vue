@@ -1,5 +1,4 @@
 <template>
-    <!--TODO 修改订单相关-->
     <el-form :model="orderForm" label-width="120px" label-position="right" ref="orderForm" :rules="orderRules"
              v-loading="loading">
         <el-form-item label="商品名" prop="productName">
