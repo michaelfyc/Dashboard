@@ -9,7 +9,7 @@ Mock.mock("/API/login", {
     isLogin: true
 });
 
-Mock.mock("/api/getStocks", {
+Mock.mock("/API/getStocks", {
     stockList: [
         {
             "contact": "182****9597",
