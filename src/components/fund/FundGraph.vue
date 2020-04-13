@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-chart :options="fundData"></v-chart>
+        <v-chart :options="fundData" v-loading="loading"></v-chart>
     </div>
 </template>
 
@@ -19,6 +19,7 @@
         name: "FundGraph",
         data() {
             return {
+                loading: false,
                 fundData: {
                     title: {text: "资金"},
                     legend: {show: true, data: ["库存总金额", "销售总金额", "已售产品售价", "已售产品邮费", "总盈利"]},
@@ -30,32 +31,49 @@
                             restore: {show: true}
                         }
                     },
-                    tooltip: {trigger: 'item', formatter: '{b}:{c}({d}%)'},
                     series: [{
-                        name: "",
                         type: "pie",
-                        radius: [0, "30%"],
-                        label: {position: 'inner'},
-                        data: [{value: 1000, name: "库存总金额"}, {value: 2000, name: "销售总金额"}]
+                        radius: [0, "60%"],
+                        label: {position: 'inner', formatter: '{b}:{c}元({d}%)'},
+                        data: [{value: 0, name: "库存总金额"}, {value: 0, name: "销售总金额"}]
                     },
                         {
-                            name: "",
                             type: "pie",
-                            radius: ["40%", "55%"],
-                            label: {position: "outside"},
-                            data: [{value: 1000, name: "库存总金额"}, {value: 1500, name: "已售产品售价"}, {
-                                value: 200,
-                                name: "已售产品邮费"
-                            }, {value: 300, name: "总盈利"}]
+                            radius: ["70%", "85%"],
+                            label: {position: "outside", formatter: '{b}:{c}元({d}%)'},
+                            data: [
+                                {value: 0, name: "库存总金额"},
+                                {value: 0, name: "已售产品售价"},
+                                {value: 0, name: "已售产品邮费"},
+                                {value: 0, name: "总盈利"}
+                            ]
                         }]
                 }
             }
         },
 
-        methods: {},
+        methods: {
+            async getFundData() {
+                await this.axios.get("/api/money")
+                    .then(response => {
+                        this.fundData.series[0].data[0].value = response.data.stockMoney;
+                        this.fundData.series[0].data[1].value = response.data.orderSold;
+                        this.fundData.series[1].data[0].value = response.data.stockMoney;
+                        this.fundData.series[1].data[1].value = response.data.orderPurchase;
+                        this.fundData.series[1].data[2].value = response.data.orderPost;
+                        this.fundData.series[1].data[3].value = response.data.orderProfit;
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        this.$message.error("资金图表加载失败！");
+                    });
+            }
+        },
 
         mounted() {
-
+            this.loading = true;
+            this.getFundData();
+            this.loading = false;
         }
     }
 </script>
@@ -63,5 +81,10 @@
 <style>
     .echarts {
         width: 100%
+    }
+
+    .fund-overview label {
+        width: 90px;
+        color: #99a9bf;
     }
 </style>

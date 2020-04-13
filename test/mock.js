@@ -168,3 +168,11 @@ Mock.mock("/API/getMonthGraph", {
     sales: [15, 3, 6, 27, 2, 5, 0, 12, 13, 5, 1, 4],
     profit: [2000, 150, 289, -40, 1500, 200, 0, 130, 423, 23, -33, 1320]
 });
+
+Mock.mock("/api/money", {
+    "orderPost": 100,
+    "orderProfit": 500,
+    "orderPurchase": 1400,
+    "orderSold": 2000,
+    "stockMoney": 1000
+});
