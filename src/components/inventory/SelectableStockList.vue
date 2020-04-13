@@ -1,9 +1,10 @@
 <template>
     <div>
+        <span style="color:red">&ast;请不要勾选选择框，单击所需行即可选择</span>
         <el-table :data="stockList" border style="width: 100%" highlight-current-row @current-change="handleSelect">
             <el-table-column>
-                <template slot-scope="scope">
-                    <el-checkbox v-model="scope.row.checked"></el-checkbox>
+                <template slot-scope="props">
+                    <el-checkbox v-model="props.row.checked"></el-checkbox>
                 </template>
             </el-table-column>
             <el-table-column prop="stockId" label="库存ID" v-if="false"></el-table-column>
@@ -53,7 +54,6 @@
                 stockList: [],
                 currentPage: 1,
                 selectedRow: {},
-                checked: false,
                 total: 0,
                 typeFilter: [
                     {text: "手机", value: "Phone"},
@@ -69,7 +69,11 @@
             async getStockList() {
                 await this.axios.post("/api/getStocks", {page: 1})
                     .then(response => {
-                        this.stockList = response.data.stockList;
+                        let stockList = response.data.stockList;
+                        stockList.forEach(item => {
+                            item.checked = false;
+                        });
+                        this.stockList = stockList;
                         console.log("库存列表加载完成！");
                     })
                     .catch(e => {
@@ -125,7 +129,11 @@
                     "Noiseless": "降噪",
                     "Noise": "普通",
                     "Wired": "有线",
-                    "Wireless": "无线"
+                    "Wireless": "无线",
+                    "Pen": "手写笔",
+                    "Charger": "充电器",
+                    "Mouse": "鼠标",
+                    "KeyBoard": "键盘"
                 };
                 if (row.productType.length === 1) {
                     return typeMap[row.productType[0]]
@@ -137,6 +145,10 @@
             },
 
             handleSelect(currentRow, oldCurrentRow) {
+                if (oldCurrentRow === null) {
+                    currentRow.checked = true;
+                    this.$emit("transferSelectedRow", currentRow);
+                }
                 this.stockList.forEach(item => {
                     if (currentRow.stockId === item.stockId) {
                         currentRow.checked = true;
