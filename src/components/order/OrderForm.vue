@@ -172,7 +172,7 @@
                     "Noiseless": "降噪",
                     "Noise": "普通",
                     "Wired": "有线",
-                    "Wireless": "无线"，
+                    "Wireless": "无线",
                     "Pen": "手写笔",
                     "Charger": "充电器",
                     "Mouse": "鼠标",
