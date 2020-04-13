@@ -14,7 +14,7 @@
                     </el-image>
                 </div>
                 <div class="avatar-button">
-                    <el-upload :limit="1" accept="jpg,png,jpeg" action="https://baidu.com"><!--TODO 上传action必须要有-->
+                    <el-upload :limit="1" accept="jpg,png,jpeg" action="https://baidu.com"><!--TODO v3.0上传action必须要有-->
                         <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
                     </el-upload>
                 </div>
@@ -212,13 +212,13 @@
                 });
             },
 
-            handleUpload() {//TODO 上传图片
+            handleUpload() {//TODO v3.0上传图片
 
             }
         },
 
         async mounted() {
-            //TODO 每次加载头像
+            //TODO v3.0每次加载头像
             await this.axios.get("/api/getUserInfo")
                 .then(response => {
                     console.log("获取用户信息成功");

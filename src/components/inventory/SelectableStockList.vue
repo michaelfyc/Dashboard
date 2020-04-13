@@ -34,7 +34,7 @@
                              :filter-method="filterType"></el-table-column>
             <el-table-column prop="price" label="单价" sortable></el-table-column>
             <el-table-column prop="num" label="数量" sortable></el-table-column>
-            <el-table-column prop="sum" label="总额" sortable></el-table-column>
+            <el-table-column prop="total" label="总额" sortable></el-table-column>
             <el-table-column prop="creator" label="进货人"></el-table-column>
             <el-table-column prop="contact" label="联系方式" width="150"></el-table-column>
             <el-table-column prop="platform" label="进货平台"></el-table-column>
@@ -136,13 +136,14 @@
                 return typeMap[row.productType[1]] + typeMap[row.productType[2]] + typeMap[row.productType[0]];
             },
 
-            handleSelect(row) {
+            handleSelect(currentRow, oldCurrentRow) {
                 this.stockList.forEach(item => {
-                    if (item.stockId !== row.stockId) {
-                        item.checked = false;
+                    if (currentRow.stockId === item.stockId) {
+                        currentRow.checked = true;
+                        oldCurrentRow.checked = false;
+                        this.$emit("transferSelectedRow", currentRow);
                     }
-                });
-                this.$emit("transferSelectedRow", row);
+                })
             },
 
             hasNote(row) {

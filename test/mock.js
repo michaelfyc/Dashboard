@@ -20,7 +20,9 @@ Mock.mock("/API/getStocks", {
             "price": 1000,
             "productDescription": {
                 "color": "silver",
-                "outlook": "全新"
+                "outlook": "全新",
+                "storage": "1T",
+                "memory": "16G"
             },
             "productName": "iPhone",
             "productType": [
@@ -39,13 +41,14 @@ Mock.mock("/API/getStocks", {
             "price": 3000,
             "productDescription": {
                 "color": "silver",
-                "outlook": "全新"
+                "outlook": "全新",
+                "storage": "1T"
             },
             "productName": "Ipad Pro",
             "productType": [
                 "Pad"
             ],
-            "stockId": 1,
+            "stockId": 2,
             "total": 20000
         },
         {
@@ -62,7 +65,7 @@ Mock.mock("/API/getStocks", {
             "productType": [
                 "Other"
             ],
-            "stockId": 1,
+            "stockId": 3,
             "total": 3000
         }
 
@@ -130,11 +133,11 @@ Mock.mock("/API/getOrders", {
     orderList: [{
         orderId: 12,
         submitterId: 2,
-        date: "2020-3-27 10:34:22",
+        dateTime: "2020-3-27 10:34:22",
         productName: "戴尔xps12寸",
         productType: ["Computer", "Laptop", "Windows"],
         withAccessories: true,
-        money: {"purchasePrice": 8999.01, "soldPrice": 9049, "postPrice": 30, "profit": 19.978},
+        "purchasePrice": 8999.01, "soldPrice": 9049, "postPrice": 30, "profit": 19.978,
         productDescription: {"color": "silver", "outlook": "非常tm新", "memory": "16G", "storage": "1024"},
         purchaser: "居家",
         contact: "7238784764",
@@ -145,11 +148,11 @@ Mock.mock("/API/getOrders", {
         {
             orderId: 13,
             submitterId: 1,
-            date: "2020-3-26 13:32:22",
+            dateTime: "2020-3-26 13:32:22",
             productName: "Ipad Pro 2018",
             productType: ["Pad"],
             withAccessories: true,
-            money: {"purchasePrice": 6899, "soldPrice": 7200, "postPrice": 10, "profit": 291},
+            "purchasePrice": 6899, "soldPrice": 7200, "postPrice": 10, "profit": 291,
             productDescription: {"color": "silver", "outlook": "全新", "storage": "512G"},
             purchaser: "理鸭",
             contact: "23425577232",

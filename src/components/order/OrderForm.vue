@@ -187,5 +187,7 @@
 </script>
 
 <style scoped>
-
+    .el-form span {
+        font-weight: bold;
+    }
 </style>
