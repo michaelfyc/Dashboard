@@ -118,7 +118,8 @@ Mock.mock("/API/register", {
 Mock.mock("/API/getUserInfo", {
     username: "admin",
     email: "example@example.com",
-    password: "123456"
+    password: "123456",
+    role: 1
 });
 
 Mock.mock("/API/editInfo", {

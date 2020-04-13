@@ -14,15 +14,15 @@
         <el-form-item label="确认密码" prop="vpassword">
             <el-input type="password" v-model="regForm.vpassword" class="narrow_input" show-password></el-input>
         </el-form-item>
+        <el-form-item label="角色">
+            <el-radio-group v-model="regForm.role">
+                <el-radio :label="1">管理员</el-radio>
+                <el-radio :label="2">用户</el-radio>
+                <el-radio :label="3">访客</el-radio>
+            </el-radio-group>
+        </el-form-item>
         <el-form-item>
-            <el-row type="flex" justify="space-between">
-                <el-col :span="12">
-                    <el-button type="primary" @click="handleReg('regForm')">注册</el-button>
-                </el-col>
-                <el-col :span="12" :push="3">
-                    <el-link type="primary" href="#/login">有账号了？去登录</el-link>
-                </el-col>
-            </el-row>
+            <el-button type="primary" @click="handleReg('regForm')">添加新用户</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -31,6 +31,14 @@
     export default {
         name: "Register",
         data() {
+            const validName = (rule, value, callback) => {
+                if (!value.match(/^[a-zA-Z\u4E00-\u9FA5]{2,16}$/)) {
+                    callback(new Error("用户名非法！"));
+                } else {
+                    callback();
+                }
+            };
+
             const validPwd = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error("请输入密码！"));
@@ -58,11 +66,13 @@
                     username: '',
                     email: '',
                     password: '',
-                    vpassword: ''
+                    vpassword: '',
+                    role: 2
                 },
                 regRules: {
                     username: [
                         {required: true, message: "请输入用户名", trigger: 'blur'},
+                        {validator: validName, trigger: 'blur'}
                     ],
                     email: [
                         {required: true, message: "请输入邮箱", trigger: 'blur'}
@@ -84,7 +94,8 @@
                 let data = {
                     username: this.regForm.username,
                     email: this.regForm.email,
-                    password: this.regForm.password
+                    password: this.regForm.password,
+                    role: this.regForm.role
                 };
                 this.$store.dispatch("register", data).catch(e => console.error(e));
             },
