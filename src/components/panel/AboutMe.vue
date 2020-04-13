@@ -1,5 +1,6 @@
 <template>
     <el-container>
+        <!--头像-->
         <el-aside width="300px">
             <el-card style="width:250px;height:300px">
                 <div class="user-avatar">
@@ -13,13 +14,14 @@
                     </el-image>
                 </div>
                 <div class="avatar-button">
-                    <el-upload limit="1" accept="jpg,png,jpeg">
+                    <el-upload :limit="1" accept="jpg,png,jpeg" action="https://baidu.com"><!--TODO 上传action必须要有-->
                         <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
                     </el-upload>
                 </div>
             </el-card>
         </el-aside>
         <el-main>
+            <!--修改用户信息-->
             <el-form :model="profile" label-width="120px" label-position="right" ref="profile" :rules="profileRules"
                      v-loading="loading">
                 <el-form-item label="修改用户名" prop="username">
@@ -51,6 +53,16 @@
                             <el-button type="primary" @click.prevent="handleUpdate">更新</el-button>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="6" v-if="role===1">
+                        <el-row>
+                            <el-col :push="19" :span="6">
+                                <el-button type="warning" @click="dialogVisible=true">添加新用户</el-button>
+                            </el-col>
+                        </el-row>
+                        <el-dialog title="添加用户" :visible.sync="dialogVisible">
+                            <Register/>
+                        </el-dialog>
+                    </el-col>
                 </el-row>
             </el-form>
         </el-main>
@@ -58,9 +70,20 @@
 </template>
 
 <script>
+    import Register from "../Register";
+
     export default {
         name: "AboutMe",
+        components: {Register},
         data() {
+            const validName = (rule, value, callback) => {
+                if (!value.match(/^[a-zA-Z\u4E00-\u9FA5]{2,16}$/)) {
+                    callback(new Error("用户名非法！"));
+                } else {
+                    callback();
+                }
+            };
+
             const validOldPass = (rule, value, callback) => {
                 if (!this.profile.changePassword) {
                     callback();
@@ -100,6 +123,8 @@
 
             return {
                 loading: false,
+                role: 3,
+                dialogVisible: false,
                 defaultImage: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 avatar: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 profile: {
@@ -113,7 +138,8 @@
 
                 profileRules: {
                     username: [
-                        {required: true, message: "请输入用户名！", trigger: 'blur'}
+                        {required: true, message: "请输入用户名！", trigger: 'blur'},
+                        {validator: validName, trigger: 'blur'}
                     ],
                     email: [
                         {required: true, message: "请输入邮箱！", trigger: 'blur'}
@@ -191,13 +217,14 @@
             }
         },
 
-        mounted() {
+        async mounted() {
             //TODO 每次加载头像
-            this.axios.get("/api/getUserInfo")
+            await this.axios.get("/api/getUserInfo")
                 .then(response => {
                     console.log("获取用户信息成功");
                     this.profile.username = response.data.username;
                     this.profile.email = response.data.email;
+                    this.role = response.data.role;
                 })
                 .catch(e => {
                     console.error(e);

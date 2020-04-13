@@ -45,7 +45,7 @@ const actions = {
             .then(response => {
                 if (response.data.verified === true) {
                     Message.success("注册成功！");
-                    router.push("/");
+                    window.location.reload();
                 } else {
                     Message.error(response.data.reason);
                 }

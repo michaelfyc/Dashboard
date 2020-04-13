@@ -3,7 +3,6 @@ import AboutMe from "../components/panel/AboutMe";
 import Home from "../view/Home";
 import Welcome from "../view/Welcome";
 import Console from "../components/panel/Console";
-import Register from "../components/Register";
 import NotFound from "../view/404";
 import OrderForm from "../components/order/OrderForm";
 import Vue from "vue";
@@ -30,12 +29,6 @@ const routes = [
                 path: "/login",
                 component: Login,
                 name: 'login',
-                hidden: true
-            },
-            {
-                path: "/register",
-                component: Register,
-                name: 'Register',
                 hidden: true
             }
         ]
