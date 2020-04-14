@@ -49,6 +49,7 @@
 
 <script>
     import order from "../../utils/orderRequests"
+    import product from "../../utils/productMap";
 
     export default {
         name: "OrderTable",
@@ -66,41 +67,12 @@
              * @returns {any}
              */
             translateColor(color) {
-                let colorMap = new Map();
-                colorMap.set("red", "红色");
-                colorMap.set("blue", "蓝色");
-                colorMap.set("green", "绿色");
-                colorMap.set("black", "黑色");
-                colorMap.set("silver", "银色");
-                colorMap.set("gold", "金色");
-                colorMap.set("yellow", "黄色");
-                colorMap.set("white", "白色");
-                colorMap.set("purple", "紫色");
-                return colorMap.get(color);
+                let colorMap = product.colorMap;
+                return colorMap[color];
             },
 
             translateType(row) {
-                let typeMap = {
-                    "Phone": "手机",
-                    "Pad": "平板电脑",
-                    "Computer": "电脑",
-                    "Accessories": "配件",
-                    "EarPhones": "耳机",
-                    "Other": "其他",
-                    "Laptop": "笔记本",
-                    "Desktop": "台式机",
-                    "Apple": "苹果",
-                    "Android": "安卓",
-                    "Windows": "Windows系统",
-                    "Noiseless": "降噪",
-                    "Noise": "普通",
-                    "Wired": "有线",
-                    "Wireless": "无线",
-                    "Pen": "手写笔",
-                    "Charger": "充电器",
-                    "Mouse": "鼠标",
-                    "KeyBoard": "键盘"
-                };
+                let typeMap = product.typeMap;
                 if (row.productType.length === 1) {
                     return typeMap[row.productType[0]]
                 }

@@ -5,7 +5,7 @@
         <el-form-item label="商品名" prop="productName">
             <el-input v-model="orderForm.productName"></el-input>
         </el-form-item>
-        <ProductType @transferProductType="getProductType" :ajaxType="orderForm.productType"></ProductType>
+        <ProductType @transferProductType="getProductType"></ProductType>
         <!--进价和售价和邮费-->
         <el-row>
             <el-col :span="6">
@@ -60,7 +60,7 @@
                 loading: false,
                 orderForm: {
                     productName: "",
-                    productType: "",
+                    productType: [],
                     money: {
                         purchasePrice: 0,
                         soldPrice: 0,

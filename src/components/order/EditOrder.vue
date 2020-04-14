@@ -81,7 +81,6 @@
                 orderForm: {
                     productName: "",
                     productType: [],
-                    withAccessories: false,
                     money: {
                         purchasePrice: 0,
                         soldPrice: 0,
@@ -160,9 +159,6 @@
             },
             getMemory(memory) {
                 this.orderForm.productDescription.memory = memory;
-            },
-            getAccessories(acc) {
-                this.orderForm.accessories = acc;
             }
         },
 
