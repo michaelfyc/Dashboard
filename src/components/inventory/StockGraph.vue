@@ -15,6 +15,7 @@
     import 'echarts/lib/component/title'
     import 'echarts/lib/chart/bar'
     import Echarts from "vue-echarts"
+    import product from "../../utils/productMap";
 
     Vue.component("v-chart", Echarts);
 
@@ -78,23 +79,7 @@
         },
         methods: {
             async getStockData() {
-                let typeMap = {
-                    "Phone": "手机",
-                    "Pad": "平板电脑",
-                    "Computer": "电脑",
-                    "Accessories": "配件",
-                    "EarPhones": "耳机",
-                    "Other": "其他",
-                    "Laptop": "笔记本",
-                    "Desktop": "台式机",
-                    "Apple": "苹果",
-                    "Android": "安卓",
-                    "Windows": "Windows系统",
-                    "Noiseless": "降噪",
-                    "Noise": "普通",
-                    "Wired": "有线",
-                    "Wireless": "无线"
-                };
+                let typeMap = product.typeMap;
                 await this.axios.get("/api/stock")
                     .then(response => {
                         this.stockData.xAxis[0].data = response.data.types.map(value => {

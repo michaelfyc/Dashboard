@@ -101,6 +101,7 @@
                     {value: "black", label: "黑色"},
                     {value: "silver", label: "银色"},
                     {value: "gold", label: "金色"},
+                    {value: "white", label: "白色"},
                     {value: "blue", label: "蓝色"},
                     {value: "red", label: "红色"},
                     {value: "green", label: "绿色"},
