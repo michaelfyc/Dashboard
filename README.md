@@ -31,7 +31,3 @@ See @vividguyCN order_system repo
 ### Sceenshots
 
 ![login.png](https://i.loli.net/2020/04/01/VXYt7uKqbnr3kZH.png)
-
-![graph.png](https://i.loli.net/2020/04/02/9Ap46HGVndQNDsg.png)
-
-![table](https://i.loli.net/2020/04/02/qHlg9K32JZm4XzE.png)
