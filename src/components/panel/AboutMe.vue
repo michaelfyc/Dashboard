@@ -14,9 +14,8 @@
                     </el-image>
                 </div>
                 <div class="avatar-button">
-                    <el-upload :limit="1" accept="jpg,png,jpeg" action="https://baidu.com"><!--TODO v3.0上传action必须要有-->
-                        <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
-                    </el-upload>
+                    <!--TODO v3.0上传action必须要有-->
+                    <el-button type="text" size="medium" @click="handleUpload">修改头像</el-button>
                 </div>
             </el-card>
         </el-aside>
