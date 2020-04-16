@@ -14,13 +14,13 @@
                         <el-form-item label="产品描述" v-show="!!props.row.productDescription.description">
                             <span v-text="props.row.productDescription.description"></span>
                         </el-form-item>
-                        <el-form-item label="产品内存" v-show="hasMemory(props.row)">
+                        <el-form-item label="产品内存" v-show="!!props.row.productDescription.memory">
                             <span v-text="props.row.productDescription.memory"></span>
                         </el-form-item>
-                        <el-form-item label="产品容量" v-show="hasStorage(props.row)">
+                        <el-form-item label="产品容量" v-show="!!props.row.productDescription.storage">
                             <span v-text="props.row.productDescription.storage"></span>
                         </el-form-item>
-                        <el-form-item label="备注" v-show="hasNote(props.row)">
+                        <el-form-item label="备注" v-show="!!props.row.note">
                             <span v-text="props.row.note"></span>
                         </el-form-item>
                     </el-form>
@@ -118,16 +118,6 @@
                     return typeMap[row.productType[1]] + typeMap[row.productType[0]]
                 }
                 return typeMap[row.productType[1]] + typeMap[row.productType[2]] + typeMap[row.productType[0]];
-            },
-
-            hasNote(row) {
-                return !!row.note;
-            },
-            hasMemory(row) {
-                return row.productType === "Phone" || row.productType === "Computer";
-            },
-            hasStorage(row) {
-                return row.productType === "Phone" || row.productType === "Computer" || row.productType === "Pad";
             }
         },
 
