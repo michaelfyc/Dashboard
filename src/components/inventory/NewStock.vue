@@ -16,7 +16,7 @@
             <el-col :span="6">
                 <el-form-item label="数量">
                     <el-input-number v-model="itemForm.money.num" :step="1" controls-position="right"
-                                     :min="0"></el-input-number>
+                                     :min="1"></el-input-number>
                 </el-form-item>
             </el-col>
         </el-row>
