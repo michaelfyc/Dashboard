@@ -33,7 +33,7 @@
                 <el-col :span="6">
                     <el-form-item label="数量">
                         <el-input-number v-model="orderForm.num" :step="1"
-                                         controls-position="right" :min="0" :max="max"></el-input-number>
+                                         controls-position="right" :min="1" :max="max"></el-input-number>
                     </el-form-item>
                 </el-col>
             </el-row>
