@@ -5,7 +5,8 @@
             <el-input v-model="loginForm.username" class="input_width"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="loginForm.password" class="input_width" show-password></el-input>
+            <el-input type="password" v-model="loginForm.password" class="input_width" show-password
+                      @keyup.enter.prevent="handleLogin('loginForm')"></el-input>
         </el-form-item>
         <el-form-item>
             <el-checkbox v-model="loginForm.rememberMe">七天免登录</el-checkbox>
